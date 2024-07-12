@@ -4,7 +4,7 @@
 
 1. Clona el repositorio:
 ```sh
-git clone https://github.com/tu_usuario/car-dealer-system.git
+git clone https://github.com/fzaca/car-dealer-system.git
 cd car-dealer-system
 ```
 
