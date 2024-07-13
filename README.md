@@ -10,10 +10,17 @@ cd car-dealer-system
 
 2. Crea un entorno virtual e instala las dependencias:
 ```sh
-python -m venv venv
-source venv/bin/activate
+python3.12 -m venv env
+source env/bin/activate
 pip install -r requirements/local.txt
 ```
+> [!NOTE]
+>
+> Si no tienes Python 3.12 instalado, puedes instalarlo en Linux con los siguientes comandos:
+> ```sh
+> sudo apt update
+> sudo apt install -y python3.12 python3.12-venv python3.12-dev
+> ```
 
 3. Configura las variables de entorno en un archivo `.env`.
 ```sh
