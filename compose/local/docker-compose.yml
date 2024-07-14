@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:latest
+    env_file:
+      - ../../environments/local.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  minio:
+    image: quay.io/minio/minio
+    command: server /data --console-address ":9001"
+    env_file:
+      - ../../environments/local.env
+    volumes:
+      - minio_data:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+
+volumes:
+  postgres_data:
+  minio_data:
+
+
+# For run services
+#   MinIO:
+#      docker compose -f compose/docker-compose.yml up --build -d minio --remove-orphans
