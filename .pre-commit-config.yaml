@@ -14,5 +14,3 @@ repos:
     hooks:
       - id: ruff
         exclude: alembic/
-      - id: ruff-format
-        exclude: alembic/
