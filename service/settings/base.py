@@ -102,12 +102,6 @@ LOGGING = {
         },
     },
     "handlers": {
-        "file": {
-            "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "filename": os.path.join(BASE_DIR, "logs/django.log"),
-            "formatter": "detailed",
-        },
         "console": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
@@ -116,12 +110,12 @@ LOGGING = {
     },
     "loggers": {
         "django": {
-            "handlers": ["file", "console"],
+            "handlers": ["console"],
             "level": "DEBUG",
             "propagate": True,
         },
         "myapp": {
-            "handlers": ["file", "console"],
+            "handlers": ["console"],
             "level": "DEBUG",
             "propagate": False,
         },
