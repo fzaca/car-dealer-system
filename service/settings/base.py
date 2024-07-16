@@ -59,6 +59,7 @@ WSGI_APPLICATION = "service.wsgi.application"
 
 DATABASES = {}
 
+AUTH_USER_MODEL = "users.CustomUser"
 AUTH_PASSWORD_VALIDATORS = [
 	{
 		"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -97,7 +98,7 @@ LOGGING = {
 			"style": "{",
 		},
 		"detailed": {
-			"format": "{levelname} {asctime} {module} {funcName} {lineno} {message}",
+			"format": "{levelname} {asctime} {filename} {funcName}():{lineno} | {message}",
 			"style": "{",
 		},
 	},
@@ -105,7 +106,7 @@ LOGGING = {
 		"console": {
 			"level": "DEBUG",
 			"class": "logging.StreamHandler",
-			"formatter": "simple",
+			"formatter": "detailed",
 		},
 	},
 	"loggers": {
@@ -114,7 +115,7 @@ LOGGING = {
 			"level": "DEBUG",
 			"propagate": True,
 		},
-		"myapp": {
+		"users": {
 			"handlers": ["console"],
 			"level": "DEBUG",
 			"propagate": False,
