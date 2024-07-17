@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
-from resources.users.forms import CustomUserChangeForm, CustomUserCreationForm
+from resources.users.forms import CustomUserCreationForm
 from resources.users.models import CustomUser
 
 
@@ -41,15 +41,3 @@ def user_list_view(request):
 def user_detail_view(request, pk):
 	user = CustomUser.objects.get(pk=pk)
 	return render(request, "user_detail.html", {"user": user})
-
-
-def user_update_view(request, pk):
-	user = CustomUser.objects.get(pk=pk)
-	if request.method == "POST":
-		form = CustomUserChangeForm(request.POST, instance=user)
-		if form.is_valid():
-			form.save()
-			return redirect("user_detail", pk=user.pk)
-	else:
-		form = CustomUserChangeForm(instance=user)
-	return render(request, "user_form.html", {"form": form})
