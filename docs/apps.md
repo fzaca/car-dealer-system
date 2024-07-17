@@ -1,34 +1,31 @@
-## users
+## Aplicaciones y Modelos
 
-Descripción: Gestión de usuarios y autenticación.
-Modelos: User (extensión del modelo de usuario de Django, con roles de staff y no staff).
-Funcionalidades: Registro, inicio de sesión, roles y permisos.
+### core
+- (No contiene modelos específicos)
 
-## cars
+### users
+- CustomUser
+- Customer
+- Employee
 
-Descripción: Gestión de autos, marcas y modelos de autos.
-Modelos: Car, Brand, CarModel.
-Funcionalidades: CRUD de autos, marcas y modelos, carga de imágenes.
+### cars
+- Car
+- Brand
+- CarModel
+- Category
+- Comment
+- Warranty
+- Service
 
-## customers
+### sales
+- Sale
+- Invoice
+- Payment
 
-Descripción: Gestión de clientes.
-Modelos: Customer.
-Funcionalidades: CRUD de clientes.
+### suppliers
+- Supplier
+- Part
+- PartOrder
 
-## categories
-
-Descripción: Gestión de categorías de autos.
-Modelos: Category.
-Funcionalidades: CRUD de categorías.
-
-## comments
-
-Descripción: Gestión de comentarios de los usuarios sobre los autos.
-Modelos: Comment.
-Funcionalidades: CRUD de comentarios, con restricciones basadas en roles.
-
-## media
-
-Descripción: Gestión de imágenes y archivos subidos.
-Modelos: Ninguno específico, pero configuración de rutas y almacenamiento de media.
+### appointments (opcional)
+- TestDrive
