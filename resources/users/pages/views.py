@@ -6,16 +6,18 @@ from resources.users.models import Customer, CustomUser
 
 
 def register_view(request):
-	if request.method == "POST":
-		form = CustomUserCreationForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			Customer.objects.create(user_id=user)
-			login(request, user)
-			return redirect("home")
-	else:
-		form = CustomUserCreationForm()
-	return render(request, "register.html", {"form": form})
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_customer = True
+            user.save()
+            Customer.objects.create(user_id=user)
+            login(request, user)
+            return redirect("home")
+    else:
+        form = CustomUserCreationForm()
+    return render(request, "register.html", {"form": form})
 
 
 def login_view(request):

@@ -5,6 +5,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class CustomUser(AbstractUser):
     is_staff = models.BooleanField(default=False)
+    is_customer = models.BooleanField(default=False)
+    is_employee = models.BooleanField(default=False)
     groups = models.ManyToManyField(
         Group,
         related_name="customuser_set",
@@ -25,7 +27,7 @@ class CustomUser(AbstractUser):
 
 
 class Customer(models.Model):
-    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     phone = PhoneNumberField(blank=True)
     address = models.CharField(max_length=200)
 
@@ -34,7 +36,7 @@ class Customer(models.Model):
 
 
 class Employee(models.Model):  # FIXME: Make this model more stable
-    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     position = models.CharField(max_length=100)  # FIXME: Create table for positions
     hire_date = models.DateField(blank=True, null=True)
     salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
