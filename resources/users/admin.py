@@ -16,8 +16,6 @@ class CustomUserAdmin(UserAdmin):
                     "password2",
                     "email",
                     "is_staff",
-                    "is_customer",
-                    "is_salesperson",
                 ),
             },
         ),

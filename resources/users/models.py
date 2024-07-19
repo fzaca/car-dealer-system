@@ -5,8 +5,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class CustomUser(AbstractUser):
     is_staff = models.BooleanField(default=False)
-    is_customer = models.BooleanField(default=True)
-    is_salesperson = models.BooleanField(default=False)
     groups = models.ManyToManyField(
         Group,
         related_name="customuser_set",
