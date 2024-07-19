@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
 from resources.users.forms import CustomUserCreationForm
-from resources.users.models import CustomUser
+from resources.users.models import Customer, CustomUser
 
 
 def register_view(request):
@@ -10,6 +10,7 @@ def register_view(request):
 		form = CustomUserCreationForm(request.POST)
 		if form.is_valid():
 			user = form.save()
+			Customer.objects.create(user_id=user)
 			login(request, user)
 			return redirect("home")
 	else:
