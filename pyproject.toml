@@ -1,5 +1,27 @@
 [tool.ruff]
 line-length = 88
-select = ["E", "F", "W", "C"]
-ignore = ["E501"]
-exclude = ["alembic/"]
+exclude = ["alembic/", "docs/", "venv", "env"]
+target-version = "py311"
+preview = true
+
+[tool.ruff.lint]
+select = [
+    "F", #Pyflakes
+    "B", #flake8-bugbear
+    "A", #flake8-builtins
+    "C4", #flake8-comprehensions
+    "ERA", #eradicate
+    "I", #isort
+    "PT", #flake8-pytest-style
+    "C90", #mccabe
+    "N", #pep8-naming
+    "E", #pycodestyle error
+    "PL", #Pylint
+    "E305",  # expected 2 blank lines after end of function or class
+    "W292",  # no newline at end of file
+]
+ignore = ["A003", "E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "tab"

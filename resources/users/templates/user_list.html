@@ -1,0 +1,6 @@
+<h2>User List</h2>
+<ul>
+    {% for user in users %}
+    <li><a href="{% url 'page_user_detail' user.pk %}">{{ user.username }}</a></li>
+    {% endfor %}
+</ul>
