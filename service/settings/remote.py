@@ -10,3 +10,26 @@ DATABASES = {
 		"PORT": "5432",
 	}
 }
+
+
+LOGGING = {
+    **LOGGING,  # noqa: F405
+    'loggers': {
+        **LOGGING['loggers'],  # noqa: F405
+        'django.security': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'django.utils.autoreload': {
+            'handlers': ['console'],
+            'level': 'INFO',  # NOTE: Level in `Info` for reduce noise
+            'propagate': False,
+        }
+    },
+}

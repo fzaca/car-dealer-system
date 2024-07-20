@@ -8,3 +8,19 @@ DATABASES = {
 		"NAME": BASE_DIR / "db.sqlite3",  # noqa: F405
 	}
 }
+
+LOGGING = {
+    **LOGGING,  # noqa: F405
+    'loggers': {
+        **LOGGING['loggers'],  # noqa: F405
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'django.template': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}

@@ -115,13 +115,23 @@ LOGGING = {
 	"loggers": {
 		"django": {
 			"handlers": ["console"],
-			"level": "DEBUG",
+			"level": "INFO",
 			"propagate": True,
 		},
-		"users": {
-			"handlers": ["console"],
-			"level": "DEBUG",
-			"propagate": False,
-		},
-	},
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.utils.autoreload': {
+            'handlers': ['console'],
+            'level': 'INFO',  # NOTE: Level in `Info` for reduce noise
+            'propagate': False,
+        }
+    }
 }
