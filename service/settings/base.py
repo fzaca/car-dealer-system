@@ -104,12 +104,16 @@ LOGGING = {
 			"format": "{levelname} {asctime} {filename} {funcName}():{lineno} | {message}",
 			"style": "{",
 		},
+		"rich": {
+			"datefmt": "[%X]",
+			"style": "{",
+		},
 	},
 	"handlers": {
 		"console": {
 			"level": "DEBUG",
-			"class": "logging.StreamHandler",
-			"formatter": "detailed",
+			"class": "rich.logging.RichHandler",
+			"formatter": "rich",
 		},
 	},
 	"loggers": {
