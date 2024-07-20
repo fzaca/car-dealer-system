@@ -8,4 +8,7 @@ urlpatterns = [
 	# Users
 	path("api/users/", include("resources.users.api.urls")),
 	path("users/", include("resources.users.pages.urls")),
+	# Cars
+	path("api/cars/", include("resources.cars.api.urls")),
+	path("cars/", include("resources.cars.pages.urls")),
 ]

@@ -28,6 +28,7 @@ INSTALLED_APPS = [
 	# Local apps
 	"resources.core",
 	"resources.users",
+	"resources.cars",
 ]
 
 MIDDLEWARE = [
