@@ -34,6 +34,20 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+## Cargar Datos del Dataset
+* Dataset: [DVM-CAR Dataset](https://deepvisualmarketing.github.io/
+)
+Para cargar los datos del dataset en la base de datos, sigue estos pasos:
+1. Coloca los archivos CSV del dataset en la ruta correcta. Asegúrate de tener los archivos:
+    * `brands.csv`
+    * `car_models.csv`
+    * `trims.csv`
+    * `cars.csv`
+2. Ejecute los comandos de carga de datos:
+```sh
+python manage.py load_car_data
+```
+
 ## Depuración
 ### Debugging con `ipdb`
 Para depurar utilizando `ipdb`, añade un breakpoint en tu código con `import ipdb; ipdb.set_trace()`.

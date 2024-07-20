@@ -5,3 +5,5 @@ python-decouple==3.8
 django-phonenumber-field[phonenumberslite]==8.0.0
 phonenumberslite==8.13.40
 rich==13.7.1
+requests
+tqdm==4.66.4
