@@ -1,11 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from unfold.admin import ModelAdmin
 
 from resources.users.forms import CustomUserChangeForm, CustomUserCreationForm
 from resources.users.models import Customer, CustomUser, Employee
 
 
-class CustomUserAdmin(UserAdmin):
+@admin.register(CustomUser)
+class CustomUserAdmin(UserAdmin, ModelAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 
@@ -36,18 +38,15 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('username',)
 
 
-class CustomerAdmin(admin.ModelAdmin):
+@admin.register(Customer)
+class CustomerAdmin(ModelAdmin):
     list_display = ('user_id', 'phone', 'address')
     search_fields = ('user_id__username', 'phone', 'address')
     ordering = ('user_id',)
 
 
-class EmployeeAdmin(admin.ModelAdmin):
+@admin.register(Employee)
+class EmployeeAdmin(ModelAdmin):
     list_display = ('user_id', 'position', 'hire_date', 'salary', 'department')
     search_fields = ('user_id__username', 'position', 'department')
     ordering = ('user_id',)
-
-
-admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Customer, CustomerAdmin)
-admin.site.register(Employee)
