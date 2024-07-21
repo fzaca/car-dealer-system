@@ -18,6 +18,7 @@ DEBUG = config("DEBUG", default=True)
 APPS_DIR = BASE_DIR / "resources"
 
 INSTALLED_APPS = [
+	"unfold",
 	"django.contrib.admin",
 	"django.contrib.auth",
 	"django.contrib.contenttypes",
