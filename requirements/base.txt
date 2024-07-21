@@ -7,3 +7,4 @@ phonenumberslite==8.13.40
 rich==13.7.1
 requests
 tqdm==4.66.4
+django-autocomplete-light==3.11.0
