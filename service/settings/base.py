@@ -18,6 +18,7 @@ DEBUG = config("DEBUG", default=True)
 APPS_DIR = BASE_DIR / "resources"
 
 INSTALLED_APPS = [
+	"unfold",
 	"django.contrib.admin",
 	"django.contrib.auth",
 	"django.contrib.contenttypes",
@@ -25,9 +26,12 @@ INSTALLED_APPS = [
 	"django.contrib.messages",
 	"django.contrib.staticfiles",
 	"phonenumber_field",
+    'dal',
+    'dal_select2',
 	# Local apps
 	"resources.core",
 	"resources.users",
+	"resources.cars",
 ]
 
 MIDDLEWARE = [
@@ -43,19 +47,19 @@ MIDDLEWARE = [
 ROOT_URLCONF = "service.urls"
 
 TEMPLATES = [
-	{
-		"BACKEND": "django.template.backends.django.DjangoTemplates",
-		"DIRS": [],
-		"APP_DIRS": True,
-		"OPTIONS": {
-			"context_processors": [
-				"django.template.context_processors.debug",
-				"django.template.context_processors.request",
-				"django.contrib.auth.context_processors.auth",
-				"django.contrib.messages.context_processors.messages",
-			],
-		},
-	},
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'resources/templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
 ]
 
 WSGI_APPLICATION = "service.wsgi.application"
@@ -104,24 +108,38 @@ LOGGING = {
 			"format": "{levelname} {asctime} {filename} {funcName}():{lineno} | {message}",
 			"style": "{",
 		},
+		"rich": {
+			"datefmt": "[%X]",
+			"style": "{",
+		},
 	},
 	"handlers": {
 		"console": {
 			"level": "DEBUG",
-			"class": "logging.StreamHandler",
-			"formatter": "detailed",
+			"class": "rich.logging.RichHandler",
+			"formatter": "rich",
 		},
 	},
 	"loggers": {
 		"django": {
 			"handlers": ["console"],
-			"level": "DEBUG",
+			"level": "INFO",
 			"propagate": True,
 		},
-		"users": {
-			"handlers": ["console"],
-			"level": "DEBUG",
-			"propagate": False,
-		},
-	},
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.utils.autoreload': {
+            'handlers': ['console'],
+            'level': 'INFO',  # NOTE: Level in `Info` for reduce noise
+            'propagate': False,
+        }
+    }
 }

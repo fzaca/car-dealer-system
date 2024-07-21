@@ -12,20 +12,10 @@
 - Car
 - Brand
 - CarModel
-- Category
-- Comment
-- Warranty
-- Service
+- Trim
 
 ### sales
 - Sale
-- Invoice
-- Payment
 
-### suppliers
-- Supplier
-- Part
-- PartOrder
-
-### appointments (opcional)
-- TestDrive
+### Comments
+- Comment
