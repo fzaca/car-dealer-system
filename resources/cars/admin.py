@@ -24,5 +24,5 @@ class CarModelAdmin(ModelAdmin):
 class CarAdmin(ModelAdmin):
     form = CarForm
     list_display = ('car_model', 'year', 'price', 'color', 'mileage', 'engine_size', 'gearbox', 'fuel_type', 'seats', 'doors', 'body_type')
-    search_fields = ('car_model__name', 'color', 'gearbox', 'fuel_type', 'body_type')
+    search_fields = ('car_model__name', 'car_model__brand__name', 'color', 'gearbox', 'fuel_type', 'body_type')
     ordering = ('car_model__brand__name', 'car_model__name', 'year')
