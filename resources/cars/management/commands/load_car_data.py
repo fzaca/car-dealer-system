@@ -1,12 +1,14 @@
 import csv
 import logging
 import os
+import re
 
 import requests
+from django.db import transaction
 from django.core.management.base import BaseCommand
 from tqdm import tqdm
 
-from resources.cars.models import Brand, CarModel
+from resources.cars.models import Brand, CarModel, Car
 
 logger = logging.getLogger(__name__)
 
@@ -74,4 +76,63 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR('An error occurred while loading car models'))
 
     def load_cars(self):
-        pass
+        try:
+            # Drop all existing Car objects
+            self.stdout.write("Dropping existing cars...")
+            Car.objects.all().delete()
+
+            # Prefetch brands and car models
+            brands = {brand.name: brand for brand in Brand.objects.all()}
+            car_models = {(model.brand.name, model.name): model for model in CarModel.objects.select_related('brand').all()}
+
+            cars_to_create = []
+            with open(os.path.join(self.BASE_DIR, 'Ad_table.csv'), newline='', encoding='utf-8') as csvfile:
+                reader = list(csv.DictReader(csvfile))
+                for row in tqdm(reader, desc="Preparing cars"):
+                    brand = brands.get(row['Maker'])
+                    car_model = car_models.get((row['Maker'], row[' Genmodel']))
+
+                    if not brand or not car_model:
+                        continue
+
+                    try:
+                        engine_size = float(row['Engin_size'].replace('L', '').strip() or 0)
+                    except ValueError:
+                        engine_size = 0.0
+
+                    try:
+                        price = float(row['Price'] or 0)
+                    except ValueError:
+                        price = 0.0
+
+                    year = int(row['Reg_year'] or 0)
+                    mileage = int(re.sub(r'[^\d]', '', row['Runned_Miles']) or 0)
+                    seats = int(row['Seat_num'] or 0)
+                    doors = int(row['Door_num'] or 0)
+
+                    cars_to_create.append(Car(
+                        car_model=car_model,
+                        price=price,
+                        engine_size=engine_size,
+                        image_url="",
+                        gearbox=row['Gearbox'],
+                        fuel_type=row['Fuel_type'],
+                        color=row['Color'],
+                        year=year,
+                        mileage=mileage,
+                        seats=seats,
+                        doors=doors,
+                        body_type=row['Bodytype'],
+                    ))
+
+            # Bulk create cars in batches
+            batch_size = 5000
+            with transaction.atomic():
+                for i in tqdm(range(0, len(cars_to_create), batch_size), desc="Creating cars"):
+                    Car.objects.bulk_create(cars_to_create[i:i + batch_size])
+
+            self.stdout.write(self.style.SUCCESS(f'Successfully loaded {len(cars_to_create)} cars'))
+            logger.info(f'Successfully loaded {len(cars_to_create)} cars')
+        except Exception as e:
+            logger.error(f'An error occurred while loading cars: {e}')
+            self.stdout.write(self.style.ERROR('An error occurred while loading cars'))
