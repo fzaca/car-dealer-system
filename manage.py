@@ -1,11 +1,13 @@
 import os
 import sys
+from decouple import config
 
 from django.core.management import execute_from_command_line
 
 
 def main():
 	os.environ.setdefault("DJANGO_SETTINGS_MODULE", "service.settings.local")
+	os.environ.setdefault("ENV", config("ENV", default="local"))
 	try:
 		execute_from_command_line(sys.argv)
 	except ImportError as exc:

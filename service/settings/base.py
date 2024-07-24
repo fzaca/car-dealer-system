@@ -7,9 +7,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 config = Config(
-	repository=str(
-		BASE_DIR / "environments" / (os.environ.get("ENV", "local") + ".env")
-	)
+    repository=str(
+        BASE_DIR / "environments" / (os.environ.get("ENV", "local") + ".env")
+    )
 )
 
 SECRET_KEY = config("SECRET_KEY", default="your-secret-key")

@@ -1,8 +1,8 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
-from resources.cars.forms import CarForm, CarModelForm, TrimForm
-from resources.cars.models import Brand, Car, CarModel, Trim
+from resources.cars.forms import CarForm, CarModelForm
+from resources.cars.models import Brand, Car, CarModel
 
 
 @admin.register(Brand)
@@ -20,17 +20,9 @@ class CarModelAdmin(ModelAdmin):
     ordering = ('name',)
 
 
-@admin.register(Trim)
-class TrimAdmin(ModelAdmin):
-    form = TrimForm
-    list_display = ('name', 'car_model', 'year', 'potential_price', 'fuel_type', 'engine_size')
-    search_fields = ('name', 'car_model__name', 'car_model__brand__name')
-    ordering = ('car_model__brand__name', 'car_model__name', 'year')
-
-
 @admin.register(Car)
 class CarAdmin(ModelAdmin):
     form = CarForm
-    list_display = ('car_model', 'trim', 'year', 'price', 'color', 'registration_year', 'mileage')
-    search_fields = ('car_model__name', 'trim__name', 'color')
-    ordering = ('car_model__brand__name', 'car_model__name', 'trim__name', 'year')
+    list_display = ('car_model', 'year', 'price', 'color', 'mileage', 'engine_size', 'gearbox', 'fuel_type', 'seats', 'doors', 'body_type')
+    search_fields = ('car_model__name', 'car_model__brand__name', 'color', 'gearbox', 'fuel_type', 'body_type')
+    ordering = ('car_model__brand__name', 'car_model__name', 'year')

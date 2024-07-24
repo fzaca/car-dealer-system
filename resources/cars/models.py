@@ -16,27 +16,19 @@ class CarModel(models.Model):
         return f"{self.name}"
 
 
-class Trim(models.Model):
-    car_model = models.ForeignKey(CarModel, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
-    year = models.PositiveIntegerField()
-    potential_price = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
-    fuel_type = models.CharField(max_length=50)
-    engine_size = models.DecimalField(max_digits=20, decimal_places=2)
-
-    def __str__(self) -> str:
-        return f"{self.name} ({self.year})"
-
-
 class Car(models.Model):
     car_model = models.ForeignKey(CarModel, on_delete=models.CASCADE)
-    trim = models.ForeignKey(Trim, on_delete=models.CASCADE)
-    year = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)  # NOTE: Final price
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    engine_size = models.DecimalField(max_digits=10, decimal_places=1)
     image_url = models.URLField(max_length=200)
+    gearbox = models.CharField(max_length=50)
+    fuel_type = models.CharField(max_length=50)
     color = models.CharField(max_length=50)
-    registration_year = models.PositiveIntegerField()
+    year = models.PositiveIntegerField()  # NOTE: Anio de registro
     mileage = models.PositiveIntegerField()
+    seats = models.PositiveIntegerField()
+    doors = models.PositiveIntegerField()
+    body_type = models.CharField(max_length=50)
 
     def __str__(self):
-        return f"{self.car_model.name} {self.trim.name} ({self.year})"
+        return f"{self.car_model.name} ({self.year})"

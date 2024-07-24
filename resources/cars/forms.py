@@ -1,16 +1,7 @@
 from dal import autocomplete
 from django import forms
 
-from resources.cars.models import Car, CarModel, Trim
-
-
-class TrimForm(forms.ModelForm):
-    class Meta:
-        model = Trim
-        fields = '__all__'
-        widgets = {
-            'car_model': autocomplete.ModelSelect2(url='carmodel-autocomplete', forward=['brand'])
-        }
+from resources.cars.models import Car, CarModel
 
 
 class CarForm(forms.ModelForm):
@@ -18,7 +9,7 @@ class CarForm(forms.ModelForm):
         model = Car
         fields = '__all__'
         widgets = {
-            'trim': autocomplete.ModelSelect2(url='trim-autocomplete', forward=['car_model'])
+            'car_model': autocomplete.ModelSelect2(url='carmodel-autocomplete', forward=['brand'])
         }
 
 
