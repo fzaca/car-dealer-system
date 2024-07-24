@@ -1,12 +1,14 @@
 import csv
 import logging
 import os
+import re
 
 import requests
+from django.db import transaction
 from django.core.management.base import BaseCommand
 from tqdm import tqdm
 
-from resources.cars.models import Brand, CarModel, Trim
+from resources.cars.models import Brand, CarModel, Car
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +31,7 @@ class Command(BaseCommand):
         self.download_files()
         self.load_brands()
         self.load_car_models()
-        self.load_trims()
+        self.load_cars()
         self.stdout.write(self.style.SUCCESS('Successfully loaded car data'))
 
     def download_files(self):
@@ -73,49 +75,64 @@ class Command(BaseCommand):
             logger.error(f'An error occurred while loading car models: {e}')
             self.stdout.write(self.style.ERROR('An error occurred while loading car models'))
 
-    def load_trims(self):
+    def load_cars(self):
         try:
-            brands = {brand.name.lower(): brand for brand in Brand.objects.all()}
-            car_models = {(car_model.name.lower(), car_model.brand.name.lower()): car_model for car_model in CarModel.objects.all()}
+            # Drop all existing Car objects
+            self.stdout.write("Dropping existing cars...")
+            Car.objects.all().delete()
 
-            trims_to_create = []
+            # Prefetch brands and car models
+            brands = {brand.name: brand for brand in Brand.objects.all()}
+            car_models = {(model.brand.name, model.name): model for model in CarModel.objects.select_related('brand').all()}
 
-            with open(os.path.join(self.BASE_DIR, 'Trim_table.csv'), newline='', encoding='utf-8') as csvfile:
+            cars_to_create = []
+            with open(os.path.join(self.BASE_DIR, 'Ad_table.csv'), newline='', encoding='utf-8') as csvfile:
                 reader = list(csv.DictReader(csvfile))
-                for row in tqdm(reader, desc="Loading trims"):
+                for row in tqdm(reader, desc="Preparing cars"):
+                    brand = brands.get(row['Maker'])
+                    car_model = car_models.get((row['Maker'], row[' Genmodel']))
+
+                    if not brand or not car_model:
+                        continue
+
                     try:
-                        brand = brands.get(row['Maker'].lower())
-                        if not brand:
-                            logger.error(f'Brand not found: {row["Maker"]}')
-                            continue
+                        engine_size = float(row['Engin_size'].replace('L', '').strip() or 0)
+                    except ValueError:
+                        engine_size = 0.0
 
-                        car_model_key = (row['Genmodel'].lower(), row['Maker'].lower())
-                        car_model = car_models.get(car_model_key)
-                        if not car_model:
-                            car_model = CarModel.objects.create(name=row['Genmodel'], brand=brand)
-                            car_models[car_model_key] = car_model
+                    try:
+                        price = float(row['Price'] or 0)
+                    except ValueError:
+                        price = 0.0
 
-                        engine_size = self.parse_engine_size(row['Engine_size'])
+                    year = int(row['Reg_year'] or 0)
+                    mileage = int(re.sub(r'[^\d]', '', row['Runned_Miles']) or 0)
+                    seats = int(row['Seat_num'] or 0)
+                    doors = int(row['Door_num'] or 0)
 
-                        trims_to_create.append(
-                            Trim(
-                                car_model=car_model,
-                                name=row['Trim'],
-                                year=row['Year'],
-                                potential_price=row['Price'],
-                                fuel_type=row['Fuel_type'],
-                                engine_size=engine_size
-                            )
-                        )
-                    except KeyError as e:
-                        logger.error(f'Missing column in Trim_table.csv: {e}')
-                        self.stdout.write(self.style.ERROR(f'Missing column in Trim_table.csv: {e}'))
-                    except Exception as e:
-                        logger.error(f'An error occurred while loading trims: {e}')
-                        self.stdout.write(self.style.ERROR('An error occurred while loading trims'))
+                    cars_to_create.append(Car(
+                        car_model=car_model,
+                        price=price,
+                        engine_size=engine_size,
+                        image_url="",
+                        gearbox=row['Gearbox'],
+                        fuel_type=row['Fuel_type'],
+                        color=row['Color'],
+                        year=year,
+                        mileage=mileage,
+                        seats=seats,
+                        doors=doors,
+                        body_type=row['Bodytype'],
+                    ))
 
-            Trim.objects.bulk_create(trims_to_create, ignore_conflicts=True)
-            logger.info('Successfully loaded trims')
+            # Bulk create cars in batches
+            batch_size = 5000
+            with transaction.atomic():
+                for i in tqdm(range(0, len(cars_to_create), batch_size), desc="Creating cars"):
+                    Car.objects.bulk_create(cars_to_create[i:i + batch_size])
+
+            self.stdout.write(self.style.SUCCESS(f'Successfully loaded {len(cars_to_create)} cars'))
+            logger.info(f'Successfully loaded {len(cars_to_create)} cars')
         except Exception as e:
-            logger.error(f'An error occurred while loading trims: {e}')
-            self.stdout.write(self.style.ERROR('An error occurred while loading trims'))
+            logger.error(f'An error occurred while loading cars: {e}')
+            self.stdout.write(self.style.ERROR('An error occurred while loading cars'))

@@ -3,11 +3,11 @@ from .base import *  # noqa: F403
 DATABASES = {
 	"default": {
 		"ENGINE": "django.db.backends.postgresql",
-		"NAME": config("POSTGRES_DB"),  # noqa: F405
-		"USER": config("POSTGRES_USER"),  # noqa: F405
-		"PASSWORD": config("POSTGRES_PASSWORD"),  # noqa: F405
-		"HOST": "postgres",  # NOTE: If you are in the compose this field is the service name
-		"PORT": "5432",
+		"NAME": config("DB_NAME"),  # noqa: F405
+		"USER": config("DB_USER"),  # noqa: F405
+		"PASSWORD": config("DB_PASSWORD"),  # noqa: F405
+		"HOST": config("DB_HOST"),  # noqa: F405
+		"PORT": config("DB_PORT"),  # noqa: F405
 	}
 }
 
