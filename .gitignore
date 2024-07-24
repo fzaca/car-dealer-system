@@ -164,3 +164,4 @@ temp/
 .ruff_cache/
 diff.txt
 data/
+*.env

@@ -22,9 +22,9 @@ pip install -r requirements/local.txt
 > sudo apt install -y python3.12 python3.12-venv python3.12-dev
 > ```
 
-3. Configura las variables de entorno en un archivo `.env`.
+3. Configura las variables de entorno en un archivo `local.env`.
 ```sh
-cp .env.example .env
+cp .env.example environments/local.env
 ```
 Asegúrate de editar el archivo `.env` con los valores adecuados para tu entorno local.
 
@@ -32,6 +32,20 @@ Asegúrate de editar el archivo `.env` con los valores adecuados para tu entorno
 ```sh
 python manage.py migrate
 python manage.py runserver
+```
+
+## Configuración de entornos
+
+Para seleccionar el entorno adecuado, establece la variable de entorno `ENV` antes de ejecutar las tareas de Django.
+
+Ejemplo para entorno local:
+```sh
+export ENV=local
+```
+
+Ejemplo para entorno de producción:
+```sh
+export ENV=production
 ```
 
 ## Cargar Datos del Dataset
