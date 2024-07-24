@@ -1,6 +1,6 @@
 from .base import *  # noqa: F403
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS")  # noqa: F405
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="").split(",")  # noqa: F405
 
 DATABASES = {
 	"default": {
