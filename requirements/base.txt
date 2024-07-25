@@ -9,5 +9,9 @@ requests
 tqdm==4.66.4
 django-autocomplete-light==3.11.0
 django-unfold==0.32.0
+<<<<<<< Updated upstream
 psycopg2-binary==2.9.9
 django-environ==0.11.2
+=======
+minio==7.2.7
+>>>>>>> Stashed changes

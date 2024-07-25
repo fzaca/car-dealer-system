@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'Download and load car data from Google Drive CSV files'
+    help = 'Download and load car data'
 
     BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'data')
     FILES = {
