@@ -43,9 +43,9 @@ Ejemplo para entorno local:
 export ENV=local
 ```
 
-Ejemplo para entorno de producción:
+Ejemplo para entorno remoto:
 ```sh
-export ENV=production
+export ENV=remote
 ```
 
 ## Cargar Datos del Dataset

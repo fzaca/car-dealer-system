@@ -1,13 +1,18 @@
 import os
 import sys
-from decouple import config
+import environ
 
 from django.core.management import execute_from_command_line
 
 
 def main():
-	os.environ.setdefault("DJANGO_SETTINGS_MODULE", "service.settings.local")
-	os.environ.setdefault("ENV", config("ENV", default="local"))
+	env = os.getenv("ENV", "local")
+
+	environ.Env.read_env(os.path.join(os.path.dirname(__file__), 'environments', f"{env}.env"))
+
+	settings_module = f"service.settings.{env}"
+	os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
+
 	try:
 		execute_from_command_line(sys.argv)
 	except ImportError as exc:
@@ -19,4 +24,4 @@ def main():
 
 
 if __name__ == "__main__":
-	main()
+    main()

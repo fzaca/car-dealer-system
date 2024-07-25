@@ -1,8 +1,10 @@
 from .base import *  # noqa: F403
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])  # noqa: F405
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])  # noqa: F405
-CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST', default=[])  # noqa: F405
+
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "localhost:8100"]
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
+CORS_ORIGIN_WHITELIST = ['http://localhost:8000']
+
 
 DATABASES = {
 	"default": {

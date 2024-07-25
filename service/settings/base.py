@@ -1,20 +1,19 @@
 import os
+import environ
 from pathlib import Path
-
-from decouple import Config, Csv
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-
-config = Config(
-    repository=str(
-        BASE_DIR / "environments" / (os.environ.get("ENV", "local") + ".env")
-    )
+env = environ.Env(
+    DEBUG=(bool, False)
 )
 
-SECRET_KEY = config("SECRET_KEY", default="your-secret-key")
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", cast=Csv())
-DEBUG = config("DEBUG", default=True)
+# Lee el archivo .env
+environ.Env.read_env(os.path.join(BASE_DIR, 'environments', f"{os.getenv('ENV', 'local')}.env"))
+
+SECRET_KEY = env('SECRET_KEY', default='your-secret-key')
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
+DEBUG = env.bool('DEBUG', default=True)
 APPS_DIR = BASE_DIR / "resources"
 
 INSTALLED_APPS = [
