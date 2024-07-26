@@ -55,10 +55,10 @@ Para cargar los datos del dataset en la base de datos, sigue estos pasos:
 1. Coloca los archivos CSV del dataset en la ruta correcta. Asegúrate de tener los archivos:
     * `brands.csv`
     * `car_models.csv`
-    * `trims.csv`
     * `cars.csv`
-2. Ejecute los comandos de carga de datos:
+2. Ejecute los comandos de carga de datos en orden:
 ```sh
+python manage.py load_car_images
 python manage.py load_car_data
 ```
 

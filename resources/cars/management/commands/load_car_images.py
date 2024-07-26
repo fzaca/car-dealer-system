@@ -64,6 +64,8 @@ class Command(BaseCommand):
     def upload_images(self, folder_path):
         for root, _, files in os.walk(folder_path):
             for file in files:
+                if not file.endswith("image_0.jpg"):
+                    continue
                 file_path = os.path.join(root, file)
                 object_name = os.path.relpath(file_path, folder_path)
                 content_type, _ = mimetypes.guess_type(file_path)
