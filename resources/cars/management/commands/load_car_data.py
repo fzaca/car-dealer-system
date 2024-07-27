@@ -57,10 +57,18 @@ class Command(BaseCommand):
 
     def load_brands(self):
         try:
+            self.stdout.write("Dropping existing brands...")
+            Brand.objects.all().delete()
+
+            brands = []
             with open(os.path.join(self.BASE_DIR, 'Basic_table.csv'), newline='', encoding='utf-8') as csvfile:
                 reader = list(csv.DictReader(csvfile))
-                for row in tqdm(reader, desc="Loading brands"):
-                    Brand.objects.get_or_create(name=row['Automaker'])
+                brand_names = {row['Automaker'] for row in reader}
+                for name in brand_names:
+                    brands.append(Brand(name=name))
+
+            Brand.objects.bulk_create(brands)
+            self.stdout.write(self.style.SUCCESS(f'Successfully loaded {len(brands)} brands'))
             logger.info('Successfully loaded brands')
         except Exception as e:
             logger.error(f'An error occurred while loading brands: {e}')
@@ -68,11 +76,20 @@ class Command(BaseCommand):
 
     def load_car_models(self):
         try:
+            self.stdout.write("Dropping existing car models...")
+            CarModel.objects.all().delete()
+
+            car_models = []
+            brands = {brand.name: brand for brand in Brand.objects.all()}
             with open(os.path.join(self.BASE_DIR, 'Basic_table.csv'), newline='', encoding='utf-8') as csvfile:
                 reader = list(csv.DictReader(csvfile))
-                for row in tqdm(reader, desc="Loading car models"):
-                    brand = Brand.objects.get(name=row['Automaker'])
-                    CarModel.objects.get_or_create(name=row['Genmodel'], brand=brand)
+                for row in reader:
+                    brand = brands.get(row['Automaker'])
+                    if brand:
+                        car_models.append(CarModel(name=row['Genmodel'], brand=brand))
+
+            CarModel.objects.bulk_create(car_models)
+            self.stdout.write(self.style.SUCCESS(f'Successfully loaded {len(car_models)} car models'))
             logger.info('Successfully loaded car models')
         except Exception as e:
             logger.error(f'An error occurred while loading car models: {e}')
