@@ -4,12 +4,13 @@ import os
 import re
 
 import requests
+from django.conf import settings
 from django.db import transaction
 from django.core.management.base import BaseCommand
 from tqdm import tqdm
 
 from resources.cars.models import Brand, CarModel, Car
-from resources.constants import MINIO_BUCKET, MINIO_PUBLIC_HOST
+from resources.constants import MINIO_BUCKET, MINIO_PUBLIC_HOST, MINIO_PUBLIC_URL
 
 
 logger = logging.getLogger(__name__)
@@ -19,7 +20,12 @@ class Command(BaseCommand):
     help = 'Download and load car data'
 
     BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'data')
-    BASE_IMAGE_URL = f"{MINIO_PUBLIC_HOST}/{MINIO_BUCKET}"
+
+    if settings.ENV == "local":
+        BASE_IMAGE_URL = f"http://{MINIO_PUBLIC_URL}/{MINIO_BUCKET}"
+    else:
+        BASE_IMAGE_URL = f"{MINIO_PUBLIC_HOST}/{MINIO_BUCKET}"
+
     FILES = {
         'Basic_table.csv': 'https://drive.google.com/uc?export=download&id=1hSuOBapbya9WznMDdT6hkgQ30DPUs9AT',
         'Ad_table.csv': 'https://drive.google.com/uc?export=download&id=1zRtkRRSM0ixap3JDpedaRxcPQlwBrlUp',

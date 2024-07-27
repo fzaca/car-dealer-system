@@ -15,6 +15,7 @@ SECRET_KEY = env('SECRET_KEY', default='your-secret-key')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 DEBUG = env.bool('DEBUG', default=True)
 APPS_DIR = BASE_DIR / "resources"
+ENV = env.bool("ENV", default="local")
 
 UNFOLD = {
     "SITE_TITLE": "Car Dealer Admin",
