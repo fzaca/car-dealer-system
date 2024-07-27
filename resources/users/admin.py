@@ -43,8 +43,8 @@ class CustomUserAdmin(UserAdmin, ModelAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(ModelAdmin):
-    list_display = ('user_id', 'phone', 'address')
-    search_fields = ('user_id__username', 'phone', 'address')
+    list_display = ('user_id', 'phone', 'address', 'dni')
+    search_fields = ('user_id__username', 'phone', 'address', 'dni')
     ordering = ('user_id',)
 
     # Unfold

@@ -30,9 +30,10 @@ class Customer(models.Model):
     user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     phone = PhoneNumberField(blank=True)
     address = models.CharField(max_length=200)
+    dni = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
-        return f"{self.user_id.username}"
+        return f"{self.user_id.username} ({self.dni})"
 
 
 class Employee(models.Model):  # FIXME: Make this model more stable
