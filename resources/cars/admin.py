@@ -12,6 +12,9 @@ class BrandAdmin(ModelAdmin):
     search_fields = ('name',)
     ordering = ('name',)
 
+    # Unfold
+    compressed_fields = True
+
 
 @admin.register(CarModel)
 class CarModelAdmin(ModelAdmin):
@@ -19,6 +22,9 @@ class CarModelAdmin(ModelAdmin):
     list_display = ('name', 'brand')
     search_fields = ('name', 'brand__name')
     ordering = ('name',)
+
+    # Unfold
+    compressed_fields = True
 
 
 @admin.register(Car)
@@ -42,3 +48,6 @@ class CarAdmin(ModelAdmin):
         return format_html('<img src="{}" width="300" height="200" />'.format(obj.image_url))
 
     image_tag.short_description = 'Car Image'
+
+    # Unfold
+    compressed_fields = True

@@ -37,6 +37,9 @@ class CustomUserAdmin(UserAdmin, ModelAdmin):
     search_fields = ('username', 'email')
     ordering = ('username',)
 
+    # Unfold
+    compressed_fields = True
+
 
 @admin.register(Customer)
 class CustomerAdmin(ModelAdmin):
@@ -44,9 +47,15 @@ class CustomerAdmin(ModelAdmin):
     search_fields = ('user_id__username', 'phone', 'address')
     ordering = ('user_id',)
 
+    # Unfold
+    compressed_fields = True
+
 
 @admin.register(Employee)
 class EmployeeAdmin(ModelAdmin):
     list_display = ('user_id', 'position', 'hire_date', 'salary', 'department')
     search_fields = ('user_id__username', 'position', 'department')
     ordering = ('user_id',)
+
+    # Unfold
+    compressed_fields = True
