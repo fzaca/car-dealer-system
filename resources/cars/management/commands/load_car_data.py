@@ -9,7 +9,7 @@ from django.db import transaction
 from django.core.management.base import BaseCommand
 from tqdm import tqdm
 
-from resources.cars.models import Brand, CarModel, Car
+from resources.cars.models import BodyType, Brand, CarModel, Car
 from resources.constants import MINIO_BUCKET, MINIO_PUBLIC_HOST, MINIO_PUBLIC_URL
 
 
@@ -105,15 +105,17 @@ class Command(BaseCommand):
         try:
             self.stdout.write("Dropping existing cars...")
             Car.objects.all().delete()
+            BodyType.objects.all().delete()
 
             brands = {brand.name: brand for brand in Brand.objects.all()}
             car_models = {(model.brand.name, model.name): model for model in CarModel.objects.select_related('brand').all()}
+            body_types = {body_type.name: body_type for body_type in BodyType.objects.all()}
 
             cars_to_create = []
             with open(os.path.join(self.BASE_DIR, 'Ad_table.csv'), newline='', encoding='utf-8') as csvfile:
                 reader = list(csv.DictReader(csvfile))
                 for row in tqdm(reader, desc="Preparing cars"):
-                    car = self.prepare_car(row.copy(), brands, car_models)
+                    car = self.prepare_car(row.copy(), brands, car_models, body_types)
                     if car:
                         cars_to_create.append(car)
 
@@ -122,12 +124,17 @@ class Command(BaseCommand):
             logger.error(f'An error occurred while loading cars: {e}')
             self.stdout.write(self.style.ERROR('An error occurred while loading cars'))
 
-    def prepare_car(self, row, brands, car_models):
+    def prepare_car(self, row, brands, car_models, body_types):
         brand = brands.get(row['Maker'])
         car_model = car_models.get((row['Maker'], row[' Genmodel']))
+        body_type = body_types.get(row['Bodytype'])
 
         if not brand or not car_model:
             return None
+
+        if not body_type:
+            body_type = BodyType.objects.create(name=row['Bodytype'])
+            body_types[body_type.name] = body_type
 
         try:
             engine_size = float(row['Engin_size'].replace('L', '').strip() or 0)
@@ -163,7 +170,7 @@ class Command(BaseCommand):
             mileage=mileage,
             seats=seats,
             doors=doors,
-            body_type=row['Bodytype'],
+            body_type=body_type,
         )
 
     def bulk_create_cars(self, cars_to_create):
