@@ -9,7 +9,8 @@ class CarForm(forms.ModelForm):
         model = Car
         fields = '__all__'
         widgets = {
-            'car_model': autocomplete.ModelSelect2(url='carmodel-autocomplete', forward=['brand'])
+            'car_model': autocomplete.ModelSelect2(url='carmodel-autocomplete', forward=['brand']),
+            'body_type': autocomplete.ModelSelect2(url='bodytype-autocomplete')
         }
 
 

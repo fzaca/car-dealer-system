@@ -1,6 +1,6 @@
 from dal import autocomplete
 
-from resources.cars.models import Brand, CarModel
+from resources.cars.models import BodyType, Brand, CarModel
 
 
 class CarModelAutocomplete(autocomplete.Select2QuerySetView):
@@ -22,6 +22,19 @@ class BrandAutocomplete(autocomplete.Select2QuerySetView):
             return Brand.objects.none()
 
         queryset = Brand.objects.all()
+
+        if self.q:
+            queryset = queryset.filter(name__icontains=self.q)
+
+        return queryset
+
+
+class BodyTypeAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return BodyType.objects.none()
+
+        queryset = BodyType.objects.all()
 
         if self.q:
             queryset = queryset.filter(name__icontains=self.q)
