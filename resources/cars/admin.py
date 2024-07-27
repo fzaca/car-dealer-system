@@ -40,8 +40,9 @@ class BodyTypeAdmin(ModelAdmin):
 @admin.register(Car)
 class CarAdmin(ModelAdmin):
     form = CarForm
-    list_display = ('car_model', 'year', 'price', 'color', 'mileage', 'engine_size', 'gearbox', 'fuel_type', 'seats', 'doors', 'body_type')
+    list_display = ('car_model', 'year', 'price', 'color', 'mileage', 'engine_size', 'gearbox', 'fuel_type', 'seats', 'doors', 'body_type', 'is_available')
     search_fields = ('car_model__name', 'car_model__brand__name', 'color', 'gearbox', 'fuel_type', 'body_type__name')
+    list_filter = ('is_available', 'car_model__brand')
     ordering = ('car_model__brand__name', 'car_model__name', 'year')
     readonly_fields = ('image_tag',)
 
@@ -50,7 +51,7 @@ class CarAdmin(ModelAdmin):
             'fields': ('image_tag', 'image_url'),
         }),
         ('Car Information', {
-            'fields': ('car_model', 'year', 'price', 'mileage'),
+            'fields': ('car_model', 'year', 'price', 'mileage', 'is_available'),
         }),
         ('Technical Specifications', {
             'fields': ('engine_size', 'gearbox', 'fuel_type'),
