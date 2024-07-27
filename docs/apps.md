@@ -12,10 +12,14 @@
 - Car
 - Brand
 - CarModel
-- Trim
+- BodyType (For categories)
 
 ### sales
 - Sale
+- Payment
+- PaymentMethod
+- Invoice
 
-### Comments
+### reviews
 - Comment
+- Review
