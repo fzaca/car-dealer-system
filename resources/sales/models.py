@@ -14,9 +14,15 @@ class Sale(models.Model):
         self.car.is_available = False
         self.car.save()
 
+    def __str__(self) -> str:
+        return f"{self.car.car_model.name}"
+
 
 class PaymentMethod(models.Model):  # FIXME: Add commands for load data
     name = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return f"{self.name}"
 
 
 class Payment(models.Model):
@@ -28,5 +34,5 @@ class Payment(models.Model):
 
 class Invoice(models.Model):
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
-    pdf = models.URLField(max_length=200)
+    pdf_url = models.URLField(max_length=200)
     date = models.DateTimeField(auto_now_add=True)
