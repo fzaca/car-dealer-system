@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 import gdown
 from minio.error import S3Error
 
-from resources.constants import MINIO_BUCKET, MINIO_URL
+from resources.constants import MINIO_BUCKET, MINIO_PUBLIC_HOST
 from resources.utils.minio_utils import get_minio_client
 
 FILE_URL = "https://drive.google.com/file/d/1xkj7Wg5pc1I14t_EzohxivXxTw9_T0th/view?usp=sharing"
@@ -76,8 +76,8 @@ class Command(BaseCommand):
                         file_path,
                         content_type=content_type
                     )
-                    public_url = f"http://{MINIO_URL}/{MINIO_BUCKET}/{object_name}"
-                    self.stdout.write(self.style.SUCCESS(f"File '{file}' uploaded successfully. Public URL: {public_url}"))
+                    public_url = f"{MINIO_PUBLIC_HOST}/{MINIO_BUCKET}/{object_name}"
+                    self.stdout.write(self.style.SUCCESS(f"File '{file}' uploaded successfully.\nPublic URL: {public_url}"))
                 except S3Error as err:
                     self.stdout.write(self.style.ERROR(f"Error uploading '{file}': {err}"))
 
