@@ -16,6 +16,26 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 DEBUG = env.bool('DEBUG', default=True)
 APPS_DIR = BASE_DIR / "resources"
 
+UNFOLD = {
+    "SITE_TITLE": "Car Dealer Admin",
+    "SITE_HEADER": "Car Dealer",
+	"COLORS": {
+		"primary": {
+			"50": "240 248 255",
+			"100": "224 240 255",
+			"200": "192 220 255",
+			"300": "160 200 255",
+			"400": "128 180 255",
+			"500": "96 160 255",
+			"600": "64 140 255",
+			"700": "32 120 255",
+			"800": "0 100 255",
+			"900": "0 80 220",
+			"950": "0 60 180"
+		}
+	},
+}
+
 INSTALLED_APPS = [
 	"unfold",
 	"django.contrib.admin",
