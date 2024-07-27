@@ -36,11 +36,17 @@ class CarAdmin(ModelAdmin):
     readonly_fields = ('image_tag',)
 
     fieldsets = (
-        (None, {
-            'fields': ('image_tag',)
+        ('Image', {
+            'fields': ('image_tag', 'image_url'),
         }),
-        ('Car Details', {
-            'fields': ('car_model', 'price', 'engine_size', 'image_url', 'gearbox', 'fuel_type', 'color', 'year', 'mileage', 'seats', 'doors', 'body_type')
+        ('Car Information', {
+            'fields': ('car_model', 'year', 'price', 'mileage'),
+        }),
+        ('Technical Specifications', {
+            'fields': ('engine_size', 'gearbox', 'fuel_type'),
+        }),
+        ('Physical Characteristics', {
+            'fields': ('color', 'seats', 'doors', 'body_type'),
         }),
     )
 
