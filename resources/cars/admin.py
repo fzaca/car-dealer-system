@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from unfold.admin import ModelAdmin
 
 from resources.cars.forms import CarForm, CarModelForm
-from resources.cars.models import Brand, Car, CarModel
+from resources.cars.models import BodyType, Brand, Car, CarModel
 
 
 @admin.register(Brand)
@@ -27,11 +27,21 @@ class CarModelAdmin(ModelAdmin):
     compressed_fields = True
 
 
+@admin.register(BodyType)
+class BodyTypeAdmin(ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+    ordering = ('name',)
+
+    # Unfold
+    compressed_fields = True
+
+
 @admin.register(Car)
 class CarAdmin(ModelAdmin):
     form = CarForm
     list_display = ('car_model', 'year', 'price', 'color', 'mileage', 'engine_size', 'gearbox', 'fuel_type', 'seats', 'doors', 'body_type')
-    search_fields = ('car_model__name', 'car_model__brand__name', 'color', 'gearbox', 'fuel_type', 'body_type')
+    search_fields = ('car_model__name', 'car_model__brand__name', 'color', 'gearbox', 'fuel_type', 'body_type__name')
     ordering = ('car_model__brand__name', 'car_model__name', 'year')
     readonly_fields = ('image_tag',)
 
