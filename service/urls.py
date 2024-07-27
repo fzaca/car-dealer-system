@@ -13,4 +13,7 @@ urlpatterns = [
 	# Cars
 	path("api/cars/", include("resources.cars.api.urls")),
 	path("cars/", include("resources.cars.pages.urls")),
+	# Sales
+	path("api/sales/", include("resources.sales.api.urls")),
+	path("sales/", include("resources.sales.pages.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

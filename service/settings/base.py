@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 	"resources.core",
 	"resources.users",
 	"resources.cars",
+	"resources.sales",
 ]
 
 MIDDLEWARE = [
