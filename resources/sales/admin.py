@@ -62,7 +62,7 @@ class InvoiceAdmin(ModelAdmin):
 
     def pdf_tag(self, obj):  # noqa: PLR6301
         return format_html(
-            '<iframe src="{}" width="600" height="400" style="border: none;"></iframe>'.format(obj.pdf)
+            '<iframe src="{}" width="600" height="400" style="border: none;"></iframe>'.format(obj.pdf_url)
         )
     pdf_tag.short_description = 'Invoice PDF'
 
