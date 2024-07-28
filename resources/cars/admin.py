@@ -119,7 +119,7 @@ class CarAdmin(ModelAdmin):
 
 @admin.register(FeaturedCar)
 class FeaturedCarAdmin(ModelAdmin):
-    list_display = ('car', 'car_price', 'car_brand', 'featured_date')
+    list_display = ('car_image', 'car', 'car_price', 'car_brand', 'featured_date')
     search_fields = ('car__car_model__name', 'car__year', 'car__car_model__brand__name')
     ordering = ('-featured_date',)
 
@@ -134,6 +134,10 @@ class FeaturedCarAdmin(ModelAdmin):
     def car_price(self, obj):  # noqa: PLR6301
         return obj.car.price
     car_price.short_description = 'Price'
+
+    def car_image(self, obj):  # noqa: PLR6301
+        return format_html('<img src="{}" style="height: 50px;"/>', obj.car.image_url)
+    car_image.short_description = 'Image'
 
     # Unfold
     compressed_fields = True
