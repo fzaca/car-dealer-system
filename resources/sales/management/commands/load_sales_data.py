@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from faker import Faker
 from resources.cars.models import Car
-from resources.users.models import Customer
+from resources.users.models import Customer, CustomUser
 from resources.sales.models import Sale, PaymentMethod, Payment, Invoice
 
 fake = Faker()
@@ -14,6 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         self.clear_existing_data()
+        self.load_customers()
         self.load_payment_methods()
         self.load_sales()
 
@@ -22,7 +23,36 @@ class Command(BaseCommand):
         Payment.objects.all().delete()
         Invoice.objects.all().delete()
         PaymentMethod.objects.all().delete()
+        Customer.objects.all().delete()
+        CustomUser.objects.filter(is_customer=True).delete()
         self.stdout.write(self.style.SUCCESS('Successfully cleared existing data'))
+
+    def load_customers(self):
+        users = []
+        customers = []
+
+        for _ in range(50):
+            user = CustomUser(
+                username=fake.user_name(),
+                email=fake.email(),
+                is_customer=True
+            )
+            user.set_password('password')
+            users.append(user)
+
+        CustomUser.objects.bulk_create(users)
+
+        for user in CustomUser.objects.filter(is_customer=True):
+            customer = Customer(
+                user_id=user,
+                phone=fake.phone_number(),
+                address=fake.address(),
+                dni=fake.unique.random_number(digits=8)
+            )
+            customers.append(customer)
+
+        Customer.objects.bulk_create(customers)
+        self.stdout.write(self.style.SUCCESS('Successfully loaded customers'))
 
     def load_payment_methods(self):
         methods = ['Credit Card', 'Debit Card', 'Cash', 'Bank Transfer']
