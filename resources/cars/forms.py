@@ -5,6 +5,8 @@ from resources.cars.models import Car, CarModel
 
 
 class CarForm(forms.ModelForm):
+    image_file = forms.ImageField(required=False)
+
     class Meta:
         model = Car
         fields = '__all__'
