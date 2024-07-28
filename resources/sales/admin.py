@@ -12,8 +12,12 @@ class SaleAdmin(ModelAdmin):
     search_fields = ('car__car_model__name', 'customer__user_id__username', 'customer__dni')
     readonly_fields = ('date',)
 
+    def get_queryset(self, request):  # noqa: PLR6301
+        queryset = super().get_queryset(request)
+        return queryset.select_related('car__car_model', 'customer__user_id')
+
     def car_model(self, obj):  # noqa: PLR6301
-        return obj.car.car_model
+        return obj.car.car_model.name
     car_model.short_description = 'Car Model'
 
     def brand(self, obj):  # noqa: PLR6301
