@@ -40,3 +40,11 @@ class Car(models.Model):
 
     def __str__(self):
         return f"{self.car_model.name} ({self.year})"
+
+
+class FeaturedCar(models.Model):
+    car = models.OneToOneField(Car, on_delete=models.CASCADE)
+    featured_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.car.car_model.name} ({self.car.year})"

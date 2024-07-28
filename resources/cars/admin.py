@@ -7,7 +7,7 @@ from unfold.admin import ModelAdmin
 from minio.error import S3Error
 
 from resources.cars.forms import CarForm, CarModelForm
-from resources.cars.models import BodyType, Brand, Car, CarModel
+from resources.cars.models import BodyType, Brand, Car, CarModel, FeaturedCar
 from resources.constants import MINIO_BUCKET
 from resources.constants import MINIO_PUBLIC_HOST, MINIO_PUBLIC_URL
 from resources.utils.minio_utils import get_minio_client
@@ -112,3 +112,10 @@ class CarAdmin(ModelAdmin):
 
     # Unfold
     compressed_fields = True
+
+
+@admin.register(FeaturedCar)
+class FeaturedCarAdmin(ModelAdmin):
+    list_display = ('car', 'featured_date')
+    search_fields = ('car__car_model__name', 'car__year')
+    ordering = ('-featured_date',)
