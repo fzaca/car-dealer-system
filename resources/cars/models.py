@@ -37,6 +37,7 @@ class Car(models.Model):
     seats = models.PositiveIntegerField()
     doors = models.PositiveIntegerField()
     is_available = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.car_model.name} ({self.year})"

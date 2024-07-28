@@ -60,7 +60,10 @@ class CarAdmin(ModelAdmin):
             'fields': ('image_tag', 'image_url', 'image_file'),
         }),
         ('Car Information', {
-            'fields': ('car_model', 'year', 'price', 'mileage', 'is_available'),
+            'fields': (
+                'car_model', 'year', 'price',
+                'mileage', 'is_featured', 'is_available'
+            ),
         }),
         ('Technical Specifications', {
             'fields': ('engine_size', 'gearbox', 'fuel_type'),
@@ -117,5 +120,5 @@ class CarAdmin(ModelAdmin):
 @admin.register(FeaturedCar)
 class FeaturedCarAdmin(ModelAdmin):
     list_display = ('car', 'featured_date')
-    search_fields = ('car__car_model__name', 'car__year')
+    search_fields = ('car__car_model__name', 'car__year', 'car__car_model__brand__name')
     ordering = ('-featured_date',)
