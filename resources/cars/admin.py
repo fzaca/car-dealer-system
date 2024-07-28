@@ -85,7 +85,7 @@ class CarAdmin(ModelAdmin):
         file_name = f"cars/{uuid.uuid4()}.{file_ext}"
 
         if obj.pk and obj.image_url:
-            old_file_name = obj.image_url.split('/')[-1]
+            old_file_name = '/'.join(obj.image_url.split('/')[-2:])
             try:
                 minio_client.remove_object(MINIO_BUCKET, old_file_name)
             except S3Error as e:
