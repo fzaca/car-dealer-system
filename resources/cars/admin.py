@@ -119,6 +119,21 @@ class CarAdmin(ModelAdmin):
 
 @admin.register(FeaturedCar)
 class FeaturedCarAdmin(ModelAdmin):
-    list_display = ('car', 'featured_date')
+    list_display = ('car', 'car_price', 'car_brand', 'featured_date')
     search_fields = ('car__car_model__name', 'car__year', 'car__car_model__brand__name')
     ordering = ('-featured_date',)
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.select_related('car__car_model__brand')
+
+    def car_brand(self, obj):  # noqa: PLR6301
+        return obj.car.car_model.brand.name
+    car_brand.short_description = 'Brand Name'
+
+    def car_price(self, obj):  # noqa: PLR6301
+        return obj.car.price
+    car_price.short_description = 'Price'
+
+    # Unfold
+    compressed_fields = True
