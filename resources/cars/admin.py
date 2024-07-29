@@ -69,6 +69,7 @@ class BodyTypeAdmin(ModelAdmin):
 @admin.register(Car)
 class CarAdmin(ModelAdmin):
     form = CarForm
+    list_per_page = 50
     list_display = (
         'car_model', 'year', 'price', 'color', 'mileage',
         'engine_size', 'gearbox', 'fuel_type', 'seats', 'doors', 'body_type', 'is_available', 'car_image'
