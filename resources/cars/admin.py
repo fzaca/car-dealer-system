@@ -10,6 +10,7 @@ from unfold.contrib.filters.admin import RangeDateTimeFilter
 from unfold.contrib.forms.widgets import ArrayWidget, WysiwygWidget
 from minio.error import S3Error
 
+from resources.cars.filters import GearboxDropdownFilter, FuelTypeDropdownFilter
 from resources.cars.forms import CarForm, CarModelForm
 from resources.cars.models import BodyType, Brand, Car, CarModel, FeaturedCar
 from resources.constants import MINIO_BUCKET
@@ -79,14 +80,14 @@ class CarAdmin(ModelAdmin):
         'gearbox', 'fuel_type', 'body_type__name'
     )
     list_filter = (
-        ('is_available', GenericChoicesDropdownFilter),
+        'is_available',
         ('car_model__brand', GenericRelatedDropdownFilter),
         ('year', GenericSliderNumericFilter),
         ('price', GenericRangeNumericFilter),
         ('mileage', GenericRangeNumericFilter),
         ('engine_size', GenericRangeNumericFilter),
-        ('gearbox', GenericChoicesDropdownFilter),
-        ('fuel_type', GenericChoicesDropdownFilter),
+        GearboxDropdownFilter,
+        FuelTypeDropdownFilter,
         ('seats', GenericSingleNumericFilter),
         ('doors', GenericSingleNumericFilter),
         ('body_type', GenericRelatedDropdownFilter),
