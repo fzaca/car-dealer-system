@@ -9,7 +9,7 @@ import gdown
 from minio.error import S3Error
 
 from resources.constants import MINIO_BUCKET, MINIO_PUBLIC_HOST, MINIO_PUBLIC_URL
-from resources.utils.minio_utils import get_minio_client
+from resources.utils.minio import get_minio_client
 
 FILE_URL = "https://drive.google.com/file/d/1xkj7Wg5pc1I14t_EzohxivXxTw9_T0th/view?usp=sharing"
 DEST_FOLDER = "resources/data"

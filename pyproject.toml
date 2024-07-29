@@ -20,7 +20,7 @@ select = [
     "E305",  # expected 2 blank lines after end of function or class
     "W292",  # no newline at end of file
 ]
-ignore = ["A003", "E501", "I001"]
+ignore = ["A003", "E501", "I001", "PLR0917", "PLR0913", "PLR6301"]
 
 [tool.ruff.format]
 quote-style = "double"
