@@ -12,7 +12,7 @@ def register_view(request):
             user = form.save(commit=False)
             user.is_customer = True
             user.save()
-            Customer.objects.create(user_id=user)
+            Customer.objects.create(user=user)
             login(request, user)
             return redirect("home")
     else:

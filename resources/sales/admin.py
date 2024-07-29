@@ -9,12 +9,12 @@ from resources.sales.models import Sale, PaymentMethod, Payment, Invoice
 class SaleAdmin(ModelAdmin):
     list_display = ('car', 'brand', 'customer', 'date')
     list_filter = ('date', 'car__car_model__brand', 'customer')
-    search_fields = ('car__car_model__name', 'customer__user_id__username', 'customer__dni')
+    search_fields = ('car__car_model__name', 'customer__user__username', 'customer__dni')
     readonly_fields = ('date',)
 
     def get_queryset(self, request):  # noqa: PLR6301
         queryset = super().get_queryset(request)
-        return queryset.select_related('car__car_model', 'customer__user_id')
+        return queryset.select_related('car__car_model', 'customer__user')
 
     def car_model(self, obj):  # noqa: PLR6301
         return obj.car.car_model.name
@@ -46,7 +46,7 @@ class PaymentMethodAdmin(ModelAdmin):
 class PaymentAdmin(ModelAdmin):
     list_display = ('sale_car', 'method', 'amount', 'date')
     list_filter = ('date', 'method')
-    search_fields = ('sale__car__car_model__name', 'sale__customer__user_id__username', 'method__name')
+    search_fields = ('sale__car__car_model__name', 'sale__customer__user__username', 'method__name')
     readonly_fields = ('date',)
 
     def sale_car(self, obj):  # noqa: PLR6301
@@ -61,7 +61,7 @@ class PaymentAdmin(ModelAdmin):
 class InvoiceAdmin(ModelAdmin):
     list_display = ('sale_car', 'pdf_url', 'date')
     list_filter = ('date',)
-    search_fields = ('sale__car__car_model__name', 'sale__customer__user_id__username')
+    search_fields = ('sale__car__car_model__name', 'sale__customer__user__username')
     readonly_fields = ('date', 'pdf_tag')
 
     def pdf_tag(self, obj):  # noqa: PLR6301

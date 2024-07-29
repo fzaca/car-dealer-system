@@ -44,7 +44,7 @@ class Command(BaseCommand):
 
         for user in CustomUser.objects.filter(is_customer=True):
             customer = Customer(
-                user_id=user,
+                user=user,
                 phone=fake.phone_number(),
                 address=fake.address(),
                 dni=fake.unique.random_number(digits=8)

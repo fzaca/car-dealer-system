@@ -27,21 +27,21 @@ class CustomUser(AbstractUser):
 
 
 class Customer(models.Model):
-    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     phone = PhoneNumberField(blank=True)
     address = models.CharField(max_length=200)
     dni = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
-        return f"{self.user_id.username} ({self.dni})"
+        return f"{self.user.username} ({self.dni})"
 
 
 class Employee(models.Model):  # FIXME: Make this model more stable
-    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     position = models.CharField(max_length=100)  # FIXME: Create table for positions
     hire_date = models.DateField(blank=True, null=True)
     salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     department = models.CharField(max_length=100)  # FIXME: Create table for departments
 
     def __str__(self):
-        return f"{self.user_id.username}"
+        return f"{self.user.username}"

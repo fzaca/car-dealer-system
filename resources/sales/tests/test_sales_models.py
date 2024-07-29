@@ -39,7 +39,7 @@ def test_payment_creation():
         doors=CAR_DOORS
     )
     user = CustomUser.objects.create_user(username="customer1", password="password")
-    customer = Customer.objects.create(user_id=user, phone=CUSTOMER_PHONE, address=CUSTOMER_ADDRESS, dni=CUSTOMER_DNI)
+    customer = Customer.objects.create(user=user, phone=CUSTOMER_PHONE, address=CUSTOMER_ADDRESS, dni=CUSTOMER_DNI)
     sale = Sale.objects.create(car=car, customer=customer, date=timezone.now())
     payment_method = PaymentMethod.objects.create(name="Credit Card")
     payment = Payment.objects.create(sale=sale, method=payment_method, amount=PAYMENT_AMOUNT, date=timezone.now())
@@ -69,7 +69,7 @@ def test_invoice_creation():
         doors=CAR_DOORS
     )
     user = CustomUser.objects.create_user(username="customer1", password="password")
-    customer = Customer.objects.create(user_id=user, phone=CUSTOMER_PHONE, address=CUSTOMER_ADDRESS, dni=CUSTOMER_DNI)
+    customer = Customer.objects.create(user=user, phone=CUSTOMER_PHONE, address=CUSTOMER_ADDRESS, dni=CUSTOMER_DNI)
     sale = Sale.objects.create(car=car, customer=customer, date=timezone.now())
     invoice = Invoice.objects.create(sale=sale, pdf_url=PDF_URL, date=timezone.now())
 

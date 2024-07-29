@@ -7,28 +7,28 @@ from resources.users.models import Customer, CustomUser, Employee
 @receiver(post_save, sender=CustomUser)
 def manage_customer(sender, instance, **kwargs):
     if instance.is_customer:
-        Customer.objects.get_or_create(user_id=instance)
+        Customer.objects.get_or_create(user=instance)
     else:
-        Customer.objects.filter(user_id=instance).delete()
+        Customer.objects.filter(user=instance).delete()
 
 
 @receiver(post_save, sender=CustomUser)
 def manage_employee(sender, instance, **kwargs):
     if instance.is_employee:
-        Employee.objects.get_or_create(user_id=instance)
+        Employee.objects.get_or_create(user=instance)
     else:
-        Employee.objects.filter(user_id=instance).delete()
+        Employee.objects.filter(user=instance).delete()
 
 
 @receiver(post_delete, sender=Customer)
 def update_user_on_customer_delete(sender, instance, **kwargs):
-    user = instance.user_id
+    user = instance.user
     user.is_customer = False
     user.save()
 
 
 @receiver(post_delete, sender=Employee)
 def update_user_on_employee_delete(sender, instance, **kwargs):
-    user = instance.user_id
+    user = instance.user
     user.is_employee = False
     user.save()
