@@ -92,7 +92,7 @@ class CarAdmin(ModelAdmin):
         ('body_type', GenericRelatedDropdownFilter),
     )
     ordering = ('car_model__brand__name', 'car_model__name', 'year')
-    readonly_fields = ('image_tag', 'image_url')
+    readonly_fields = ('image_tag', 'image_url', 'hash')
 
     fieldsets = (
         ('Image', {
@@ -100,7 +100,7 @@ class CarAdmin(ModelAdmin):
         }),
         ('Car Information', {
             'fields': (
-                'car_model', 'year', 'price',
+                'hash', 'car_model', 'year', 'price',
                 'mileage', 'is_featured', 'is_available'
             ),
         }),

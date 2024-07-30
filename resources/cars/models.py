@@ -1,4 +1,5 @@
 from django.db import models
+from nanoid_field import NanoidField
 
 
 class Brand(models.Model):
@@ -24,6 +25,7 @@ class BodyType(models.Model):
 
 
 class Car(models.Model):
+    hash = NanoidField(max_length=10, alphabet="1234567890ABCDEF", editable=False)
     car_model = models.ForeignKey(CarModel, on_delete=models.CASCADE)
     body_type = models.ForeignKey(BodyType, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -40,7 +42,7 @@ class Car(models.Model):
     is_featured = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"id - {self.car_model.name} ({self.year})"
+        return f"{self.hash} - {self.car_model.name} ({self.year})"
 
 
 class FeaturedCar(models.Model):
