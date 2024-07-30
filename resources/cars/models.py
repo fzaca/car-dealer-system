@@ -40,7 +40,7 @@ class Car(models.Model):
     is_featured = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.car_model.name} ({self.year})"
+        return f"id - {self.car_model.name} ({self.year})"
 
 
 class FeaturedCar(models.Model):
