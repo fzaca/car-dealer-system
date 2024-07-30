@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 	"resources.users",
 	"resources.cars",
 	"resources.sales",
+	"resources.reviews",
 ]
 
 MIDDLEWARE = [

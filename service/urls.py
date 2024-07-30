@@ -16,4 +16,7 @@ urlpatterns = [
 	# Sales
 	path("api/sales/", include("resources.sales.api.urls")),
 	path("sales/", include("resources.sales.pages.urls")),
+	# Reviews
+	path("api/reviews/", include("resources.reviews.api.urls")),
+	path("reviews/", include("resources.reviews.pages.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
