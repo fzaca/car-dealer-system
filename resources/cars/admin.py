@@ -39,7 +39,8 @@ class BrandAdmin(ModelAdmin):
 @admin.register(CarModel)
 class CarModelAdmin(ModelAdmin):
     form = CarModelForm
-    list_display = ('name', 'brand')
+    list_display = ('hash', 'name', 'brand')
+    readonly_fields = ('hash',)
     search_fields = ('name', 'brand__name')
     ordering = ('name',)
     list_filter = (

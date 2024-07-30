@@ -10,6 +10,7 @@ class Brand(models.Model):
 
 
 class CarModel(models.Model):
+    hash = NanoidField(max_length=10, alphabet="1234567890ABCDEF", editable=False)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
 
