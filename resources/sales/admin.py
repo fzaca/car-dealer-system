@@ -71,7 +71,16 @@ class InvoiceAdmin(ModelAdmin):
     list_display = ('sale_car', 'pdf_url', 'date')
     list_filter = ('date',)
     search_fields = ('sale__car__car_model__name', 'sale__customer__user__username')
-    readonly_fields = ('date', 'pdf_tag', 'pdf_url')
+    readonly_fields = ('date', 'pdf_tag')
+    fieldsets = (
+        (None, {
+            'fields': ('sale', 'date', 'pdf_file', 'pdf_tag')
+        }),
+        ('Advanced options', {
+            'classes': ('collapse',),
+            'fields': ('pdf_url',),
+        }),
+    )
 
     def pdf_tag(self, obj):  # noqa: PLR6301
         return format_html(
