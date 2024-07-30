@@ -1,7 +1,9 @@
+from django.conf import settings
 from minio import Minio
 
 from resources.constants import MINIO_ACCESS_KEY, MINIO_SECRET_KEY
-from resources.constants import MINIO_PUBLIC_URL
+from resources.constants import MINIO_PUBLIC_URL, MINIO_BUCKET
+from resources.constants import MINIO_PUBLIC_HOST
 
 
 def get_minio_client():
@@ -14,3 +16,10 @@ def get_minio_client():
         secure=use_ssl
     )
     return client
+
+
+def generate_public_url(file_name):
+    if settings.ENV == "local":
+        return f"http://{MINIO_PUBLIC_URL}/{MINIO_BUCKET}/{file_name}"
+    else:
+        return f"{MINIO_PUBLIC_HOST}/{MINIO_BUCKET}/{file_name}"
