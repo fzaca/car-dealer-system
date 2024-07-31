@@ -25,7 +25,7 @@ class Review(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.customer.user} - {self.car} - {self.rating}"
+        return f"{self.customer.user} - {self.sale} - {self.rating}"
 
 
 class Comment(models.Model):
