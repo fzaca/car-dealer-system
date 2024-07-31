@@ -41,5 +41,5 @@ def test_car_str():
         seats=4,
         doors=2
     )
-    expected_str = f"{car.hash} - Serie 2 Coupe (2022)"
+    expected_str = "Serie 2 Coupe (2022)"
     assert str(car) == expected_str
