@@ -19,6 +19,11 @@ services:
       - 9000:9000
       - 9001:9001
 
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
 volumes:
   postgres_data:
   minio_data:
@@ -27,3 +32,5 @@ volumes:
 # For run services
 #   MinIO:
 #      docker compose -f compose/docker-compose.yml up --build -d minio --remove-orphans
+#   Redis:
+#      docker compose -f compose/docker-compose.yml up --build -d redis --remove-orphans
