@@ -32,6 +32,7 @@ class PaymentMethod(models.Model):  # FIXME: Add commands for load data
 
 
 class Payment(models.Model):
+    hash = NanoidField(max_length=10, alphabet="1234567890ABCDEF", editable=False)
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
     method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)

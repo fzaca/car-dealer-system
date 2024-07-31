@@ -63,15 +63,14 @@ class PaymentMethodAdmin(ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(ModelAdmin):
-    list_display = ('sale', 'sale_car', 'sale_brand', 'method', 'amount', 'date', 'created_at', 'updated_at')
+    list_display = ('hash', 'sale_car', 'sale_brand', 'method', 'amount', 'date', 'created_at')
     list_filter = (
         ('date', RangeDateTimeFilter),
         ('method', RelatedDropdownFilter),
         ('created_at', RangeDateTimeFilter),
-        ('updated_at', RangeDateTimeFilter),
     )
     search_fields = ('sale__car__car_model__name', 'sale__customer__user__username', 'method__name')
-    readonly_fields = ('date',)
+    readonly_fields = ('date', 'hash')
 
     def sale_car(self, obj):  # noqa: PLR6301
         return obj.sale.car
