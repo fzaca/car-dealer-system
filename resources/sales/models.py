@@ -17,7 +17,7 @@ class Sale(models.Model):
         self.car.save()
 
     def __str__(self) -> str:
-        return f"{self.hash} - {self.car}"
+        return f"{self.hash}"
 
 
 class PaymentMethod(models.Model):  # FIXME: Add commands for load data
