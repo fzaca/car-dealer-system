@@ -20,7 +20,7 @@ class ReviewAdmin(ModelAdmin):
     readonly_fields = ('created_at', 'updated_at')
     fieldsets = (
         (None, {
-            'fields': ('customer', 'car', 'sale', 'rating', 'comment')
+            'fields': ('customer', 'sale', 'rating', 'comment')
         }),
         ('Dates', {
             'fields': ('created_at', 'updated_at'),
