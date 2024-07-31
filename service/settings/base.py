@@ -216,15 +216,6 @@ UNFOLD = {
             "950": "0 60 180"
         },
     },
-    "EXTENSIONS": {
-        "modeltranslation": {
-            "flags": {
-                "en": "🇬🇧",
-                "fr": "🇫🇷",
-                "nl": "🇧🇪",
-            },
-        },
-    },
     "SIDEBAR": {
         "show_search": True,
         "show_all_applications": False,

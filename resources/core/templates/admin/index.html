@@ -3,6 +3,8 @@
 
 {% load cache humanize i18n %}
 
+{% load unfold %}
+
 {% block breadcrumbs %}{% endblock %}
 
 {% block title %}
@@ -22,5 +24,27 @@
 {% endblock %}
 
 {% block content %}
-    Custom Dashboard
+
+    {% component "unfold/components/container.html" %}
+    {% component "unfold/components/flex.html" with class="gap-4 mb-8"%}
+        {% for card in cards %}
+            {% component "unfold/components/card.html" with class="lg:w-1/3" %}
+                {% component "unfold/components/title.html" %}
+                    {{ card.title }}
+                {% endcomponent %}
+
+                {% component "unfold/components/text.html" %}
+                    {{ card.metric }}
+                {% endcomponent %}
+            {% endcomponent %}
+        {% endfor %}
+    {% endcomponent %}
+
+    {% component "unfold/components/flex.html" with class="gap-8 mb-8 flex-col lg:flex-row" %}
+        {% component "unfold/components/card.html" with title="Cars Table" %}
+            {% component "unfold/components/table.html" with table=table_data card_included=1 striped=1 %}{% endcomponent %}
+        {% endcomponent %}
+    {% endcomponent %}
+    {% endcomponent %}
+
 {% endblock %}
