@@ -17,14 +17,23 @@ minio_client = get_minio_client()
 
 @admin.register(Sale)
 class SaleAdmin(ModelAdmin):
-    list_display = ('hash', 'car', 'brand', 'customer', 'date')
-    list_filter = ('date', 'car__car_model__brand', 'customer')
+    list_display = ('hash', 'car', 'brand', 'customer', 'date', 'created_at', 'updated_at')
+    list_filter = (
+        ('date', RangeDateTimeFilter),
+        ('car__car_model__brand', RelatedDropdownFilter),
+        ('customer', RelatedDropdownFilter),
+        ('created_at', RangeDateTimeFilter),
+        ('updated_at', RangeDateTimeFilter),
+    )
     search_fields = ('car__car_model__name', 'customer__user__username', 'customer__dni')
     readonly_fields = ('date', 'hash')
 
-    def get_queryset(self, request):  # noqa: PLR6301
-        queryset = super().get_queryset(request)
-        return queryset.select_related('car__car_model', 'customer__user')
+    def get_queryset(self, request):
+        queryset = cache.get('sale_queryset')
+        if not queryset:
+            queryset = super().get_queryset(request).select_related('car__car_model', 'customer__user')
+            cache.set('sale_queryset', queryset, timeout=60 * 15)
+        return queryset
 
     def car_model(self, obj):  # noqa: PLR6301
         return obj.car.car_model.name
@@ -45,7 +54,7 @@ class SaleAdmin(ModelAdmin):
 
 @admin.register(PaymentMethod)
 class PaymentMethodAdmin(ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'created_at', 'updated_at')
     search_fields = ('name',)
 
     # Unfold
@@ -54,8 +63,13 @@ class PaymentMethodAdmin(ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(ModelAdmin):
-    list_display = ('sale', 'sale_car', 'sale_brand', 'method', 'amount', 'date')
-    list_filter = ('date', 'method')
+    list_display = ('sale', 'sale_car', 'sale_brand', 'method', 'amount', 'date', 'created_at', 'updated_at')
+    list_filter = (
+        ('date', RangeDateTimeFilter),
+        ('method', RelatedDropdownFilter),
+        ('created_at', RangeDateTimeFilter),
+        ('updated_at', RangeDateTimeFilter),
+    )
     search_fields = ('sale__car__car_model__name', 'sale__customer__user__username', 'method__name')
     readonly_fields = ('date',)
 
@@ -74,10 +88,12 @@ class PaymentAdmin(ModelAdmin):
 @admin.register(Invoice)
 class InvoiceAdmin(ModelAdmin):
     form = InvoiceForm
-    list_display = ('hash', 'sale', 'sale_car', 'pdf_url', 'date')
+    list_display = ('hash', 'sale', 'sale_car', 'pdf_url', 'date', 'created_at', 'updated_at')
     list_filter = (
         ('date', RangeDateTimeFilter),
         ('sale', RelatedDropdownFilter),
+        ('created_at', RangeDateTimeFilter),
+        ('updated_at', RangeDateTimeFilter),
     )
     search_fields = ('sale', 'sale__customer__user__username')
     readonly_fields = ('date', 'pdf_tag', 'hash')
