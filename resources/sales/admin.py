@@ -68,17 +68,17 @@ class PaymentAdmin(ModelAdmin):
 @admin.register(Invoice)
 class InvoiceAdmin(ModelAdmin):
     form = InvoiceForm
-    list_display = ('sale_car', 'pdf_url', 'date')
+    list_display = ('hash', 'sale_car', 'pdf_url', 'date')
     list_filter = ('date',)
     search_fields = ('sale__car__car_model__name', 'sale__customer__user__username')
-    readonly_fields = ('date', 'pdf_tag')
+    readonly_fields = ('date', 'pdf_tag', 'hash')
     fieldsets = (
         (None, {
             'fields': ('sale', 'date', 'pdf_file', 'pdf_tag')
         }),
         ('Advanced options', {
             'classes': ('collapse',),
-            'fields': ('pdf_url',),
+            'fields': ('pdf_url', 'hash'),
         }),
     )
 

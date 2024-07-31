@@ -1,4 +1,5 @@
 from django.db import models
+from nanoid_field import NanoidField
 
 from resources.cars.models import Car
 from resources.users.models import Customer
@@ -31,8 +32,15 @@ class Payment(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self) -> str:
+        return f"{self.method}"
+
 
 class Invoice(models.Model):
+    hash = NanoidField(max_length=10, alphabet="1234567890ABCDEF", editable=False)
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
     pdf_url = models.URLField(max_length=200)
     date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.hash}"
