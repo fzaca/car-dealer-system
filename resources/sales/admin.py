@@ -52,14 +52,10 @@ class PaymentMethodAdmin(ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(ModelAdmin):
-    list_display = ('sale_car', 'method', 'amount', 'date')
+    list_display = ('sale', 'method', 'amount', 'date')
     list_filter = ('date', 'method')
     search_fields = ('sale__car__car_model__name', 'sale__customer__user__username', 'method__name')
     readonly_fields = ('date',)
-
-    def sale_car(self, obj):  # noqa: PLR6301
-        return obj.sale.car
-    sale_car.short_description = 'Car'
 
     # Unfold
     compressed_fields = True
