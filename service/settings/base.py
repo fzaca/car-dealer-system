@@ -2,6 +2,10 @@ import os
 import environ
 from pathlib import Path
 
+from django.templatetags.static import static
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = environ.Env(
@@ -17,25 +21,6 @@ DEBUG = env.bool('DEBUG', default=True)
 APPS_DIR = BASE_DIR / "resources"
 ENV = env.bool("ENV", default="local")
 
-UNFOLD = {
-    "SITE_TITLE": "Car Dealer Admin",
-    "SITE_HEADER": "Car Dealer",
-	"COLORS": {
-		"primary": {
-			"50": "240 248 255",
-			"100": "224 240 255",
-			"200": "192 220 255",
-			"300": "160 200 255",
-			"400": "128 180 255",
-			"500": "96 160 255",
-			"600": "64 140 255",
-			"700": "32 120 255",
-			"800": "0 100 255",
-			"900": "0 80 220",
-			"950": "0 60 180"
-		}
-	},
-}
 
 INSTALLED_APPS = [
 	"unfold",
@@ -49,6 +34,7 @@ INSTALLED_APPS = [
 	"django.contrib.staticfiles",
 	'whitenoise.runserver_nostatic',
 	"phonenumber_field",
+	"nanoid_field",
 	# Local apps
 	"resources.core",
 	"resources.users",
@@ -177,3 +163,188 @@ LOGGING = {
         }
     }
 }
+
+# https://fonts.google.com/icons
+UNFOLD = {
+    "SITE_URL": "/",
+    "SITE_ICON": {
+        "light": lambda request: static("images/logo.svg"),
+        "dark": lambda request: static("images/logo.svg"),
+    },
+    "SITE_LOGO": {
+        "light": lambda request: static("images/logo.svg"),
+        "dark": lambda request: static("images/logo.svg"),
+    },
+    "SITE_TITLE": "Car Dealer Admin",
+    "SITE_HEADER": "Car Dealer",
+    "SITE_SYMBOL": "directions_car",
+    "SITE_FAVICONS": [
+        {
+            "rel": "icon",
+            "sizes": "32x32",
+            "type": "image/svg+xml",
+            "href": lambda request: static("images/favicon.ico"),
+        },
+    ],
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
+    "LOGIN": {
+        "image": lambda request: static("images/car-dealer-bg.jpg"),
+        "redirect_after": lambda request: reverse_lazy("admin:index"),
+    },
+    "STYLES": [
+        lambda request: static("css/style.css"),
+    ],
+    "SCRIPTS": [
+        lambda request: static("js/script.js"),
+    ],
+    "COLORS": {
+        "primary": {
+            "50": "240 248 255",
+            "100": "224 240 255",
+            "200": "192 220 255",
+            "300": "160 200 255",
+            "400": "128 180 255",
+            "500": "96 160 255",
+            "600": "64 140 255",
+            "700": "32 120 255",
+            "800": "0 100 255",
+            "900": "0 80 220",
+            "950": "0 60 180"
+        },
+    },
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": False,
+        "navigation": [
+            {
+                "title": _("Navigation"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Dashboard"),
+                        "icon": "dashboard",
+                        "link": reverse_lazy("admin:index"),
+                    },
+                ],
+            },
+            {
+                "title": _("Cars"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Body types"),
+                        "icon": "Garage",  # https://fonts.google.com/icons
+                        "link": reverse_lazy("admin:cars_bodytype_changelist"),
+                    },
+                    {
+                        "title": _("Brands"),
+                        "icon": "local_offer",
+                        "link": reverse_lazy("admin:cars_brand_changelist"),
+                    },
+                    {
+                        "title": _("Car models"),
+                        "icon": "auto_awesome_motion",
+                        "link": reverse_lazy("admin:cars_carmodel_changelist"),
+                    },
+                    {
+                        "title": _("Cars"),
+                        "icon": "directions_car",
+                        "link": reverse_lazy("admin:cars_car_changelist"),
+                    },
+                    {
+                        "title": _("Featured cars"),
+                        "icon": "star",
+                        "link": reverse_lazy("admin:cars_featuredcar_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": _("Reviews"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Comments"),
+                        "icon": "comment",
+                        "link": reverse_lazy("admin:reviews_comment_changelist"),
+                    },
+                    {
+                        "title": _("Reviews"),
+                        "icon": "rate_review",
+                        "link": reverse_lazy("admin:reviews_review_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": _("Sales"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Invoices"),
+                        "icon": "receipt",
+                        "link": reverse_lazy("admin:sales_invoice_changelist"),
+                    },
+                    {
+                        "title": _("Payment methods"),
+                        "icon": "payment",
+                        "link": reverse_lazy("admin:sales_paymentmethod_changelist"),
+                    },
+                    {
+                        "title": _("Payments"),
+                        "icon": "attach_money",
+                        "link": reverse_lazy("admin:sales_payment_changelist"),
+                    },
+                    {
+                        "title": _("Sales"),
+                        "icon": "shopping_cart",
+                        "link": reverse_lazy("admin:sales_sale_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": _("Users & Groups"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Customers"),
+                        "icon": "recent_actors",
+                        "link": reverse_lazy("admin:users_customer_changelist"),
+                    },
+                    {
+                        "title": _("Employees"),
+                        "icon": "support_agent",
+                        "link": reverse_lazy("admin:users_employee_changelist"),
+                    },
+                    {
+                        "title": _("Groups"),
+                        "icon": "groups_3",
+                        "link": reverse_lazy("admin:auth_group_changelist"),
+                    },
+                    {
+                        "title": _("Users"),
+                        "icon": "people",
+                        "link": reverse_lazy("admin:users_customuser_changelist"),
+                    },
+                ],
+            },
+        ],
+    },
+    "TABS": [],
+}
+
+
+def environment_callback(request):
+    return ["Production", "danger"]
+
+
+def badge_callback(request):
+    return 3
+
+
+def permission_callback(request):
+    return request.user.has_perm("resources.users.change_customuser")
