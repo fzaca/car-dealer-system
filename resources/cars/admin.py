@@ -25,11 +25,13 @@ minio_client = get_minio_client()
 
 @admin.register(Brand)
 class BrandAdmin(ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'created_at', 'updated_at')
     search_fields = ('name',)
     ordering = ('name',)
     list_filter = (
         ('name', GenericChoicesDropdownFilter),
+        ('created_at', RangeDateTimeFilter),
+        ('updated_at', RangeDateTimeFilter),
     )
 
     def get_queryset(self, request):
@@ -47,12 +49,14 @@ class BrandAdmin(ModelAdmin):
 @admin.register(CarModel)
 class CarModelAdmin(ModelAdmin):
     form = CarModelForm
-    list_display = ('hash', 'name', 'brand')
+    list_display = ('hash', 'name', 'brand', 'created_at', 'updated_at')
     readonly_fields = ('hash',)
     search_fields = ('name', 'brand__name')
     ordering = ('name',)
     list_filter = (
         ('brand', GenericRelatedDropdownFilter),
+        ('created_at', RangeDateTimeFilter),
+        ('updated_at', RangeDateTimeFilter),
     )
 
     def get_queryset(self, request):
@@ -69,11 +73,13 @@ class CarModelAdmin(ModelAdmin):
 
 @admin.register(BodyType)
 class BodyTypeAdmin(ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'created_at', 'updated_at')
     search_fields = ('name',)
     ordering = ('name',)
     list_filter = (
         ('name', GenericChoicesDropdownFilter),
+        ('created_at', RangeDateTimeFilter),
+        ('updated_at', RangeDateTimeFilter),
     )
 
     def get_queryset(self, request):
@@ -113,6 +119,8 @@ class CarAdmin(ModelAdmin):
         ('seats', GenericSingleNumericFilter),
         ('doors', GenericSingleNumericFilter),
         ('body_type', GenericRelatedDropdownFilter),
+        ('created_at', RangeDateTimeFilter),
+        ('updated_at', RangeDateTimeFilter),
     )
     ordering = ('car_model__brand__name', 'car_model__name', 'year')
     readonly_fields = ('image_tag', 'image_url', 'hash')
@@ -202,8 +210,9 @@ class FeaturedCarAdmin(ModelAdmin):
     ordering = ('-featured_date',)
     list_filter = (
         ('car__car_model__brand', GenericRelatedDropdownFilter),
-        ('featured_date', RangeDateTimeFilter),
         ('car__price', GenericRangeNumericFilter),
+        ('featured_date', RangeDateTimeFilter),
+        ('updated_at', RangeDateTimeFilter),
     )
 
     def get_queryset(self, request):

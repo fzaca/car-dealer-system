@@ -4,6 +4,8 @@ from nanoid_field import NanoidField
 
 class Brand(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return f"{self.name}"
@@ -13,6 +15,8 @@ class CarModel(models.Model):
     hash = NanoidField(max_length=10, alphabet="1234567890ABCDEF", editable=False)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return f"{self.name}"
@@ -20,6 +24,8 @@ class CarModel(models.Model):
 
 class BodyType(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return f"{self.name}"
@@ -41,6 +47,8 @@ class Car(models.Model):
     doors = models.PositiveIntegerField()
     is_available = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.car_model.name} ({self.year})"
@@ -49,6 +57,7 @@ class Car(models.Model):
 class FeaturedCar(models.Model):
     car = models.OneToOneField(Car, on_delete=models.CASCADE)
     featured_date = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.car.car_model.name} ({self.car.year})"
