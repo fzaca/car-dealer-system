@@ -5,10 +5,10 @@ from django.utils.translation import gettext_lazy as _
 
 
 def environment_callback(request):
-    if settings.ENV == "production":
-        return [_("Production"), "warning"]
+    if settings.DEBUG:
+        return [_(f"Development:{settings.ENV}"), "info"]
 
-    return [_(f"Development:{settings.ENV}"), "info"]
+    return [_("Production"), "warning"]
 
 
 def badge_callback(request):
