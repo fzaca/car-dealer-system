@@ -2,8 +2,10 @@ import uuid
 
 from django.contrib import admin
 from django.utils.html import format_html
+from django.core.cache import cache
 from minio.error import S3Error
 from unfold.admin import ModelAdmin
+from unfold.contrib.filters.admin import RangeDateTimeFilter, RelatedDropdownFilter
 
 from resources.constants import MINIO_BUCKET
 from resources.sales.forms import InvoiceForm
@@ -72,9 +74,12 @@ class PaymentAdmin(ModelAdmin):
 @admin.register(Invoice)
 class InvoiceAdmin(ModelAdmin):
     form = InvoiceForm
-    list_display = ('hash', 'sale_car', 'pdf_url', 'date')
-    list_filter = ('date',)
-    search_fields = ('sale__car__car_model__name', 'sale__customer__user__username')
+    list_display = ('hash', 'sale', 'sale_car', 'pdf_url', 'date')
+    list_filter = (
+        ('date', RangeDateTimeFilter),
+        ('sale', RelatedDropdownFilter),
+    )
+    search_fields = ('sale', 'sale__customer__user__username')
     readonly_fields = ('date', 'pdf_tag', 'hash')
     fieldsets = (
         (None, {
@@ -125,6 +130,13 @@ class InvoiceAdmin(ModelAdmin):
             obj.pdf_url = public_url
         except S3Error as e:
             self.message_user(request, f"Error uploading invoice: {e}", level='error')
+
+    def get_queryset(self, request):
+        queryset = cache.get('invoice_queryset')
+        if not queryset:
+            queryset = super().get_queryset(request).select_related('sale')
+            cache.set('invoice_queryset', queryset, timeout=60 * 15)
+        return queryset
 
     # Unfold
     compressed_fields = True
