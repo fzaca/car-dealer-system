@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.core.cache import cache
 from django.contrib import admin
 from django.contrib.postgres.fields import ArrayField
 from django.utils.html import format_html
@@ -31,6 +32,13 @@ class BrandAdmin(ModelAdmin):
         ('name', GenericChoicesDropdownFilter),
     )
 
+    def get_queryset(self, request):
+        queryset = cache.get('brand_queryset')
+        if not queryset:
+            queryset = super().get_queryset(request)
+            cache.set('brand_queryset', queryset, timeout=60 * 15)
+        return queryset
+
     # Unfold
     compressed_fields = True
     list_filter_submit = True
@@ -47,6 +55,13 @@ class CarModelAdmin(ModelAdmin):
         ('brand', GenericRelatedDropdownFilter),
     )
 
+    def get_queryset(self, request):
+        queryset = cache.get('carmodel_queryset')
+        if not queryset:
+            queryset = super().get_queryset(request).select_related('brand')
+            cache.set('carmodel_queryset', queryset, timeout=60 * 15)
+        return queryset
+
     # Unfold
     compressed_fields = True
     list_filter_submit = True
@@ -60,6 +75,13 @@ class BodyTypeAdmin(ModelAdmin):
     list_filter = (
         ('name', GenericChoicesDropdownFilter),
     )
+
+    def get_queryset(self, request):
+        queryset = cache.get('bodytype_queryset')
+        if not queryset:
+            queryset = super().get_queryset(request)
+            cache.set('bodytype_queryset', queryset, timeout=60 * 15)
+        return queryset
 
     # Unfold
     compressed_fields = True
@@ -112,6 +134,13 @@ class CarAdmin(ModelAdmin):
             'fields': ('color', 'seats', 'doors', 'body_type'),
         }),
     )
+
+    def get_queryset(self, request):
+        queryset = cache.get('car_queryset')
+        if not queryset:
+            queryset = super().get_queryset(request).select_related('car_model__brand', 'body_type')
+            cache.set('car_queryset', queryset, timeout=60 * 15)
+        return queryset
 
     def image_tag(self, obj):  # noqa: PLR6301
         return format_html('<img src="{}" width="300" height="200" />'.format(obj.image_url))
@@ -178,8 +207,11 @@ class FeaturedCarAdmin(ModelAdmin):
     )
 
     def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        return queryset.select_related('car__car_model__brand')
+        queryset = cache.get('featuredcar_queryset')
+        if not queryset:
+            queryset = super().get_queryset(request).select_related('car__car_model__brand')
+            cache.set('featuredcar_queryset', queryset, timeout=60 * 15)
+        return queryset
 
     def car_brand(self, obj):  # noqa: PLR6301
         return obj.car.car_model.brand.name
