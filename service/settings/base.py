@@ -32,7 +32,8 @@ INSTALLED_APPS = [
 	"django.contrib.sessions",
 	"django.contrib.messages",
 	"django.contrib.staticfiles",
-	'whitenoise.runserver_nostatic',
+    "django.contrib.humanize",
+	"whitenoise.runserver_nostatic",
 	"phonenumber_field",
 	"nanoid_field",
 	# Local apps
@@ -59,7 +60,7 @@ ROOT_URLCONF = "service.urls"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'resources/templates'],
+        'DIRS': [BASE_DIR / 'resources/core/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -175,8 +176,8 @@ UNFOLD = {
         "light": lambda request: static("images/logo.svg"),
         "dark": lambda request: static("images/logo.svg"),
     },
-    "SITE_TITLE": "Car Dealer Admin",
-    "SITE_HEADER": "Car Dealer",
+    "SITE_TITLE": _("Car Dealer Admin"),
+    "SITE_HEADER": _("Car Dealer"),
     "SITE_SYMBOL": "directions_car",
     "SITE_FAVICONS": [
         {
@@ -188,6 +189,8 @@ UNFOLD = {
     ],
     "SHOW_HISTORY": True,
     "SHOW_VIEW_ON_SITE": True,
+    "ENVIRONMENT": "resources.core.utils.environment_callback",
+    "DASHBOARD_CALLBACK": "resources.core.pages.views.dashboard_callback",
     "LOGIN": {
         "image": lambda request: static("images/car-dealer-bg.jpg"),
         "redirect_after": lambda request: reverse_lazy("admin:index"),
@@ -213,6 +216,15 @@ UNFOLD = {
             "950": "0 60 180"
         },
     },
+    "EXTENSIONS": {
+        "modeltranslation": {
+            "flags": {
+                "en": "🇬🇧",
+                "fr": "🇫🇷",
+                "nl": "🇧🇪",
+            },
+        },
+    },
     "SIDEBAR": {
         "show_search": True,
         "show_all_applications": False,
@@ -225,6 +237,7 @@ UNFOLD = {
                     {
                         "title": _("Dashboard"),
                         "icon": "dashboard",
+                        "badge": "resources.core.utils.badge_callback",  # FIXME: Example for use in others apps
                         "link": reverse_lazy("admin:index"),
                     },
                 ],
@@ -336,15 +349,3 @@ UNFOLD = {
     },
     "TABS": [],
 }
-
-
-def environment_callback(request):
-    return ["Production", "danger"]
-
-
-def badge_callback(request):
-    return 3
-
-
-def permission_callback(request):
-    return request.user.has_perm("resources.users.change_customuser")
