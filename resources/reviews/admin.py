@@ -16,11 +16,11 @@ class CommentAdmin(ModelAdmin):
 class ReviewAdmin(ModelAdmin):
     list_display = ('hash', 'customer', 'sale', 'rating', 'created_at', 'updated_at')
     list_filter = ('sale', 'rating', 'created_at', 'updated_at')
-    search_fields = ('customer__user__username', 'sale__car', 'comment')
+    search_fields = ('customer__user__username', 'sale', 'comment')
     readonly_fields = ('created_at', 'updated_at', 'hash')
     fieldsets = (
         (None, {
-            'fields': ('customer', 'sale', 'rating', 'comment')
+            'fields': ('customer', 'sale', 'rating', 'comment', 'hash')
         }),
         ('Dates', {
             'fields': ('created_at', 'updated_at'),

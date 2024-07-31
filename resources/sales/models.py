@@ -6,6 +6,7 @@ from resources.users.models import Customer
 
 
 class Sale(models.Model):
+    hash = NanoidField(max_length=10, alphabet="1234567890ABCDEF", editable=False)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
@@ -16,7 +17,7 @@ class Sale(models.Model):
         self.car.save()
 
     def __str__(self) -> str:
-        return f"{self.car.car_model.name}"
+        return f"{self.hash} {self.car}"
 
 
 class PaymentMethod(models.Model):  # FIXME: Add commands for load data

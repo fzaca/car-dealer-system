@@ -43,7 +43,7 @@ class Car(models.Model):
     is_featured = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.hash} - {self.car_model.name} ({self.year})"
+        return f"{self.car_model.name} ({self.year})"
 
 
 class FeaturedCar(models.Model):

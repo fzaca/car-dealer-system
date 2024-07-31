@@ -15,10 +15,10 @@ minio_client = get_minio_client()
 
 @admin.register(Sale)
 class SaleAdmin(ModelAdmin):
-    list_display = ('car', 'brand', 'customer', 'date')
+    list_display = ('hash', 'car', 'brand', 'customer', 'date')
     list_filter = ('date', 'car__car_model__brand', 'customer')
     search_fields = ('car__car_model__name', 'customer__user__username', 'customer__dni')
-    readonly_fields = ('date',)
+    readonly_fields = ('date', 'hash')
 
     def get_queryset(self, request):  # noqa: PLR6301
         queryset = super().get_queryset(request)
