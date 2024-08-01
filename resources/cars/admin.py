@@ -123,6 +123,7 @@ class CarAdmin(ModelAdmin):
     )
     ordering = ('car_model__brand__name', 'car_model__name', 'year')
     readonly_fields = ('image_tag', 'image_url', 'hash')
+    autocomplete_fields = ['car_model', 'body_type']
 
     fieldsets = (
         ('Image', {
@@ -215,6 +216,7 @@ class FeaturedCarAdmin(ModelAdmin):
         ('updated_at', RangeDateTimeFilter),
     )
     readonly_fields = ('car_image', 'car_hash', 'car_price', 'car_brand', 'featured_date')
+    autocomplete_fields = ['car']
 
     fieldsets = (
         ('Car Information', {
