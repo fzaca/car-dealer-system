@@ -1,13 +1,10 @@
 import uuid
 
-from django.db import models
 from django.core.cache import cache
 from django.contrib import admin
-from django.contrib.postgres.fields import ArrayField
 from django.utils.html import format_html
 from unfold.admin import ModelAdmin
 from unfold.contrib.filters.admin import RangeDateTimeFilter, RelatedDropdownFilter
-from unfold.contrib.forms.widgets import ArrayWidget, WysiwygWidget
 from minio.error import S3Error
 
 from resources.cars.filters import GearboxDropdownFilter, FuelTypeDropdownFilter
@@ -193,15 +190,6 @@ class CarAdmin(ModelAdmin):
     compressed_fields = True
     list_filter_submit = True
     list_fullwidth = False
-
-    formfield_overrides = {
-        models.TextField: {
-            "widget": WysiwygWidget,
-        },
-        ArrayField: {
-            "widget": ArrayWidget,
-        }
-    }
 
 
 @admin.register(FeaturedCar)

@@ -106,6 +106,7 @@ class InvoiceAdmin(ModelAdmin):
     )
     search_fields = ('sale__car__car_model__name', 'sale__customer__user__username')
     readonly_fields = ('date', 'pdf_tag', 'hash')
+    autocomplete_fields = ['sale']
     fieldsets = (
         (None, {
             'fields': ('sale', 'date', 'pdf_file', 'pdf_tag')
