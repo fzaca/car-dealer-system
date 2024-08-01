@@ -219,6 +219,7 @@ class CarAdmin(ModelAdmin):
 
     # Actions
     actions_detail = ["change_detail_action_highlight"]
+    actions_submit_line = ["submit_line_action_mark_sold"]
 
     @action(description=_("Highlight Car"), url_path="highlight-car", attrs={"target": "_blank"})
     def change_detail_action_highlight(self, request: HttpRequest, object_id: int):
@@ -227,6 +228,12 @@ class CarAdmin(ModelAdmin):
         car.save()
         self.message_user(request, "Car highlighted successfully.")
         return redirect("admin:cars_car_change", object_id=object_id)
+
+    @action(description=_("Save & Mark as Sold"))
+    def submit_line_action_mark_sold(self, request: HttpRequest, obj: Car):
+        obj.is_available = False
+        obj.save()
+        self.message_user(request, "Car marked as sold.")
 
 
 @admin.register(FeaturedCar)
