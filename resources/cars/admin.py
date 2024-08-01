@@ -47,13 +47,23 @@ class BrandAdmin(ModelAdmin):
 class CarModelAdmin(ModelAdmin):
     form = CarModelForm
     list_display = ('hash', 'name', 'brand', 'created_at', 'updated_at')
-    readonly_fields = ('hash',)
+    readonly_fields = ('hash', 'created_at', 'updated_at')
     search_fields = ('name', 'brand__name')
     ordering = ('name',)
+    autocomplete_fields = ('brand', )
     list_filter = (
         ('brand', GenericRelatedDropdownFilter),
         ('created_at', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
+    )
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'hash', 'brand')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
     )
 
     def get_queryset(self, request):
@@ -73,10 +83,20 @@ class BodyTypeAdmin(ModelAdmin):
     list_display = ('name', 'created_at', 'updated_at')
     search_fields = ('name',)
     ordering = ('name',)
+    readonly_fields = ('created_at', 'updated_at')
     list_filter = (
         ('name', GenericChoicesDropdownFilter),
         ('created_at', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
+    )
+    fieldsets = (
+        (None, {
+            'fields': ('name',)
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
     )
 
     def get_queryset(self, request):
@@ -204,7 +224,7 @@ class FeaturedCarAdmin(ModelAdmin):
         ('updated_at', RangeDateTimeFilter),
     )
     readonly_fields = ('car_image', 'car_hash', 'car_price', 'car_brand', 'featured_date')
-    autocomplete_fields = ['car']
+    autocomplete_fields = ('car', )
 
     fieldsets = (
         ('Car Information', {
