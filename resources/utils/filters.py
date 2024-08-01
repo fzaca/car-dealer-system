@@ -1,52 +1,34 @@
-from django.db.models import Count
+from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from unfold.contrib.filters.admin import ChoicesDropdownFilter, RelatedDropdownFilter
-from unfold.contrib.filters.admin import RangeNumericListFilter, RangeNumericFilter
-from unfold.contrib.filters.admin import SingleNumericFilter, SliderNumericFilter
 
 
-class GenericChoicesDropdownFilter(ChoicesDropdownFilter):
-    def __init__(self, field, request, params, model, model_admin, field_path):
-        self.field_name = field
-        super().__init__(field, request, params, model, model_admin, field_path)
+class AutocompleteDropdownFilter(admin.SimpleListFilter):
+    template = 'admin/filter_autocomplete.html'  # Asegúrate de tener esta plantilla
 
+    def __init__(self, request, params, model, model_admin, field_name, title=None):
+        self.parameter_name = field_name
+        self.title = title or _(f"{field_name} Autocomplete Filter")
+        self.field_name = field_name
+        super().__init__(request, params, model, model_admin)
 
-class GenericRelatedDropdownFilter(RelatedDropdownFilter):
-    def __init__(self, field, request, params, model, model_admin, field_path):
-        self.field_name = field
-        super().__init__(field, request, params, model, model_admin, field_path)
-
-
-class GenericSingleNumericFilter(SingleNumericFilter):
-    def __init__(self, field, request, params, model, model_admin, field_path):
-        self.field_name = field
-        super().__init__(field, request, params, model, model_admin, field_path)
-
-
-class GenericRangeNumericFilter(RangeNumericFilter):
-    def __init__(self, field, request, params, model, model_admin, field_path):
-        self.field_name = field
-        super().__init__(field, request, params, model, model_admin, field_path)
-
-
-class GenericSliderNumericFilter(SliderNumericFilter):
-    def __init__(self, field, request, params, model, model_admin, field_path):
-        self.field_name = field
-        super().__init__(field, request, params, model, model_admin, field_path)
-
-
-class GenericRangeNumericListFilter(RangeNumericListFilter):
-    def __init__(self, field, request, params, model, model_admin, field_path):
-        self.field_name = field
-        self.parameter_name = f"{field}_count"
-        self.title = _(f"{field} count")
-        super().__init__(field, request, params, model, model_admin, field_path)
+    def lookups(self, request, model_admin):
+        return (
+            (str(value), str(value))
+            for value in model_admin.model.objects.values_list(self.field_name, flat=True).distinct()
+        )
 
     def queryset(self, request, queryset):
-        if self.form.is_valid():
-            validated_data = dict(self.form.cleaned_data.items())
-            if validated_data:
-                return queryset.annotate(**{self.parameter_name: Count(self.field_name, distinct=True)}).filter(
-                    **{f"{self.parameter_name}__range": (validated_data.get("from"), validated_data.get("to"))}
-                )
+        if self.value():
+            return queryset.filter(**{self.field_name: self.value()})
         return queryset
+
+
+def create_autocomplete_filter(field_name, title=None):
+    """
+    Factory function to create a specific autocomplete filter for a given field name.
+    """
+    class SpecificAutocompleteDropdownFilter(AutocompleteDropdownFilter):
+        def __init__(self, request, params, model, model_admin):
+            super().__init__(request, params, model, model_admin, field_name, title)
+
+    return SpecificAutocompleteDropdownFilter

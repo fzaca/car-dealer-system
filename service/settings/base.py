@@ -37,6 +37,7 @@ INSTALLED_APPS = [
 	"phonenumber_field",
 	"nanoid_field",
     "memoize",
+    "django_select2",
 	# Local apps
 	"resources.core",
 	"resources.users",

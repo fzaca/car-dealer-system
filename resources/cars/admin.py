@@ -3,18 +3,17 @@ import uuid
 from django.core.cache import cache
 from django.contrib import admin
 from django.utils.html import format_html
+from minio.error import S3Error
 from unfold.admin import ModelAdmin
 from unfold.contrib.filters.admin import RangeDateTimeFilter, RelatedDropdownFilter
-from minio.error import S3Error
+from unfold.contrib.filters.admin import RangeNumericFilter, ChoicesDropdownFilter
+from unfold.contrib.filters.admin import SingleNumericFilter, SliderNumericFilter
 
 from resources.cars.filters import GearboxDropdownFilter, FuelTypeDropdownFilter
 from resources.cars.forms import CarForm, CarModelForm
 from resources.cars.models import BodyType, Brand, Car, CarModel, FeaturedCar
 from resources.constants import MINIO_BUCKET
 from resources.utils.minio import get_minio_client, generate_public_url
-from resources.utils.filters import GenericChoicesDropdownFilter, GenericRelatedDropdownFilter
-from resources.utils.filters import GenericRangeNumericFilter, GenericSliderNumericFilter
-from resources.utils.filters import GenericSingleNumericFilter
 
 
 minio_client = get_minio_client()
@@ -26,7 +25,7 @@ class BrandAdmin(ModelAdmin):
     search_fields = ('name',)
     ordering = ('name',)
     list_filter = (
-        ('name', GenericChoicesDropdownFilter),
+        ('name', ChoicesDropdownFilter),
         ('created_at', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
     )
@@ -52,7 +51,7 @@ class CarModelAdmin(ModelAdmin):
     ordering = ('name',)
     autocomplete_fields = ('brand', )
     list_filter = (
-        ('brand', GenericRelatedDropdownFilter),
+        ('brand', RelatedDropdownFilter),
         ('created_at', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
     )
@@ -85,7 +84,7 @@ class BodyTypeAdmin(ModelAdmin):
     ordering = ('name',)
     readonly_fields = ('created_at', 'updated_at')
     list_filter = (
-        ('name', GenericChoicesDropdownFilter),
+        ('name', ChoicesDropdownFilter),
         ('created_at', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
     )
@@ -126,14 +125,14 @@ class CarAdmin(ModelAdmin):
     list_filter = (
         'is_available',
         ('car_model__brand', RelatedDropdownFilter),
-        ('year', GenericSliderNumericFilter),
-        ('price', GenericRangeNumericFilter),
-        ('mileage', GenericRangeNumericFilter),
-        ('engine_size', GenericRangeNumericFilter),
+        ('year', SliderNumericFilter),
+        ('price', RangeNumericFilter),
+        ('mileage', RangeNumericFilter),
+        ('engine_size', RangeNumericFilter),
         GearboxDropdownFilter,
         FuelTypeDropdownFilter,
-        ('seats', GenericSingleNumericFilter),
-        ('doors', GenericSingleNumericFilter),
+        ('seats', SingleNumericFilter),
+        ('doors', SingleNumericFilter),
         ('body_type', RelatedDropdownFilter),
         ('created_at', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
@@ -218,13 +217,13 @@ class FeaturedCarAdmin(ModelAdmin):
     search_fields = ('car__car_model__name', 'car__year', 'car__car_model__brand__name')
     ordering = ('-featured_date',)
     list_filter = (
-        ('car__car_model__brand', GenericRelatedDropdownFilter),
-        ('car__price', GenericRangeNumericFilter),
+        ('car__car_model__brand', RelatedDropdownFilter),
+        ('car__price', RangeNumericFilter),
         ('featured_date', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
     )
     readonly_fields = ('car_image', 'car_hash', 'car_price', 'car_brand', 'featured_date')
-    autocomplete_fields = ('car', )
+    autocomplete_fields = ('car',)
 
     fieldsets = (
         ('Car Information', {
