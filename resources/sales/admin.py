@@ -81,6 +81,7 @@ class PaymentAdmin(ModelAdmin):
     )
     search_fields = ('sale__car__car_model__name', 'sale__customer__user__username', 'method__name')
     readonly_fields = ('date', 'hash')
+    autocomplete_fields = ['sale', 'method']
 
     def sale_car(self, obj):  # noqa: PLR6301
         return obj.sale.car
