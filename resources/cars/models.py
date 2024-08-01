@@ -22,6 +22,9 @@ class CarModel(models.Model):
     def __str__(self) -> str:
         return f"{self.name}"
 
+    class Meta:
+        ordering = ['name']
+
 
 class BodyType(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -30,6 +33,9 @@ class BodyType(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}"
+
+    class Meta:
+        ordering = ['name']
 
 
 class Car(models.Model):

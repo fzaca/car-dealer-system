@@ -187,6 +187,8 @@ class CarAdmin(ModelAdmin):
         except S3Error as e:
             self.message_user(request, f"Error uploading image: {e}", level='error')
 
+    autocomplete_fields = ['car_model', 'body_type']
+
     # Unfold
     compressed_fields = True
     list_filter_submit = True
