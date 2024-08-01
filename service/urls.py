@@ -5,6 +5,8 @@ from django.urls import include, path
 
 urlpatterns = [
 	path("admin/", admin.site.urls),
+    path('__debug__/', include('debug_toolbar.urls')),
+    path('silk/', include('silk.urls', namespace='silk')),
 	# Core
     path("", include("resources.core.pages.urls")),
 	# Users

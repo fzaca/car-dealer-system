@@ -37,6 +37,8 @@ INSTALLED_APPS = [
 	"phonenumber_field",
 	"nanoid_field",
     "memoize",
+    "debug_toolbar",
+    "silk",
 	# Local apps
 	"resources.core",
 	"resources.users",
@@ -54,6 +56,8 @@ MIDDLEWARE = [
 	"django.contrib.messages.middleware.MessageMiddleware",
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
 	"whitenoise.middleware.WhiteNoiseMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "silk.middleware.SilkyMiddleware",
 ]
 
 ROOT_URLCONF = "service.urls"
