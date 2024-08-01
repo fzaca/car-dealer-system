@@ -2,7 +2,7 @@ import uuid
 
 from django.contrib import admin
 from django.utils.html import format_html
-from django.core.cache import cache
+from memoize import memoize
 from minio.error import S3Error
 from unfold.admin import ModelAdmin
 from unfold.contrib.filters.admin import RangeDateTimeFilter, RelatedDropdownFilter
@@ -28,11 +28,11 @@ class SaleAdmin(ModelAdmin):
     search_fields = ('car__car_model__name', 'customer__user__username', 'customer__dni')
     readonly_fields = ('date', 'hash')
 
+    @memoize(timeout=60 * 15)
     def get_queryset(self, request):
-        queryset = cache.get('sale_queryset')
-        if not queryset:
-            queryset = super().get_queryset(request).select_related('car__car_model', 'customer__user')
-            cache.set('sale_queryset', queryset, timeout=60 * 15)
+        queryset = super().get_queryset(request).select_related(
+            'car__car_model', 'car__car_model__brand', 'customer__user'
+        )
         return queryset
 
     def car_model(self, obj):  # noqa: PLR6301
@@ -94,7 +94,7 @@ class InvoiceAdmin(ModelAdmin):
         ('created_at', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
     )
-    search_fields = ('sale', 'sale__customer__user__username')
+    search_fields = ('sale__car__car_model__name', 'sale__customer__user__username')
     readonly_fields = ('date', 'pdf_tag', 'hash')
     fieldsets = (
         (None, {
@@ -146,11 +146,11 @@ class InvoiceAdmin(ModelAdmin):
         except S3Error as e:
             self.message_user(request, f"Error uploading invoice: {e}", level='error')
 
+    @memoize(timeout=60 * 15)
     def get_queryset(self, request):
-        queryset = cache.get('invoice_queryset')
-        if not queryset:
-            queryset = super().get_queryset(request).select_related('sale')
-            cache.set('invoice_queryset', queryset, timeout=60 * 15)
+        queryset = super().get_queryset(request).select_related(
+            'sale', 'sale__car', 'sale__car__car_model', 'sale__car__car_model__brand', 'sale__customer__user'
+        )
         return queryset
 
     # Unfold
