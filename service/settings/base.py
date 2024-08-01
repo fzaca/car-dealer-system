@@ -107,16 +107,6 @@ WSGI_APPLICATION = "service.wsgi.application"
 
 DATABASES = {}
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': f'redis://{env("REDIS_HOST", default="localhost")}:{env("REDIS_PORT", default="6379")}/1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    }
-}
-
 AUTH_USER_MODEL = "users.CustomUser"
 AUTH_PASSWORD_VALIDATORS = [
 	{

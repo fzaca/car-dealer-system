@@ -37,3 +37,16 @@ LOGGING = {
         }
     },
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f'redis://{env("REDIS_USER", default="default")}:'  # noqa: F405
+                    f'{env("REDIS_PASSWORD", default="")}@'  # noqa: F405
+                    f'{env("REDIS_HOST", default="localhost")}:'  # noqa: F405
+                    f'{env("REDIS_PORT", default="6379")}/1',  # noqa: F405
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
