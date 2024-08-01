@@ -32,3 +32,5 @@ tomli==2.0.1
 traitlets==5.14.3
 virtualenv==20.26.3
 wcwidth==0.2.13
+django-debug-toolbar==4.4.6
+django-silk==5.1.0

@@ -5,8 +5,6 @@ from django.urls import include, path
 
 urlpatterns = [
 	path("admin/", admin.site.urls),
-    path('__debug__/', include('debug_toolbar.urls')),
-    path('silk/', include('silk.urls', namespace='silk')),
 	# Core
     path("", include("resources.core.pages.urls")),
 	# Users
@@ -21,4 +19,12 @@ urlpatterns = [
 	# Reviews
 	path("api/reviews/", include("resources.reviews.api.urls")),
 	path("reviews/", include("resources.reviews.pages.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+	urlpatterns += [
+		path('__debug__/', include('debug_toolbar.urls')),
+		path('silk/', include('silk.urls', namespace='silk')),
+	]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
