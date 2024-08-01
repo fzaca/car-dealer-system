@@ -11,7 +11,7 @@ from unfold.contrib.forms.widgets import ArrayWidget, WysiwygWidget
 from minio.error import S3Error
 
 from resources.cars.filters import GearboxDropdownFilter, FuelTypeDropdownFilter
-from resources.cars.forms import CarModelForm
+from resources.cars.forms import CarForm, CarModelForm
 from resources.cars.models import BodyType, Brand, Car, CarModel, FeaturedCar
 from resources.constants import MINIO_BUCKET
 from resources.utils.minio import get_minio_client, generate_public_url
@@ -96,6 +96,7 @@ class BodyTypeAdmin(ModelAdmin):
 
 @admin.register(Car)
 class CarAdmin(ModelAdmin):
+    form = CarForm
     list_display = (
         'hash', 'car_model', 'year', 'price', 'color', 'mileage',
         'engine_size', 'gearbox', 'fuel_type', 'seats', 'doors',
@@ -213,12 +214,23 @@ class FeaturedCarAdmin(ModelAdmin):
         ('featured_date', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
     )
+    readonly_fields = ('car_image', 'car_hash', 'car_price', 'car_brand', 'featured_date')
+
+    fieldsets = (
+        ('Car Information', {
+            'fields': ('car_hash', 'car_price', 'car_brand', 'car_image')
+        }),
+        ('Featured Information', {
+            'fields': ('featured_date',)
+        }),
+    )
 
     def get_queryset(self, request):
-        queryset = cache.get('featuredcar_queryset')
+        cache_key = f'featuredcar_queryset_{request.user.id}'
+        queryset = cache.get(cache_key)
         if not queryset:
             queryset = super().get_queryset(request).select_related('car__car_model__brand')
-            cache.set('featuredcar_queryset', queryset, timeout=60 * 15)
+            cache.set(cache_key, queryset, timeout=60 * 15)
         return queryset
 
     def car_brand(self, obj):  # noqa: PLR6301
