@@ -26,7 +26,17 @@ class SaleAdmin(ModelAdmin):
         ('updated_at', RangeDateTimeFilter),
     )
     search_fields = ('car__car_model__name', 'customer__user__username', 'customer__dni')
-    readonly_fields = ('date', 'hash')
+    readonly_fields = ('date', 'hash', 'created_at', 'updated_at')
+    autocomplete_fields = ['car', 'customer']
+
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('hash', 'date', 'car', 'customer')
+        }),
+        ('Additional Information', {
+            'fields': ('created_at', 'updated_at')
+        }),
+    )
 
     @memoize(timeout=60 * 15)
     def get_queryset(self, request):
