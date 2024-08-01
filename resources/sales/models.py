@@ -13,6 +13,15 @@ class Sale(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['car']),
+            models.Index(fields=['customer']),
+            models.Index(fields=['date']),
+            models.Index(fields=['created_at']),
+            models.Index(fields=['updated_at']),
+        ]
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.car.is_available = False
@@ -40,6 +49,15 @@ class Payment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['sale']),
+            models.Index(fields=['method']),
+            models.Index(fields=['date']),
+            models.Index(fields=['created_at']),
+            models.Index(fields=['updated_at']),
+        ]
+
     def __str__(self) -> str:
         return f"{self.method}"
 
@@ -51,6 +69,14 @@ class Invoice(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['sale']),
+            models.Index(fields=['date']),
+            models.Index(fields=['created_at']),
+            models.Index(fields=['updated_at']),
+        ]
 
     def __str__(self) -> str:
         return f"{self.hash}"
