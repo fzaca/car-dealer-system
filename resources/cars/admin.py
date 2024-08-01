@@ -2,9 +2,13 @@ import uuid
 
 from django.core.cache import cache
 from django.contrib import admin
+from django.http import HttpRequest
+from django.shortcuts import redirect
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 from minio.error import S3Error
 from unfold.admin import ModelAdmin
+from unfold.decorators import action
 from unfold.contrib.filters.admin import RangeDateTimeFilter, RelatedDropdownFilter
 from unfold.contrib.filters.admin import RangeNumericFilter, ChoicesDropdownFilter
 from unfold.contrib.filters.admin import SingleNumericFilter, SliderNumericFilter
@@ -209,6 +213,20 @@ class CarAdmin(ModelAdmin):
     compressed_fields = True
     list_filter_submit = True
     list_fullwidth = False
+    list_fullwidth = False
+    list_horizontal_scrollbar_top = False
+    list_disable_select_all = False
+
+    # Actions
+    actions_detail = ["change_detail_action_highlight"]
+
+    @action(description=_("Highlight Car"), url_path="highlight-car", attrs={"target": "_blank"})
+    def change_detail_action_highlight(self, request: HttpRequest, object_id: int):
+        car = Car.objects.get(pk=object_id)
+        car.is_featured = True
+        car.save()
+        self.message_user(request, "Car highlighted successfully.")
+        return redirect("admin:cars_car_change", object_id=object_id)
 
 
 @admin.register(FeaturedCar)
