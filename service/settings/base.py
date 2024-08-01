@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 	"whitenoise.runserver_nostatic",
 	"phonenumber_field",
 	"nanoid_field",
+    "memoize",
 	# Local apps
 	"resources.core",
 	"resources.users",

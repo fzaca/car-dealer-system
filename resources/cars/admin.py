@@ -5,6 +5,7 @@ from django.core.cache import cache
 from django.contrib import admin
 from django.contrib.postgres.fields import ArrayField
 from django.utils.html import format_html
+from memoize import memoize
 from unfold.admin import ModelAdmin
 from unfold.contrib.filters.admin import RangeDateTimeFilter
 from unfold.contrib.forms.widgets import ArrayWidget, WysiwygWidget
@@ -143,11 +144,9 @@ class CarAdmin(ModelAdmin):
         }),
     )
 
+    @memoize(timeout=60 * 15)
     def get_queryset(self, request):
-        queryset = cache.get('car_queryset')
-        if not queryset:
-            queryset = super().get_queryset(request).select_related('car_model__brand', 'body_type')
-            cache.set('car_queryset', queryset, timeout=60 * 15)
+        queryset = super().get_queryset(request).select_related('car_model__brand', 'body_type')
         return queryset
 
     def image_tag(self, obj):  # noqa: PLR6301

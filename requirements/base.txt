@@ -18,3 +18,4 @@ pillow==10.4.0
 nanoid==2.0.0
 django-nanoid-field==0.1.4
 django-redis==5.4.0
+django-memoize==2.3.1

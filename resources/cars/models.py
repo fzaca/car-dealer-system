@@ -1,5 +1,6 @@
 from django.db import models
 from nanoid_field import NanoidField
+from memoize import memoize
 
 
 class Brand(models.Model):
@@ -52,6 +53,33 @@ class Car(models.Model):
 
     def __str__(self):
         return f"{self.car_model.name} ({self.year})"
+
+    @memoize(timeout=60 * 15)
+    def get_related_cars(self):
+        return (
+            Car.objects
+            .filter(car_model=self.car_model, year=self.year)
+            .select_related('car_model', 'body_type')
+        )
+
+    @memoize(timeout=60 * 15)
+    def get_average_price_by_model(self):
+        return (
+            Car.objects
+            .filter(car_model=self.car_model)
+            .aggregate(models.Avg('price'))['price__avg']
+        )
+
+    @memoize(timeout=60 * 5)
+    def get_similar_cars(self):
+        return (
+            Car.objects
+            .filter(
+                body_type=self.body_type,
+                year__range=(self.year - 1, self.year + 1)
+            )
+            .select_related('car_model', 'body_type')
+        )
 
 
 class FeaturedCar(models.Model):
