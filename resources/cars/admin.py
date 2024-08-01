@@ -5,14 +5,13 @@ from django.core.cache import cache
 from django.contrib import admin
 from django.contrib.postgres.fields import ArrayField
 from django.utils.html import format_html
-from memoize import memoize
 from unfold.admin import ModelAdmin
-from unfold.contrib.filters.admin import RangeDateTimeFilter
+from unfold.contrib.filters.admin import RangeDateTimeFilter, RelatedDropdownFilter
 from unfold.contrib.forms.widgets import ArrayWidget, WysiwygWidget
 from minio.error import S3Error
 
 from resources.cars.filters import GearboxDropdownFilter, FuelTypeDropdownFilter
-from resources.cars.forms import CarForm, CarModelForm
+from resources.cars.forms import CarModelForm
 from resources.cars.models import BodyType, Brand, Car, CarModel, FeaturedCar
 from resources.constants import MINIO_BUCKET
 from resources.utils.minio import get_minio_client, generate_public_url
@@ -97,12 +96,10 @@ class BodyTypeAdmin(ModelAdmin):
 
 @admin.register(Car)
 class CarAdmin(ModelAdmin):
-    form = CarForm
-    list_per_page = 50
     list_display = (
         'hash', 'car_model', 'year', 'price', 'color', 'mileage',
         'engine_size', 'gearbox', 'fuel_type', 'seats', 'doors',
-        'body_type', 'is_available', 'car_image'
+        'body_type', 'is_available', 'car_image',
     )
     search_fields = (
         'car_model__name', 'car_model__brand__name', 'color',
@@ -110,7 +107,7 @@ class CarAdmin(ModelAdmin):
     )
     list_filter = (
         'is_available',
-        ('car_model__brand', GenericRelatedDropdownFilter),
+        ('car_model__brand', RelatedDropdownFilter),
         ('year', GenericSliderNumericFilter),
         ('price', GenericRangeNumericFilter),
         ('mileage', GenericRangeNumericFilter),
@@ -119,7 +116,7 @@ class CarAdmin(ModelAdmin):
         FuelTypeDropdownFilter,
         ('seats', GenericSingleNumericFilter),
         ('doors', GenericSingleNumericFilter),
-        ('body_type', GenericRelatedDropdownFilter),
+        ('body_type', RelatedDropdownFilter),
         ('created_at', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
     )
@@ -144,7 +141,6 @@ class CarAdmin(ModelAdmin):
         }),
     )
 
-    @memoize(timeout=60 * 15)
     def get_queryset(self, request):
         queryset = super().get_queryset(request).select_related(
             'car_model__brand', 'body_type'
@@ -154,11 +150,11 @@ class CarAdmin(ModelAdmin):
         )
         return queryset
 
-    def image_tag(self, obj):  # noqa: PLR6301
+    def image_tag(self, obj):
         return format_html('<img src="{}" width="300" height="200" />'.format(obj.image_url))
     image_tag.short_description = 'Car Image'
 
-    def car_image(self, obj):  # noqa: PLR6301
+    def car_image(self, obj):
         return format_html('<img src="{}" style="height: 50px;"/>', obj.image_url)
     car_image.short_description = 'Image'
 
@@ -192,9 +188,6 @@ class CarAdmin(ModelAdmin):
         except S3Error as e:
             self.message_user(request, f"Error uploading image: {e}", level='error')
 
-    autocomplete_fields = ['car_model', 'body_type']
-
-    # Unfold
     compressed_fields = True
     list_filter_submit = True
     list_fullwidth = False
