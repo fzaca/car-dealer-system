@@ -60,6 +60,16 @@ class Car(models.Model):
     def __str__(self):
         return f"{self.car_model.name} ({self.year})"
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['car_model']),
+            models.Index(fields=['body_type']),
+            models.Index(fields=['price']),
+            models.Index(fields=['year']),
+            models.Index(fields=['is_available']),
+            models.Index(fields=['created_at']),
+        ]
+
     @memoize(timeout=60 * 15)
     def get_related_cars(self):
         return (

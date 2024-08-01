@@ -146,7 +146,12 @@ class CarAdmin(ModelAdmin):
 
     @memoize(timeout=60 * 15)
     def get_queryset(self, request):
-        queryset = super().get_queryset(request).select_related('car_model__brand', 'body_type')
+        queryset = super().get_queryset(request).select_related(
+            'car_model__brand', 'body_type'
+        ).only(
+            'hash', 'car_model__name', 'car_model__brand__name', 'year', 'price', 'color', 'mileage',
+            'engine_size', 'gearbox', 'fuel_type', 'seats', 'doors', 'body_type__name', 'is_available', 'image_url'
+        )
         return queryset
 
     def image_tag(self, obj):  # noqa: PLR6301
