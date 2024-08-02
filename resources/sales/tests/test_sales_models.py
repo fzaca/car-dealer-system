@@ -1,5 +1,5 @@
 import pytest
-from django.utils import timezone
+
 from resources.cars.models import Car, CarModel, BodyType, Brand
 from resources.users.models import CustomUser, Customer
 from resources.sales.models import Sale, PaymentMethod, Payment, Invoice
@@ -40,9 +40,9 @@ def test_payment_creation():
     )
     user = CustomUser.objects.create_user(username="customer1", password="password")
     customer = Customer.objects.create(user=user, phone=CUSTOMER_PHONE, address=CUSTOMER_ADDRESS, dni=CUSTOMER_DNI)
-    sale = Sale.objects.create(car=car, customer=customer, date=timezone.now())
+    sale = Sale.objects.create(car=car, customer=customer)
     payment_method = PaymentMethod.objects.create(name="Credit Card")
-    payment = Payment.objects.create(sale=sale, method=payment_method, amount=PAYMENT_AMOUNT, date=timezone.now())
+    payment = Payment.objects.create(sale=sale, method=payment_method, amount=PAYMENT_AMOUNT)
 
     assert payment.sale.car == car
     assert payment.method.name == "Credit Card"
@@ -70,8 +70,8 @@ def test_invoice_creation():
     )
     user = CustomUser.objects.create_user(username="customer1", password="password")
     customer = Customer.objects.create(user=user, phone=CUSTOMER_PHONE, address=CUSTOMER_ADDRESS, dni=CUSTOMER_DNI)
-    sale = Sale.objects.create(car=car, customer=customer, date=timezone.now())
-    invoice = Invoice.objects.create(sale=sale, pdf_url=PDF_URL, date=timezone.now())
+    sale = Sale.objects.create(car=car, customer=customer)
+    invoice = Invoice.objects.create(sale=sale, pdf_url=PDF_URL)
 
     assert invoice.sale.car == car
     assert invoice.pdf_url == PDF_URL

@@ -22,7 +22,6 @@ class Sale(models.Model):
         ]
 
     def save(self, *args, **kwargs):
-        # Si created_at no está definido, establecerlo a la fecha y hora actuales
         if not self.created_at:
             self.created_at = timezone.now()
         super().save(*args, **kwargs)
@@ -33,7 +32,7 @@ class Sale(models.Model):
         return f"{self.hash}"
 
 
-class PaymentMethod(models.Model):  # FIXME: Add commands for load data
+class PaymentMethod(models.Model):
     name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
