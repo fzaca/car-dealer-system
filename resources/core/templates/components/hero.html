@@ -1,23 +1,28 @@
-<!-- Hero -->
 {% load static %}
-<div class="flex justify-center">
-  <div class="flex flex-col items-center text-center gap-6 max-w-xl">
+<!-- Hero Section -->
+<div class="relative h-screen bg-cover bg-center" style="background-image: url({% static 'images/background.jpg' %});">
+
+  <!-- Overlay for better text contrast -->
+  <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+
+  <!-- Content centered on top of the overlay -->
+  <div class="relative z-10 flex flex-col items-center justify-center h-full text-center gap-6 p-6 text-white">
     <span class="text-sm text-accent">Car Dealer: The Future of Automotive Excellence</span>
 
     <h1 class="text-5xl font-bold">Intuitive Car Solutions</h1>
 
-    <span class>
+    <span>
       The future of driving is here. Car Dealer is your gateway to experiencing the next generation of vehicles. Explore our exceptional range of cars and discover the perfect ride for you!
     </span>
 
     <div class="flex gap-4">
-      <a class="btn btn-primary">
-        <i class="fa-solid fa-car text-secondary"></i>
+      <a class="btn btn-primary flex items-center gap-2">
+        <i class="fa-solid fa-car"></i>
         Explore Our Vehicles
         <i class="fa-solid fa-arrow-right text-sm"></i>
       </a>
 
-      <a class="btn btn-neutral">
+      <a class="btn btn-neutral flex items-center gap-2">
         Visit Our Blog
         <i class="fa-solid fa-blog"></i>
       </a>
