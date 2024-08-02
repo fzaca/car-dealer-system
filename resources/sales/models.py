@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from nanoid_field import NanoidField
 
 from resources.cars.models import Car
@@ -9,20 +10,21 @@ class Sale(models.Model):
     hash = NanoidField(max_length=10, alphabet="1234567890ABCDEF", editable=False)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField()
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         indexes = [
             models.Index(fields=['car']),
             models.Index(fields=['customer']),
-            models.Index(fields=['date']),
             models.Index(fields=['created_at']),
             models.Index(fields=['updated_at']),
         ]
 
     def save(self, *args, **kwargs):
+        # Si created_at no está definido, establecerlo a la fecha y hora actuales
+        if not self.created_at:
+            self.created_at = timezone.now()
         super().save(*args, **kwargs)
         self.car.is_available = False
         self.car.save()

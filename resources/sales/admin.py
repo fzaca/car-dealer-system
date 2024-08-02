@@ -17,21 +17,20 @@ minio_client = get_minio_client()
 
 @admin.register(Sale)
 class SaleAdmin(ModelAdmin):
-    list_display = ('hash', 'car', 'brand', 'customer', 'date', 'created_at', 'updated_at')
+    list_display = ('hash', 'car', 'brand', 'customer', 'created_at', 'updated_at')
     list_filter = (
-        ('date', RangeDateTimeFilter),
         ('car__car_model__brand', RelatedDropdownFilter),
         ('customer', RelatedDropdownFilter),
         ('created_at', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
     )
     search_fields = ('car__car_model__name', 'customer__user__username', 'customer__dni')
-    readonly_fields = ('date', 'hash', 'created_at', 'updated_at')
+    readonly_fields = ('hash', 'created_at', 'updated_at')
     autocomplete_fields = ['car', 'customer']
 
     fieldsets = (
         ('Basic Information', {
-            'fields': ('hash', 'date', 'car', 'customer')
+            'fields': ('hash', 'car', 'customer')
         }),
         ('Additional Information', {
             'fields': ('created_at', 'updated_at')

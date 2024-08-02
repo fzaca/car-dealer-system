@@ -1,29 +1,26 @@
-{# comment #}
 {% extends 'unfold/layouts/base_simple.html' %}
 
-{% load cache humanize i18n %}
-{% load unfold %}
+{% load i18n unfold %}
 
 {% block breadcrumbs %}{% endblock %}
 
-{% block title %}
-    {% if subtitle %}
-        {{ subtitle }} |
-    {% endif %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
 
-    {{ title }} | {{ site_title|default:_('Django site admin') }}
+{% block title %}
+    {% trans 'Dashboard' %} | {{ site_title|default:_('Django site admin') }}
 {% endblock %}
 
 {% block branding %}
     <h1 id="site-name">
         <a href="{% url 'admin:index' %}">
-            {{ site_header|default:_('Django administration') }}
+            {{ site_header }}
         </a>
     </h1>
 {% endblock %}
 
 {% block content %}
-
     {% component "unfold/components/container.html" %}
 
     {# Tarjetas de métricas #}
@@ -41,20 +38,82 @@
         {% endfor %}
     {% endcomponent %}
 
+    {# Gráficos de ventas semanales #}
+    {% component "unfold/components/flex.html" with class="gap-8 mb-8 flex-col lg:flex-row" %}
+        {# Card para el gráfico de barras #}
+        {% component "unfold/components/card.html" with title="Sales in the Last Week" class="lg:w-1/2" %}
+            <div class="flex-grow relative">
+                <canvas id="salesBarChart"></canvas>
+            </div>
+        {% endcomponent %}
+
+        {# Card para el gráfico de líneas #}
+        {% component "unfold/components/card.html" with title="Sales Trends" class="lg:w-1/2" %}
+            <div class="flex-grow relative">
+                <canvas id="salesLineChart"></canvas>
+            </div>
+        {% endcomponent %}
+    {% endcomponent %}
+
     {# Tabla de ventas recientes #}
     {% component "unfold/components/flex.html" with class="gap-8 mb-8 flex-col lg:flex-row" %}
         {% component "unfold/components/card.html" with title="Recent Sales" %}
-            {% component "unfold/components/table.html" with table=sales_table_data card_included=1 striped=1 %}{% endcomponent %}
+            {% component "unfold/components/table.html" with table=sales_table_data card_included=1 striped=1 %}
+            {% endcomponent %}
         {% endcomponent %}
     {% endcomponent %}
 
-    {# Tabla de autos disponibles #}
+    {# Tabla de autos destacados #}
     {% component "unfold/components/flex.html" with class="gap-8 mb-8 flex-col lg:flex-row" %}
         {% component "unfold/components/card.html" with title="Featured Cars" %}
-            {% component "unfold/components/table.html" with table=cars_table_data card_included=1 striped=1 %}{% endcomponent %}
+            {% component "unfold/components/table.html" with table=cars_table_data card_included=1 striped=1 %}
+            {% endcomponent %}
         {% endcomponent %}
     {% endcomponent %}
 
     {% endcomponent %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartData = JSON.parse('{{ chart_data|escapejs }}');
+
+            const barChartCtx = document.getElementById('salesBarChart').getContext('2d');
+            const lineChartCtx = document.getElementById('salesLineChart').getContext('2d');
+
+            new Chart(barChartCtx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Sales in the Last Week'
+                        }
+                    }
+                }
+            });
+
+            new Chart(lineChartCtx, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Sales Trends'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 
 {% endblock %}

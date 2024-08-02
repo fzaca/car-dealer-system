@@ -60,7 +60,7 @@ class Command(BaseCommand):
         PaymentMethod.objects.bulk_create(payment_methods)
         self.stdout.write(self.style.SUCCESS('Successfully loaded payment methods'))
 
-    def load_sales(self):
+    def load_sales(self):  # noqa: PLR0914
         cars = list(Car.objects.filter(is_available=True))
         customers = list(Customer.objects.all())
         payment_methods = list(PaymentMethod.objects.all())
@@ -75,6 +75,9 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR('No payment methods found'))
             return
 
+        now = timezone.now()
+        one_week_ago = now - timezone.timedelta(days=7)
+
         sales = []
         payments = []
         invoices = []
@@ -82,26 +85,22 @@ class Command(BaseCommand):
         for _ in range(50):
             car = random.choice(cars)
             customer = random.choice(customers)
-            sale_date = fake.date_time_this_year(before_now=True, after_now=False, tzinfo=timezone.get_current_timezone())
 
-            sale = Sale(car=car, customer=customer, date=sale_date)
+            created_at = fake.date_time_between(start_date=one_week_ago, end_date=now, tzinfo=timezone.get_current_timezone())
+
+            sale = Sale(car=car, customer=customer, created_at=created_at)
+            sale.save()
             sales.append(sale)
 
-        Sale.objects.bulk_create(sales)
-
-        for sale in sales:
             method = random.choice(payment_methods)
             amount = random.uniform(5000, 50000)
-            payment_date = sale.date
-
-            payment = Payment(sale=sale, method=method, amount=amount, date=payment_date)
+            payment = Payment(sale=sale, method=method, amount=amount, created_at=created_at)
+            payment.save()
             payments.append(payment)
 
             pdf_url = fake.url()
-            invoice = Invoice(sale=sale, pdf_url=pdf_url, date=sale.date)
+            invoice = Invoice(sale=sale, pdf_url=pdf_url, created_at=created_at)
+            invoice.save()
             invoices.append(invoice)
-
-        Payment.objects.bulk_create(payments)
-        Invoice.objects.bulk_create(invoices)
 
         self.stdout.write(self.style.SUCCESS('Successfully loaded random sales, payments, and invoices'))
