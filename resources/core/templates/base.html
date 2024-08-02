@@ -1,24 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" data-theme="business">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Site{% endblock %}</title>
+    <title>{% block title %}Car Dealer{% endblock %}</title>
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     {% load static %}
-    <link href="{% static 'django_select2/css/select2.min.css' %}" rel="stylesheet" />
-    <script src="{% static 'django_select2/js/select2.min.js' %}"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css"
+      rel="stylesheet" type="text/css" />
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            clifford: '#da373d',
+          }
+        }
+      }
+    }
+    </script>
     {% block extra_head %}{% endblock %}
-</head>
-<body>
-    <header>
-        <!-- Header content -->
-    </header>
-    <main>
-        {% block content %}{% endblock %}
+  </head>
+  <body class>
+    <!-- Navbar -->
+    {% include 'components/navbar.html' %}
+
+    <main class="container mx-auto py-8">
+      {% block content %}
+      <!-- Main content -->
+      {% endblock %}
     </main>
-    <footer>
-        <!-- Footer content -->
-    </footer>
+
+    <!-- Footer -->
+    {% include 'components/footer.html' %}
+
     {% block extra_scripts %}{% endblock %}
-</body>
+  </body>
 </html>

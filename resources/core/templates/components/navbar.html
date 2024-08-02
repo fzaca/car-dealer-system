@@ -1,0 +1,70 @@
+<!-- Navbar -->
+{% load static %}
+<nav class="navbar justify-between bg-base-300">
+  <!-- Logo -->
+  <a class="btn btn-ghost text-lg">
+    <img alt="Logo" src="{% static 'images/logo.svg' %}" class="w-8" />
+    Car Dealer
+  </a>
+
+  <!-- Menu for mobile -->
+  <div class="sm:hidden">
+    <div class="dropdown dropdown-end">
+      <button class="btn btn-ghost">
+        <i class="fa-solid fa-bars text-lg"></i>
+      </button>
+
+      <ul tabindex="0"
+        class="dropdown-content menu z-[1] bg-base-200 p-4 rounded-box shadow w-64 gap-2">
+        <li><a>About</a></li>
+        <li><a>Team</a></li>
+        <li>
+          <h2 class="menu-title">Categories</h2>
+          <ul>
+            {% for body_type in body_types %}
+            <li><a>{{ body_type.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+        <a class="btn btn-primary btn-sm" href="{% url 'page_login' %}">
+          <i class="fa-solid fa-rocket"></i>
+          Login
+        </a>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Menu for desktop -->
+  <div class="hidden sm:flex gap-2">
+    <a class="btn btn-ghost btn-sm">
+      <i class="fa-solid fa-circle-info text-secondary"></i>
+      About
+    </a>
+
+    <a class="btn btn-ghost btn-sm">
+      <i class="fa-solid fa-users text-secondary"></i>
+      Team
+    </a>
+
+    <!-- Dropdown menu -->
+    <div class="dropdown dropdown-end">
+      <button class="btn btn-ghost btn-sm">
+        <i class="fa-solid fa-fire text-secondary"></i>
+        Categories
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+
+      <ul tabindex="0"
+        class="dropdown-content menu z-[1] bg-base-200 p-6 rounded-box shadow w-56 gap-2">
+        {% for body_type in body_types %}
+        <li><a>{{ body_type.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <a class="btn btn-primary btn-sm" href="{% url 'page_login' %}">
+      <i class="fa-solid fa-rocket"></i>
+      Login
+    </a>
+  </div>
+</nav>

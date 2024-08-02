@@ -6,12 +6,13 @@ from django.shortcuts import render
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 
-from resources.cars.models import Car, FeaturedCar
+from resources.cars.models import Car, FeaturedCar, BodyType
 from resources.sales.models import Sale
 
 
 def home_view(request):
-    return render(request, 'home.html')
+    body_types = BodyType.objects.all()
+    return render(request, 'home.html', {'body_types': body_types})
 
 
 def dashboard_callback(request, context):

@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home</title>
-</head>
-<body>
-    <h1>Welcome to the Car Dealership Management System</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+    Home | Car Dealer
+{% endblock %}
+
+{% block content %}
+    {% load static %}
+    <h1 class="text-5xl font-bold">Welcome to Car Dealer</h1>
+{% endblock %}
