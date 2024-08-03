@@ -226,7 +226,7 @@ UNFOLD = {
         "redirect_after": lambda request: reverse_lazy("admin:index"),
     },
     "STYLES": [
-        lambda request: static("css/style.css"),
+        lambda request: static("css/styles.css"),
     ],
     "SCRIPTS": [
         lambda request: static("js/script.js"),
