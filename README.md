@@ -22,13 +22,19 @@ pip install -r requirements/local.txt
 > sudo apt install -y python3.12 python3.12-venv python3.12-dev
 > ```
 
-3. Configura las variables de entorno en un archivo `local.env`.
+3. Instala las dependencias de Node.js y construye el CSS de Tailwind:
+```sh
+npm install
+npm run build:css
+```
+
+4. Configura las variables de entorno en un archivo `local.env`.
 ```sh
 cp .env.example environments/local.env
 ```
 Asegúrate de editar el archivo `.env` con los valores adecuados para tu entorno local.
 
-4. Ejecuta las migraciones y arranca el servidor de desarrollo:
+5. Ejecuta las migraciones y arranca el servidor de desarrollo:
 ```sh
 python manage.py migrate
 python manage.py runserver
