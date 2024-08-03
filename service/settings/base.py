@@ -229,7 +229,7 @@ UNFOLD = {
         lambda request: static("css/styles.css"),
     ],
     "SCRIPTS": [
-        lambda request: static("js/script.js"),
+        lambda request: static("js/scripts.js"),
     ],
     "COLORS": {
         "primary": {
