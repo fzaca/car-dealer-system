@@ -37,7 +37,7 @@
 
         {% if user.is_authenticated %}
           <!-- Sección de logout y avatar para usuarios autenticados -->
-          <div class="flex items-center justify-between mt-4 p-2">
+          <div class="flex items-center justify-between p-2">
             <div class="avatar placeholder">
               <div class="bg-accent text-neutral-content w-10 h-10 rounded-full flex items-center justify-center">
                 <span>{{ user.get_initials }}</span>
@@ -50,7 +50,7 @@
           </div>
           <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
-            <button type="submit" class="btn btn-secondary btn-sm btn-outline">Logout</button>
+            <button type="submit" class="btn btn-secondary btn-sm btn-outline w-full">Logout</button>
           </form>
         {% else %}
           <!-- Botón de Login para Usuarios No Autenticados -->
