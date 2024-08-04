@@ -10,6 +10,8 @@ module.exports = {
     './resources/core/templates/**/*.html',
     './resources/users/templates/*.html',
     './resources/users/templates/**/*.html',
+    './resources/cars/templates/*.html',
+    './resources/cars/templates/**/*.html',
   ],
   theme: {
     extend: {
@@ -31,7 +33,6 @@ module.exports = {
   },
   plugins: [
     require('daisyui'),
-    require('@tailwindcss/forms'),
   ],
   daisyui: {
     themes: [

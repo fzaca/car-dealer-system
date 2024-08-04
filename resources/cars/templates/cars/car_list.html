@@ -5,10 +5,68 @@ Car Listing | Car Dealer
 {% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 pb-6">
-    <div class="py-10"></div>
+{% load static %}
+<div class="relative h-screen bg-base-300 p-5">
+  <div class="py-10 flex-none"></div>
 
+  <div class="flex flex-col md:flex-row">
 
+    <!-- Sidebar with Filters -->
+    <div class="w-full md:w-1/3 lg:w-1/4 mb-4 md:mb-0">
+      <div class="bg-primary bg-opacity-50 p-5 rounded">
+        <form method="get" class>
+          <h2 class="text-lg font-semibold">Filters</h2>
+          <select class="select select-bordered w-full" name="brand" id="brand">
+            <option disabled selected value>Brand</option>
+            {% for brand in brands %}
+            <option value="{{ brand.name }}">{{ brand.name }}</option>
+            {% endfor %}
+          </select>
+        </form>
+      </div>
+    </div>
+
+  </div>
 
 </div>
+
+<!--
+                <div>
+                    <label for="body_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Body Type</label>
+                    <select name="body_type" id="body_type" class="select select-bordered w-full">
+                        <option value="">All Body Types</option>
+                        {% for body_type in body_types %}
+                            <option value="{{ body_type.name }}" {% if body_type.name == body_type_filter %}selected{% endif %}>{{ body_type.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="min_price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Min Price</label>
+                    <input type="number" name="min_price" id="min_price" value="{{ min_price }}" class="input input-bordered w-full" placeholder="0">
+                </div>
+
+                <div>
+                    <label for="max_price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Max Price</label>
+                    <input type="number" name="max_price" id="max_price" value="{{ max_price }}" class="input input-bordered w-full" placeholder="100000">
+                </div>
+
+                <div>
+                    <label for="min_year" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Min Year</label>
+                    <input type="number" name="min_year" id="min_year" value="{{ min_year }}" class="input input-bordered w-full" placeholder="2000">
+                </div>
+
+                <div>
+                    <label for="max_year" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Max Year</label>
+                    <input type="number" name="max_year" id="max_year" value="{{ max_year }}" class="input input-bordered w-full" placeholder="2024">
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="submit" class="btn btn-primary w-full">Apply Filters</button>
+                </div>
+              -->
+
+{% endblock %}
+
+{% block extra_scripts %}
 {% endblock %}

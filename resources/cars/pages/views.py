@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
 
-from resources.cars.models import Car, Brand, BodyType
+from resources.cars.models import Car, Brand
 
 
 def car_list_view(request):
@@ -37,12 +37,10 @@ def car_list_view(request):
     page_obj = paginator.get_page(page_number)
 
     brands = Brand.objects.all()
-    body_types = BodyType.objects.all()
 
     context = {
         'page_obj': page_obj,
         'brands': brands,
-        'body_types': body_types,
         'brand_filter': brand_filter,
         'body_type_filter': body_type_filter,
         'min_price': min_price,
