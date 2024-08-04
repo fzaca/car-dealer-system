@@ -2,10 +2,11 @@ from django.db.models import Max, Min
 from django.core.paginator import Paginator
 from django.shortcuts import render
 
-from resources.cars.models import Car, Brand
+from resources.cars.models import Car, Brand, CarModel
 
 
 def car_list_view(request):  # noqa: PLR0914
+    # Get filter values from request
     brand_filter = request.GET.get('brand', '')
     body_type_filter = request.GET.get('body_type', '')
     min_price = request.GET.get('min_price', '')
@@ -13,8 +14,10 @@ def car_list_view(request):  # noqa: PLR0914
     min_year = request.GET.get('min_year', '')
     max_year = request.GET.get('max_year', '')
 
+    # Initial car queryset
     cars = Car.objects.all()
 
+    # Apply filters to the car queryset
     if brand_filter:
         cars = cars.filter(car_model__brand__name__icontains=brand_filter)
 
@@ -33,20 +36,30 @@ def car_list_view(request):  # noqa: PLR0914
     if max_year:
         cars = cars.filter(year__lte=max_year)
 
+    # Get maximum price and year range for filtering UI
     max_car_price = cars.aggregate(Max('price'))['price__max'] or 0
     default_max_price = max_car_price / 2 if max_car_price > 0 else 0
     min_car_year = cars.aggregate(Min('year'))['year__min'] or 0
     max_car_year = cars.aggregate(Max('year'))['year__max'] or 0
 
+    # Pagination
     paginator = Paginator(cars, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # Get all brands for the brand filter dropdown
     brands = Brand.objects.all()
+
+    # Filter car models based on selected brand
+    if brand_filter:
+        car_models = CarModel.objects.filter(brand__name__icontains=brand_filter)
+    else:
+        car_models = CarModel.objects.all()
 
     context = {
         'page_obj': page_obj,
         'brands': brands,
+        'car_models': car_models,
         'brand_filter': brand_filter,
         'body_type_filter': body_type_filter,
         'min_price': min_price,

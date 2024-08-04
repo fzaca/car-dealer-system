@@ -38,17 +38,7 @@ Car Listing | Car Dealer
 
       <!-- Elemento 03 (Para mobile y tablet estará abajo de todo) -->
       <div class="lg:col-span-3 lg:order-3 order-3">
-        <div class="bg-base-100 text-white rounded-lg p-5">
-          Cars
-          <!-- Pagination -->
-          <div class="join w-full justify-center p-5">
-            <button class="join-item btn btn-primary">1</button>
-            <button class="join-item btn btn-primary">2</button>
-            <button class="join-item btn btn-disabled btn-outline">...</button>
-            <button class="join-item btn btn-primary">99</button>
-            <button class="join-item btn btn-primary">100</button>
-          </div>
-        </div>
+        {% include './partials/cars.html' %}}
       </div>
 
     </div>
