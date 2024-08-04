@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.db.models import Max, Min
 from django.core.paginator import Paginator
+from django.shortcuts import render
 
 from resources.cars.models import Car, Brand
 
 
-def car_list_view(request):
+def car_list_view(request):  # noqa: PLR0914
     brand_filter = request.GET.get('brand', '')
     body_type_filter = request.GET.get('body_type', '')
     min_price = request.GET.get('min_price', '')
@@ -32,6 +33,12 @@ def car_list_view(request):
     if max_year:
         cars = cars.filter(year__lte=max_year)
 
+    max_car_price = cars.aggregate(Max('price'))['price__max'] or 0
+    default_max_price = max_car_price / 2 if max_car_price > 0 else 0
+    min_car_year = cars.aggregate(Min('year'))['year__min'] or 0
+    max_car_year = cars.aggregate(Max('year'))['year__max'] or 0
+    default_max_year = max_car_year
+
     paginator = Paginator(cars, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -47,6 +54,11 @@ def car_list_view(request):
         'max_price': max_price,
         'min_year': min_year,
         'max_year': max_year,
+        'max_car_price': max_car_price,
+        'default_max_price': default_max_price,
+        'min_car_year': min_car_year,
+        'max_car_year': max_car_year,
+        'default_max_year': default_max_year,
     }
 
     return render(request, 'cars/car_list.html', context)
