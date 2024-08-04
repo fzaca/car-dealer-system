@@ -17,20 +17,33 @@ Car Listing | Car Dealer
     <!-- Para mobile: grid con 3 filas y 1 columna -->
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
 
-      <!-- Elemento 02 (Para mobile y tablet estará arriba de todo) -->
-      <div class="z-20 lg:col-span-4 bg-purple-800 text-white rounded-lg p-5 order-1">
-        <form method="get">
-          <!-- Ordenar por: Precio y Fecha -->
-          <div class="flex items-center justify-end space-x-2">
-            <label for="orderby" class="text-white">Order By:</label>
-            <select class="select select-bordered select-info select-sm" name="orderby" id="orderby">
-              <option value="price">Price</option>
-              <option value="date">Date</option>
-            </select>
+    <!-- Elemento 02 (Para mobile y tablet estará arriba de todo) -->
+    <div class="z-20 lg:col-span-4 bg-purple-800 text-white rounded-lg p-5 order-1">
+      <form method="get" id="filterForm">
+          <div class="flex flex-wrap justify-end items-center space-x-4">
+              <!-- Ordenar por: Precio y Fecha -->
+              <div class="flex items-center space-x-2">
+                  <label for="orderby" class="text-white">Order By:</label>
+                  <select class="select select-bordered select-info select-sm" name="orderby" id="orderby" onchange="document.getElementById('filterForm').submit();">
+                      <option value="price" {% if order_by == "price" %}selected{% endif %}>Price</option>
+                      <option value="date" {% if order_by == "date" %}selected{% endif %}>Date</option>
+                  </select>
+              </div>
+              <!-- Divider -->
+              <div class="divider divider-horizontal"></div>
+              <!-- Seleccionar cantidad de productos por página -->
+              <div class="flex items-center space-x-2">
+                  <label for="items_per_page" class="text-white">Items per Page:</label>
+                  <select class="select select-bordered select-info select-sm" name="items_per_page" id="items_per_page" onchange="document.getElementById('filterForm').submit();">
+                      <option value="12" {% if items_per_page == 12 %}selected{% endif %}>12</option>
+                      <option value="20" {% if items_per_page == 20 %}selected{% endif %}>20</option>
+                      <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50</option>
+                      <option value="100" {% if items_per_page == 100 %}selected{% endif %}>100</option>
+                  </select>
+              </div>
           </div>
-        </form>
-      </div>
-
+      </form>
+    </div>
       <!-- Elemento 01 (Para mobile y tablet estará en el medio) -->
       <div class="lg:order-2 order-2">
         {% include './partials/filters.html' %}
