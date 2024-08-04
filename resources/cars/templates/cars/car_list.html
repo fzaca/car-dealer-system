@@ -6,43 +6,57 @@ Car Listing | Car Dealer
 
 {% block content %}
 {% load static %}
-<div class="relative h-screen bg-base-300 p-5">
-  <div class="py-10 flex-none"></div>
+<div class="bg-base-300">
 
-  <div class="flex flex-col md:flex-row gap-4">
+  <div class="brightness-50">
+    <img src="{% static 'images/portada.jpg' %}" alt="bmw"
+      class="object-cover object-center w-full h-96" />
+  </div>
 
-    <!-- Sidebar with Filters -->
-    <div class="w-full md:w-1/3 lg:w-1/4 mb-4 md:mb-0">
-      <div class="bg-primary bg-opacity-50 p-5 rounded">
-        <form method="get" class>
-          <h2 class="text-lg font-semibold">Filters</h2>
-          <select class="select select-bordered w-full" name="brand" id="brand">
-            <option disabled selected value>Brand</option>
-            {% for brand in brands %}
-            <option value="{{ brand.name }}">{{ brand.name }}</option>
-            {% endfor %}
-          </select>
-        </form>
+  <div class="container mx-auto p-4 -mt-10">
+    <!-- Para desktop: grid con 2 columnas -->
+    <!-- Para mobile: grid con 3 filas y 1 columna -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+
+      <!-- Elemento 02 (Para mobile y tablet estará arriba de todo) -->
+      <div
+        class="z-20 lg:col-span-4 bg-purple-800 text-white rounded-lg p-5 order-1">
+        02
       </div>
-    </div>
 
-    <!-- Cars -->
-    <div class="flex-grow">
-      <div class="bg-base-100 rounded p-5 h-full">
-        <div>
-          hello world
-        </div>
-        <!-- Pagination -->
-        <div class="join w-full justify-center">
-          <button class="join-item btn btn-primary">1</button>
-          <button class="join-item btn btn-primary">2</button>
-          <button class="join-item btn btn-disabled btn-outline">...</button>
-          <button class="join-item btn btn-primary">99</button>
-          <button class="join-item btn btn-primary">100</button>
+      <!-- Elemento 01 (Para mobile y tablet estará en el medio) -->
+      <div class="lg:order-2 order-2">
+        <div class="bg-purple-600 text-white rounded-lg p-5 ">
+
+          <form method="get">
+            <h2 class="text-lg font-semibold">Filters</h2>
+            <select class="select select-bordered w-full" name="brand"
+              id="brand">
+              <option disabled selected value>Brand</option>
+              {% for brand in brands %}
+              <option value="{{ brand.name }}">{{ brand.name }}</option>
+              {% endfor %}
+            </select>
+          </form>
         </div>
       </div>
-    </div>
 
+      <!-- Elemento 03 (Para mobile y tablet estará abajo de todo) -->
+      <div class="lg:col-span-3 lg:order-3 order-3">
+        <div class="bg-base-100 text-white rounded-lg p-5">
+          Cars
+          <!-- Pagination -->
+          <div class="join w-full justify-center p-5">
+            <button class="join-item btn btn-primary">1</button>
+            <button class="join-item btn btn-primary">2</button>
+            <button class="join-item btn btn-disabled btn-outline">...</button>
+            <button class="join-item btn btn-primary">99</button>
+            <button class="join-item btn btn-primary">100</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
 </div>
