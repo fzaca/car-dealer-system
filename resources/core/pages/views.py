@@ -7,18 +7,15 @@ from django.shortcuts import render
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 
-from resources.cars.models import Car, FeaturedCar, BodyType
+from resources.cars.models import Car, FeaturedCar
 from resources.sales.models import Sale
 
 
 def home_view(request):
-    body_types = BodyType.objects.all()
-
     featured_cars = list(FeaturedCar.objects.select_related('car').all())
     random_featured_cars = random.sample(featured_cars, min(len(featured_cars), 10))
 
     context = {
-        'body_types': body_types,
         'featured_cars': random_featured_cars
     }
 
