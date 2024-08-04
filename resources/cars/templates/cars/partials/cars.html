@@ -1,11 +1,49 @@
 <div class="bg-base-100 text-white rounded-lg p-5">
-  Cars
+  <div class="flex flex-wrap justify-center gap-4">
+    {% for car in page_obj.object_list %}
+    <div class="item flex-grow-0 flex-shrink-0 min-w-full md:min-w-[calc(50%-16px)] lg:min-w-[calc(25%-16px)] max-w-full md:max-w-[calc(50%-16px)] lg:max-w-[calc(25%-16px)]">
+      <div class="flex-shrink-0 relative overflow-hidden rounded-lg shadow-lg" style="height: 300px;">
+        <svg class="absolute bottom-0 left-0 mb-8" viewBox="0 0 375 283" fill="none" style="transform: scale(1.5); opacity: 0.1;">
+          <rect x="159.52" y="175" width="152" height="152" rx="8" transform="rotate(-45 159.52 175)" fill="white" />
+          <rect y="107.48" width="152" height="152" rx="8" transform="rotate(-45 0 107.48)" fill="white" />
+        </svg>
+        <div class="relative pt-10 px-10 flex items-center justify-center" style="height: 200px;">
+          <div class="block absolute w-48 h-48 bottom-0 left-0 -mb-24 ml-3" style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;">
+          </div>
+          <img class="fixed-image-size relative rounded-lg" src="{{ car.image_url }}" alt="{{ car.car_model.name }}" style="width: auto; height: 100%; max-width: 100%; object-fit: contain;">
+        </div>
+        <div class="relative text-white px-6 pb-6 mt-6">
+          <span class="block opacity-75 -mb-1">{{ car.body_type.name }}</span>
+          <div class="flex justify-between">
+            <span class="block font-semibold text-xl">{{ car.car_model.name }}</span>
+            <span class="block bg-white rounded-full text-orange-500 text-xs font-bold px-3 py-2 leading-none flex items-center">${{ car.price }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No cars found.</p>
+    {% endfor %}
+  </div>
+
   <!-- Pagination -->
-  <div class="join w-full justify-center p-5">
-    <button class="join-item btn btn-primary brightness-75">1</button>
-    <button class="join-item btn btn-primary brightness-75">2</button>
-    <button class="join-item btn btn-disabled btn-outline">...</button>
-    <button class="join-item btn btn-primary brightness-75">99</button>
-    <button class="join-item btn btn-primary brightness-75">100</button>
+  <div class="join w-full justify-center flex flex-wrap">
+    {% if page_obj.has_previous %}
+    <a href="?page=1" class="join-item btn btn-primary brightness-75">Primera</a>
+    <a href="?page={{ page_obj.previous_page_number }}" class="join-item btn btn-primary brightness-75">Anterior</a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <span class="join-item btn btn-primary brightness-75">{{ num }}</span>
+      {% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' %}
+        <a href="?page={{ num }}" class="join-item btn btn-primary brightness-75">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="join-item btn btn-primary brightness-75">Siguiente</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}" class="join-item btn btn-primary brightness-75">Última</a>
+    {% endif %}
   </div>
 </div>

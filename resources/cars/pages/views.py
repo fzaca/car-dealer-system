@@ -10,7 +10,7 @@ def car_list_view(request):  # noqa: PLR0914
     brand_filter = request.GET.get('brand', '')
     car_model_filter = request.GET.get('car_model', '')
     body_type_filter = request.GET.get('body_type', '')
-    min_price = request.GET.get('min_price', '')
+    min_price = ''
     max_price = request.GET.get('max_price', '')
     min_year = request.GET.get('min_year', '')
     max_year = request.GET.get('max_year', '')
