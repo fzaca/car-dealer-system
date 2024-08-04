@@ -15,21 +15,46 @@
       </button>
 
       <ul tabindex="0"
-        class="dropdown-content menu z-[1] bg-base-200 p-4 rounded-box shadow w-64 gap-2">
+        class="dropdown-content menu z-[1] bg-base-200 p-4 rounded-box shadow w-64 gap-2 mr-4">
         <li><a>About</a></li>
         <li><a>Cars</a></li>
-        <li>
-          <h2 class="menu-title">Categories</h2>
-          <ul>
-            {% for body_type in body_types %}
-            <li><a>{{ body_type.name }}</a></li>
-            {% endfor %}
-          </ul>
-        </li>
-        <a class="btn btn-primary btn-sm" href="{% url 'page_login' %}">
-          <i class="fa-solid fa-rocket"></i>
-          Login
-        </a>
+
+        <!-- Acordeón de categorías -->
+        <div class="collapse bg-base-200">
+          <input type="checkbox" id="categories-toggle" class="collapse-toggle" />
+          <label for="categories-toggle" class="collapse-title">
+            Categories
+          </label>
+          <div class="collapse-content overflow-y-auto max-h-32">
+            <ul class="menu menu-compact">
+              {% for body_type in body_types %}
+              <li><a>{{ body_type.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <hr className="divider divider-info"></hr>
+
+        {% if user.is_authenticated %}
+          <!-- Sección de logout y avatar para usuarios autenticados -->
+          <div class="flex items-center justify-between mt-4 p-2">
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-secondary btn-sm btn-outline">Logout</button>
+            </form>
+            <div class="avatar placeholder">
+              <div class="bg-accent text-neutral-content w-10 h-10 rounded-full flex items-center justify-center">
+                <span>{{ user.get_initials }}</span>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <!-- Botón de Login para Usuarios No Autenticados -->
+          <a class="btn btn-primary btn-sm mt-2" href="{% url 'page_login' %}">
+            <i class="fa-solid fa-rocket"></i>
+            Login
+          </a>
+        {% endif %}
       </ul>
     </div>
   </div>
@@ -62,9 +87,29 @@
       </ul>
     </div>
 
-    <a class="btn btn-primary btn-sm" href="{% url 'page_login' %}">
-      <i class="fa-solid fa-rocket"></i>
-      Login
-    </a>
+    {% if user.is_authenticated %}
+      <!-- Avatar with Dropdown for Authenticated Users -->
+      <div class="dropdown dropdown-bottom dropdown-end">
+        <div tabIndex="0" role="button" class="avatar placeholder">
+          <div class="bg-neutral text-neutral-content w-12 rounded-full">
+            <span>{{ user.get_initials }}</span>
+          </div>
+        </div>
+        <ul tabIndex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] p-2 shadow mt-2">
+          <li>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-secondary btn-sm btn-wide btn-outline">Logout</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    {% else %}
+      <!-- Login Button for Unauthenticated Users -->
+      <a class="btn btn-primary btn-sm" href="{% url 'page_login' %}">
+        <i class="fa-solid fa-rocket"></i>
+        Login
+      </a>
+    {% endif %}
   </div>
 </nav>

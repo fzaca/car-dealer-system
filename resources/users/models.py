@@ -25,6 +25,10 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return f"{self.username}"
 
+    def get_initials(self):
+        initials = self.username[:2]
+        return initials.upper()
+
 
 class Customer(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
