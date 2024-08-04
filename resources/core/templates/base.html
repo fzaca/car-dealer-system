@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" data-theme="cardealer">
   <head>
@@ -6,8 +7,6 @@
     <title>{% block title %}Car Dealer{% endblock %}</title>
     <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
     {% block extra_head %}{% endblock %}
   </head>

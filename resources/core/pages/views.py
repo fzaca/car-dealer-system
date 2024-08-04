@@ -1,4 +1,5 @@
 import json
+import random
 from datetime import timedelta
 
 from django.utils import timezone
@@ -12,7 +13,16 @@ from resources.sales.models import Sale
 
 def home_view(request):
     body_types = BodyType.objects.all()
-    return render(request, 'home.html', {'body_types': body_types})
+
+    featured_cars = list(FeaturedCar.objects.select_related('car').all())
+    random_featured_cars = random.sample(featured_cars, min(len(featured_cars), 3))
+
+    context = {
+        'body_types': body_types,
+        'featured_cars': random_featured_cars
+    }
+
+    return render(request, 'home.html', context)
 
 
 def dashboard_callback(request, context):
