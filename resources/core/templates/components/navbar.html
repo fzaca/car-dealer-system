@@ -60,7 +60,7 @@
   </div>
 
   <!-- Menu for desktop -->
-  <div class="hidden sm:flex gap-2">
+  <div class="hidden sm:flex gap-2 mx-2 mt-2">
     <a class="btn btn-ghost btn-sm">
       <i class="fa-solid fa-circle-info text-secondary"></i>
       About
@@ -91,7 +91,7 @@
       <!-- Avatar with Dropdown for Authenticated Users -->
       <div class="dropdown dropdown-bottom dropdown-end">
         <div tabIndex="0" role="button" class="avatar placeholder">
-          <div class="bg-neutral text-neutral-content w-12 rounded-full">
+          <div class="bg-neutral text-neutral-content w-12 rounded-full ring-primary ring-offset-primary ring ring-offset-2 mr-2">
             <span>{{ user.get_initials }}</span>
           </div>
         </div>
