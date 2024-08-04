@@ -4,6 +4,7 @@
     <div class="owl-carousel">
         {% for featured_car in featured_cars %}
         <div class="item">
+            <a href="{% url 'car_detail' featured_car.car.id %}" class="block">
             <div class="bg-base-200 flex-shrink-0 relative overflow-hidden rounded-lg max-w-xs shadow-lg"
                 style="height: 300px;">
                 <svg class="absolute bottom-0 left-0 mb-8" viewBox="0 0 375 283" fill="none"
@@ -30,6 +31,7 @@
                     </div>
                 </div>
             </div>
+            </a>
         </div>
         {% endfor %}
     </div>
