@@ -5,6 +5,8 @@ from pathlib import Path
 from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+from django.contrib.messages import constants as message_constants
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -102,6 +104,15 @@ TEMPLATES = [
         },
     },
 ]
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+MESSAGE_TAGS = {
+    message_constants.DEBUG: 'debug',
+    message_constants.INFO: 'info',
+    message_constants.SUCCESS: 'success',
+    message_constants.WARNING: 'warning',
+    message_constants.ERROR: 'error',
+}
 
 WSGI_APPLICATION = "service.wsgi.application"
 
