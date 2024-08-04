@@ -37,7 +37,6 @@ def car_list_view(request):  # noqa: PLR0914
     default_max_price = max_car_price / 2 if max_car_price > 0 else 0
     min_car_year = cars.aggregate(Min('year'))['year__min'] or 0
     max_car_year = cars.aggregate(Max('year'))['year__max'] or 0
-    default_max_year = max_car_year
 
     paginator = Paginator(cars, 10)
     page_number = request.GET.get('page')
@@ -58,7 +57,6 @@ def car_list_view(request):  # noqa: PLR0914
         'default_max_price': default_max_price,
         'min_car_year': min_car_year,
         'max_car_year': max_car_year,
-        'default_max_year': default_max_year,
     }
 
     return render(request, 'cars/car_list.html', context)

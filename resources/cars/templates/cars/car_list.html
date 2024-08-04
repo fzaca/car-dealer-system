@@ -59,15 +59,53 @@ Car Listing | Car Dealer
               {% endfor %}
             </select>
 
+            <div class="divider"></div>
+
             <!-- Filtro Precio -->
-            <h2 class="text-lg font-semibold my-1">Select Price</h2>
+            <h2 class="text-lg font-semibold my-1">Select Max Price</h2>
             <div class="price-range-container">
-              <input type="range" id="price-range" min="0" max="{{ max_car_price }}" value="{{ default_max_price }}"
+              <input type="range" id="price-range" min="0"
+                max="{{ max_car_price }}" value="{{ default_max_price }}"
                 class="range range-xs" />
 
               <div class="max-price-container my-1">
-                <input type="number" name="max_price" id="max_price" value="{{ max_price|default:default_max_price }}"
-                  class="input input-bordered w-full" placeholder="{{ max_car_price }}">
+                <input type="number" name="max_price" id="max_price"
+                  value="{{ max_price|default:default_max_price }}"
+                  class="input input-bordered w-full"
+                  placeholder="{{ max_car_price }}">
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Filtro Año -->
+            <div class="year-range-container flex justify-between">
+              <!-- Rango para el año mínimo -->
+              <div class="year-range-item">
+                <label for="min_year_range"
+                  class="block text-lg font-semibold my-1">Min Year</label>
+                <input type="range" id="min_year_range" min="{{ min_car_year }}"
+                  max="{{ max_car_year }}"
+                  value="{{ min_year|default:min_car_year }}"
+                  class="range range-xs" />
+                <input type="number" name="min_year" id="min_year"
+                  value="{{ min_year }}"
+                  class="input input-bordered w-full mt-2"
+                  placeholder="{{ min_car_year }}">
+              </div>
+              <div class="divider divider-horizontal"></div>
+              <!-- Rango para el año máximo -->
+              <div class="year-range-item">
+                <label for="max_year_range"
+                  class="block text-lg font-semibold my-1">Max Year</label>
+                <input type="range" id="max_year_range" min="{{ min_car_year }}"
+                  max="{{ max_car_year }}"
+                  value="{{ max_year|default:max_car_year }}"
+                  class="range range-xs" />
+                <input type="number" name="max_year" id="max_year"
+                  value="{{ max_year }}"
+                  class="input input-bordered w-full mt-2"
+                  placeholder="{{ max_car_year }}">
               </div>
             </div>
 
@@ -116,23 +154,71 @@ Car Listing | Car Dealer
 
 {% block extra_scripts %}
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const rangeInput = document.getElementById('price-range');
-    const maxPriceInput = document.getElementById('max_price');
+document.addEventListener('DOMContentLoaded', function() {
+  const rangeInput = document.getElementById('price-range');
+  const maxPriceInput = document.getElementById('max_price');
 
-    // Actualizar el input de número cuando el rango cambia
-    rangeInput.addEventListener('input', function() {
-        maxPriceInput.value = rangeInput.value;
-    });
+  const minYearRangeInput = document.getElementById('min_year_range');
+  const maxYearRangeInput = document.getElementById('max_year_range');
+  const minYearInput = document.getElementById('min_year');
+  const maxYearInput = document.getElementById('max_year');
 
-    // Actualizar el rango cuando el input de número cambia
-    maxPriceInput.addEventListener('input', function() {
-        // Asegurarse de que el valor máximo no exceda el rango definido
-        if (parseInt(maxPriceInput.value) > rangeInput.max) {
-            maxPriceInput.value = rangeInput.max;
-        }
-        rangeInput.value = maxPriceInput.value;
-    });
+  // Actualizar el input de número cuando el rango de precio cambia
+  rangeInput.addEventListener('input', function() {
+      maxPriceInput.value = rangeInput.value;
+  });
+
+  // Actualizar el rango de precio cuando el input de número cambia
+  maxPriceInput.addEventListener('input', function() {
+      if (parseInt(maxPriceInput.value) > rangeInput.max) {
+          maxPriceInput.value = rangeInput.max;
+      }
+      rangeInput.value = maxPriceInput.value;
+  });
+
+  // Sincronizar el rango de año mínimo con su input
+  minYearRangeInput.addEventListener('input', function() {
+      minYearInput.value = minYearRangeInput.value;
+
+      // Asegurarse de que el año mínimo no sea mayor que el año máximo
+      if (parseInt(minYearRangeInput.value) > parseInt(maxYearRangeInput.value)) {
+          maxYearRangeInput.value = minYearRangeInput.value;
+          maxYearInput.value = minYearRangeInput.value;
+      }
+  });
+
+  // Sincronizar el input de año mínimo con su rango
+  minYearInput.addEventListener('input', function() {
+      minYearRangeInput.value = minYearInput.value;
+
+      // Asegurarse de que el año mínimo no sea mayor que el año máximo
+      if (parseInt(minYearInput.value) > parseInt(maxYearInput.value)) {
+          maxYearRangeInput.value = minYearInput.value;
+          maxYearInput.value = minYearInput.value;
+      }
+  });
+
+  // Sincronizar el rango de año máximo con su input
+  maxYearRangeInput.addEventListener('input', function() {
+      maxYearInput.value = maxYearRangeInput.value;
+
+      // Asegurarse de que el año máximo no sea menor que el año mínimo
+      if (parseInt(maxYearRangeInput.value) < parseInt(minYearRangeInput.value)) {
+          minYearRangeInput.value = maxYearRangeInput.value;
+          minYearInput.value = maxYearRangeInput.value;
+      }
+  });
+
+  // Sincronizar el input de año máximo con su rango
+  maxYearInput.addEventListener('input', function() {
+      maxYearRangeInput.value = maxYearInput.value;
+
+      // Asegurarse de que el año máximo no sea menor que el año mínimo
+      if (parseInt(maxYearInput.value) < parseInt(minYearInput.value)) {
+          minYearRangeInput.value = maxYearInput.value;
+          minYearInput.value = maxYearInput.value;
+      }
+  });
 });
 </script>
 {% endblock %}
