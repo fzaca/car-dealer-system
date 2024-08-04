@@ -22,17 +22,22 @@
         <!-- Acordeón de categorías -->
         <div class="collapse bg-base-200">
           <input type="checkbox" id="categories-toggle" class="collapse-toggle" />
-          <label for="categories-toggle" class="collapse-title">
+          <label for="categories-toggle" class="collapse-title cursor-pointer">
             Categories
           </label>
           <div class="collapse-content overflow-y-auto max-h-32">
             <ul class="menu menu-compact">
               {% for body_type in body_types %}
-              <li><a>{{ body_type.name }}</a></li>
+              <li>
+                <a href="{% url 'car_list' %}?body_type={{ body_type.name }}">
+                  {{ body_type.name }}
+                </a>
+              </li>
               {% endfor %}
             </ul>
           </div>
         </div>
+
         <hr className="divider divider-info my-0"></hr>
 
         {% if user.is_authenticated %}
@@ -86,7 +91,7 @@
         tabindex="0"
         class="menu dropdown-content bg-base-100 rounded-box z-[1] mt-4 w-52 p-2 shadow">
         {% for body_type in body_types %}
-        <li><a>{{ body_type.name }}</a></li>
+        <li><a href="{% url 'car_list' %}?body_type={{ body_type.name }}">{{ body_type.name }}</a></li>
         {% endfor %}
       </ul>
     </div>
