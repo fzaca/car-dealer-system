@@ -2,6 +2,7 @@
   <div class="flex flex-wrap justify-center gap-4">
     {% for car in page_obj.object_list %}
     <div class="item bg-base-200 rounded flex-grow-0 flex-shrink-0 min-w-full md:min-w-[calc(50%-16px)] lg:min-w-[calc(25%-16px)] max-w-full md:max-w-[calc(50%-16px)] lg:max-w-[calc(25%-16px)]">
+    <a href="{% url 'car_detail' car.id %}" class="block">
       <div class="flex-shrink-0 relative overflow-hidden rounded-lg shadow-lg" style="height: 300px;">
         <svg class="absolute bottom-0 left-0 mb-8" viewBox="0 0 375 283" fill="none" style="transform: scale(1.5); opacity: 0.1;">
           <rect x="159.52" y="175" width="152" height="152" rx="8" transform="rotate(-45 159.52 175)" fill="white" />
@@ -20,6 +21,7 @@
           </div>
         </div>
       </div>
+      </a>
     </div>
     {% empty %}
     <p>No cars found.</p>

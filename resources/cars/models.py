@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.core.cache import cache
 from django.db import models
 from django.db.models import Max, Min, Q
@@ -155,12 +156,13 @@ class Car(models.Model):
 
     @memoize(timeout=60 * 5)
     def get_similar_cars(self, similarity_criteria=None):
+        """Retrieve similar cars based on body type and year."""
         if similarity_criteria is None:
             similarity_criteria = {
                 'year_range': 1,
                 'body_type': True,
                 'car_model': False,
-                'price_range': 0.1
+                'price_range': Decimal('0.1')
             }
 
         q_filters = Q(is_available=True)
@@ -177,8 +179,8 @@ class Car(models.Model):
 
         if 'price_range' in similarity_criteria:
             price_range_percentage = similarity_criteria['price_range']
-            price_min = self.price * (1 - price_range_percentage)
-            price_max = self.price * (1 + price_range_percentage)
+            price_min = self.price * (Decimal('1') - price_range_percentage)
+            price_max = self.price * (Decimal('1') + price_range_percentage)
             q_filters &= Q(price__range=(price_min, price_max))
 
         similar_cars = Car.objects.filter(q_filters).exclude(id=self.id).select_related('car_model', 'body_type')[:5]
