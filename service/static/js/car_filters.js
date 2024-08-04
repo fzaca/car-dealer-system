@@ -113,3 +113,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+function updateHiddenInputsAndSubmit() {
+    // Submit the form automatically after updating any selection
+    document.getElementById('filterForm').submit();
+}

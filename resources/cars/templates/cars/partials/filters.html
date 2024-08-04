@@ -89,6 +89,12 @@
               placeholder="{{ max_car_year }}">
           </div>
         </div>
+        <!-- Campos ocultos para los parámetros existentes -->
+        {% for key, value in request.GET.items %}
+        {% if key != 'brand' and key != 'car_model' and key != 'body_type' and key != 'max_price' and key != 'min_year' and key != 'max_year' %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endif %}
+        {% endfor %}
 
         <div class="divider"></div>
         <div class="flex justify-end">
@@ -182,6 +188,12 @@
             placeholder="{{ max_car_year }}">
         </div>
       </div>
+      <!-- Campos ocultos para los parámetros existentes -->
+      {% for key, value in request.GET.items %}
+      {% if key != 'brand' and key != 'car_model' and key != 'body_type' and key != 'max_price' and key != 'min_year' and key != 'max_year' %}
+      <input type="hidden" name="{{ key }}" value="{{ value }}">
+      {% endif %}
+      {% endfor %}
 
       <div class="divider"></div>
       <div class="flex justify-end">
