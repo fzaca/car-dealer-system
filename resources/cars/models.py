@@ -154,15 +154,36 @@ class Car(models.Model):
         )
 
     @memoize(timeout=60 * 5)
-    def get_similar_cars(self):
-        return (
-            Car.objects
-            .filter(
-                body_type=self.body_type,
-                year__range=(self.year - 1, self.year + 1)
-            )
-            .select_related('car_model', 'body_type')
-        )
+    def get_similar_cars(self, similarity_criteria=None):
+        if similarity_criteria is None:
+            similarity_criteria = {
+                'year_range': 1,
+                'body_type': True,
+                'car_model': False,
+                'price_range': 0.1
+            }
+
+        q_filters = Q(is_available=True)
+
+        if 'year_range' in similarity_criteria:
+            year_range = similarity_criteria['year_range']
+            q_filters &= Q(year__range=(self.year - year_range, self.year + year_range))
+
+        if similarity_criteria.get('body_type'):
+            q_filters &= Q(body_type=self.body_type)
+
+        if similarity_criteria.get('car_model'):
+            q_filters &= Q(car_model=self.car_model)
+
+        if 'price_range' in similarity_criteria:
+            price_range_percentage = similarity_criteria['price_range']
+            price_min = self.price * (1 - price_range_percentage)
+            price_max = self.price * (1 + price_range_percentage)
+            q_filters &= Q(price__range=(price_min, price_max))
+
+        similar_cars = Car.objects.filter(q_filters).exclude(id=self.id).select_related('car_model', 'body_type')[:5]
+
+        return similar_cars
 
 
 class FeaturedCar(models.Model):

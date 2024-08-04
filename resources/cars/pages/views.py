@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 
 from resources.cars.utils import get_filters, paginate_cars
@@ -39,3 +39,15 @@ def car_list_view(request: HttpRequest) -> HttpResponse:
     }
 
     return render(request, 'cars/car_list.html', context)
+
+
+def car_detail_view(request: HttpRequest, car_id: int) -> HttpResponse:
+    car = get_object_or_404(Car, id=car_id)
+    similar_cars = car.get_similar_cars()
+
+    context = {
+        'car': car,
+        'similar_cars': similar_cars,
+    }
+
+    return render(request, 'cars/car_detail.html', context)

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="car-detail">
+    <h1>{{ car.car_model.name }} ({{ car.year }})</h1>
+    <img src="{{ car.image_url }}" alt="{{ car.car_model.name }}">
+    <ul>
+      <li><strong>Price:</strong> ${{ car.price }}</li>
+      <li><strong>Engine Size:</strong> {{ car.engine_size }}L</li>
+      <li><strong>Gearbox:</strong> {{ car.gearbox }}</li>
+      <li><strong>Fuel Type:</strong> {{ car.fuel_type }}</li>
+      <li><strong>Color:</strong> {{ car.color }}</li>
+      <li><strong>Mileage:</strong> {{ car.mileage }} km</li>
+      <li><strong>Seats:</strong> {{ car.seats }}</li>
+      <li><strong>Doors:</strong> {{ car.doors }}</li>
+      <li><strong>Body Type:</strong> {{ car.body_type.name }}</li>
+    </ul>
+
+    <h2>Similar Cars</h2>
+    <div class="similar-cars">
+      {% for similar_car in similar_cars %}
+        <div class="similar-car">
+          <h3>{{ similar_car.car_model.name }} ({{ similar_car.year }})</h3>
+          <img src="{{ similar_car.image_url }}" alt="{{ similar_car.car_model.name }}">
+          <p>Price: ${{ similar_car.price }}</p>
+          <a href="{% url 'car_detail' similar_car.id %}">View Details</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
