@@ -1,43 +1,31 @@
 {% extends 'base.html' %}
 
+{% load static %}
+{% load widget_tweaks %}
+
 {% block title %}
-login | car dealer
+Login | Car Dealer
 {% endblock %}
 
-{% block extra_head %}{% endblock %}
-
 {% block content %}
-{% load static %}
 <div class="relative h-screen bg-base-300">
-  <!-- Overlay for better text contrast -->
   <div class="absolute inset-0"></div>
 
-  <!-- Content centered on top of the overlay -->
-  <div
-    class="relative z-10 flex flex-col items-center justify-center h-full text-center gap-6 p-6 text-white">
-
-    <div
-      class="flex flex-col gap-4 rounded-box bg-base-200 p-6 max-w-md w-full">
+  <div class="relative z-10 flex flex-col items-center justify-center h-full text-center gap-6 p-6 text-white">
+    <div class="flex flex-col gap-4 rounded-box bg-base-200 p-6 max-w-md w-full">
 
       {% if messages %}
-        <ul>
-          {% for message in messages %}
-          <div role="alert" class="alert text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="stroke-info h-6 w-6 shrink-0">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span>{{ message }}</span>
-          </div>
-          {% endfor %}
-        </ul>
+      <ul>
+        {% for message in messages %}
+        <div role="alert" class="alert text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info h-6 w-6 shrink-0">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+      </ul>
       {% endif %}
 
       <form method="post">
@@ -49,28 +37,29 @@ login | car dealer
           <a class="link link-secondary" href="{% url 'page_register' %}">Register</a>
         </span>
 
-        <label class="form-control" for="username">
+        <label class="form-control" for="{{ form.username.id_for_label }}">
           <div class="label">
-            <span class="label-text">Username</span>
+            <span class="label-text">{{ form.username.label }}</span>
           </div>
-
-          <input class="input input-bordered" type="text" id="username"
-            name="username" />
+          {{ form.username|add_class:"input input-bordered" }}
+          {% if form.username.errors %}
+          <span class="text-red-500 text-xs">{{ form.username.errors|join:', ' }}</span>
+          {% endif %}
         </label>
 
-        <label class="form-control" for="password">
+        <label class="form-control" for="{{ form.password.id_for_label }}">
           <div class="label">
-            <span class="label-text">Password</span>
-            {# <a class="label-text link link-accent">Forgot password?</a> #}
+            <span class="label-text">{{ form.password.label }}</span>
           </div>
-
-          <input class="input input-bordered" type="password" id="password"
-            name="password" />
+          {{ form.password|add_class:"input input-bordered" }}
+          {% if form.password.errors %}
+          <span class="text-red-500 text-xs">{{ form.password.errors|join:', ' }}</span>
+          {% endif %}
         </label>
 
         <div class="form-control">
           <label class="cursor-pointer label self-start gap-2">
-            <input type="checkbox" class="checkbox" />
+            <input type="checkbox" class="checkbox" name="remember" />
             <span class="label-text">Remember me</span>
           </label>
         </div>
@@ -78,9 +67,6 @@ login | car dealer
         <button class="btn btn-primary btn-wide" type="submit">Log in</button>
       </form>
     </div>
-
   </div>
 </div>
 {% endblock %}
-
-{% block extra_scripts %}{% endblock %}
