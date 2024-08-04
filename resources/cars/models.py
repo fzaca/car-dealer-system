@@ -1,4 +1,6 @@
+from django.core.cache import cache
 from django.db import models
+from django.db.models import Max, Min, Q
 from nanoid_field import NanoidField
 from memoize import memoize
 
@@ -10,6 +12,15 @@ class Brand(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}"
+
+    @classmethod
+    def get_all_cached(cls):
+        cache_key = "brands"
+        brands = cache.get(cache_key)
+        if brands is None:
+            brands = cls.objects.all()
+            cache.set(cache_key, brands, timeout=300)  # Cache for 5 minutes
+        return brands
 
 
 class CarModel(models.Model):
@@ -24,6 +35,17 @@ class CarModel(models.Model):
 
     class Meta:
         ordering = ['name']
+
+    @classmethod
+    def get_by_brand_cached(cls, brand_name):
+        cache_key = f"car_models_{brand_name}"
+        car_models = cache.get(cache_key)
+        if car_models is None:
+            if brand_name:
+                car_models = cls.objects.filter(brand__name__icontains=brand_name)
+            else:
+                car_models = cls.objects.all()
+            cache.set(cache_key, car_models, timeout=300)
 
 
 class BodyType(models.Model):
@@ -69,6 +91,51 @@ class Car(models.Model):
             models.Index(fields=['is_available']),
             models.Index(fields=['created_at']),
         ]
+
+    @classmethod
+    def get_aggregates(cls):
+        cache_key = "cars_aggregates"
+        aggregates = cache.get(cache_key)
+        if not aggregates:
+            aggregates = cls.objects.aggregate(
+                max_price=Max('price'),
+                min_year=Min('year'),
+                max_year=Max('year')
+            )
+            cache.set(cache_key, aggregates, timeout=300)
+        return aggregates
+
+    @classmethod
+    def filter_cars(cls, filters):
+        """Apply filters to the Car queryset."""
+        cache_key = f"cars_{filters['brand']}_{filters['car_model']}_" \
+                    f"{filters['body_type']}_{filters['min_price']}_" \
+                    f"{filters['max_price']}_{filters['min_year']}_" \
+                    f"{filters['max_year']}_{filters['items_per_page']}_{filters['page_number']}"
+
+        cars = cache.get(cache_key)
+        if cars is None:
+            cars = cls.objects.select_related('car_model', 'car_model__brand', 'body_type')
+
+            q_filters = Q()
+            if filters['brand']:
+                q_filters &= Q(car_model__brand__name__icontains=filters['brand'])
+            if filters['car_model']:
+                q_filters &= Q(car_model__name__icontains=filters['car_model'])
+            if filters['body_type']:
+                q_filters &= Q(body_type__name__icontains=filters['body_type'])
+            if filters['min_price'] is not None:
+                q_filters &= Q(price__gte=filters['min_price'])
+            if filters['max_price'] is not None:
+                q_filters &= Q(price__lte=filters['max_price'])
+            if filters['min_year'] is not None:
+                q_filters &= Q(year__gte=filters['min_year'])
+            if filters['max_year'] is not None:
+                q_filters &= Q(year__lte=filters['max_year'])
+
+            cars = cars.filter(q_filters)
+            cache.set(cache_key, cars, timeout=300)  # Cache for 5 minutes
+        return cars
 
     @memoize(timeout=60 * 15)
     def get_related_cars(self):

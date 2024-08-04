@@ -1,7 +1,4 @@
-from django.core.cache import cache
 from django.core.paginator import Paginator
-from django.db.models import Max, Min, Q
-from resources.cars.models import Car, Brand, CarModel
 
 
 def get_filters(request):
@@ -38,71 +35,6 @@ def get_filters(request):
         filters['max_year'] = None
 
     return filters
-
-
-def filter_cars(filters):
-    cache_key = f"cars_{filters['brand']}_{filters['car_model']}_{filters['body_type']}_" \
-                f"{filters['min_price']}_{filters['max_price']}_" \
-                f"{filters['min_year']}_{filters['max_year']}_{filters['items_per_page']}_{filters['page_number']}"
-
-    cars = cache.get(cache_key)
-    if cars is None:
-        cars = Car.objects.select_related('car_model', 'car_model__brand', 'body_type')
-
-        q_filters = Q()
-        if filters['brand']:
-            q_filters &= Q(car_model__brand__name__icontains=filters['brand'])
-        if filters['car_model']:
-            q_filters &= Q(car_model__name__icontains=filters['car_model'])
-        if filters['body_type']:
-            q_filters &= Q(body_type__name__icontains=filters['body_type'])
-        if filters['min_price'] is not None:
-            q_filters &= Q(price__gte=filters['min_price'])
-        if filters['max_price'] is not None:
-            q_filters &= Q(price__lte=filters['max_price'])
-        if filters['min_year'] is not None:
-            q_filters &= Q(year__gte=filters['min_year'])
-        if filters['max_year'] is not None:
-            q_filters &= Q(year__lte=filters['max_year'])
-
-        cars = cars.filter(q_filters)
-
-        cache.set(cache_key, cars, timeout=300)
-    return cars
-
-
-def get_aggregates():
-    cache_key = "cars_aggregates"
-    aggregates = cache.get(cache_key)
-    if not aggregates:
-        aggregates = Car.objects.aggregate(
-            max_price=Max('price'),
-            min_year=Min('year'),
-            max_year=Max('year')
-        )
-        cache.set(cache_key, aggregates, timeout=300)
-    return aggregates
-
-
-def get_brands():
-    cache_key = "brands"
-    brands = cache.get(cache_key)
-    if brands is None:
-        brands = Brand.objects.all()
-        cache.set(cache_key, brands, timeout=300)
-    return brands
-
-
-def get_car_models(brand_filter):
-    cache_key = f"car_models_{brand_filter}"
-    car_models = cache.get(cache_key)
-    if car_models is None:
-        if brand_filter:
-            car_models = CarModel.objects.filter(brand__name__icontains=brand_filter)
-        else:
-            car_models = CarModel.objects.all()
-        cache.set(cache_key, car_models, timeout=300)
-    return car_models
 
 
 def paginate_cars(cars: list, items_per_page: int, page_number: int) -> Paginator:

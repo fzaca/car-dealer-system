@@ -1,24 +1,24 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 
-from resources.cars.utils import get_filters, filter_cars, paginate_cars
-from resources.cars.utils import get_aggregates, get_brands, get_car_models
+from resources.cars.utils import get_filters, paginate_cars
+from resources.cars.models import Car, Brand, CarModel
 
 
 def car_list_view(request: HttpRequest) -> HttpResponse:
     filters = get_filters(request)
 
-    cars = filter_cars(filters)
+    cars = Car.filter_cars(filters)
     page_obj = paginate_cars(cars, filters['items_per_page'], filters['page_number'])
 
-    aggregates = get_aggregates()
+    aggregates = Car.get_aggregates()
     max_car_price = aggregates['max_price'] or 0
     default_max_price = max_car_price / 2 if max_car_price > 0 else 0
     min_car_year = aggregates['min_year'] or 0
     max_car_year = aggregates['max_year'] or 0
 
-    brands = get_brands()
-    car_models = get_car_models(filters['brand'])
+    brands = Brand.get_all_cached()
+    car_models = CarModel.get_by_brand_cached(filters['brand'])
 
     context = {
         'page_obj': page_obj,
