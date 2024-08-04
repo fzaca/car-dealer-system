@@ -9,8 +9,7 @@ Car Listing | Car Dealer
 <div class="bg-base-300">
 
   <div class="brightness-50">
-    <img src="{% static 'images/portada.jpg' %}" alt="bmw"
-      class="object-cover object-center w-full h-96" />
+    <img src="{% static 'images/portada.jpg' %}" alt="bmw" class="object-cover object-center w-full h-96" />
   </div>
 
   <div class="container mx-auto p-4 -mt-10">
@@ -19,14 +18,12 @@ Car Listing | Car Dealer
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
 
       <!-- Elemento 02 (Para mobile y tablet estará arriba de todo) -->
-      <div
-        class="z-20 lg:col-span-4 bg-purple-800 text-white rounded-lg p-5 order-1">
+      <div class="z-20 lg:col-span-4 bg-purple-800 text-white rounded-lg p-5 order-1">
         <form method="get">
           <!-- Ordenar por: Precio y Fecha -->
           <div class="flex items-center justify-end space-x-2">
             <label for="orderby" class="text-white">Order By:</label>
-            <select class="select select-bordered select-info select-sm"
-              name="orderby" id="orderby">
+            <select class="select select-bordered select-info select-sm" name="orderby" id="orderby">
               <option value="price">Price</option>
               <option value="date">Date</option>
             </select>
@@ -36,185 +33,7 @@ Car Listing | Car Dealer
 
       <!-- Elemento 01 (Para mobile y tablet estará en el medio) -->
       <div class="lg:order-2 order-2">
-        <div class="lg:bg-purple-600 text-white lg:rounded-lg lg:p-5">
-
-          <!-- Componente Collapse, visible solo en mobile y tablet -->
-          <div class="collapse lg:hidden bg-base-200 collapse-arrow">
-            <input type="checkbox" class="peer" />
-            <div
-              class="collapse-title text-lg font-semibold bg-purple-600 text-white peer-checked:bg-purple-600 peer-checked:text-white">
-              Filters
-            </div>
-            <div class="collapse-content bg-purple-600">
-              <div class="divider"></div>
-              <form method="get">
-                <h2 class="text-lg font-semibold mb-2">Options</h2>
-
-                <!-- Filtro Brands -->
-                <select class="select select-bordered w-full my-1" name="brand"
-                  id="brand">
-                  <option disabled selected value>Brand</option>
-                  {% for brand in brands %}
-                  <option value="{{ brand.name }}">{{ brand.name }}</option>
-                  {% endfor %}
-                </select>
-
-                <!-- Filtro Body Type -->
-                <select class="select select-bordered w-full my-1"
-                  name="body_type" id="body_type">
-                  <option disabled selected value>Body Type</option>
-                  {% for body_type in body_types %}
-                  <option value="{{ body_type.name }}">{{ body_type.name
-                    }}</option>
-                  {% endfor %}
-                </select>
-
-                <div class="divider"></div>
-
-                <!-- Filtro Precio -->
-                <h2 class="text-lg font-semibold my-1">Select Max Price</h2>
-                <div class="price-range-container">
-                  <input type="range" id="price-range" min="0"
-                    max="{{ max_car_price }}" value="{{ default_max_price }}"
-                    class="range range-xs" />
-
-                  <div class="max-price-container my-1">
-                    <input type="number" name="max_price" id="max_price"
-                      value="{{ max_price|default:default_max_price }}"
-                      class="input input-bordered w-full"
-                      placeholder="{{ max_car_price }}">
-                  </div>
-                </div>
-
-                <div class="divider"></div>
-
-                <!-- Filtro Año -->
-                <div class="year-range-container flex justify-between">
-                  <!-- Rango para el año mínimo -->
-                  <div class="year-range-item w-full">
-                    <label for="min_year_range"
-                      class="block text-lg font-semibold my-1">Min Year</label>
-                    <input type="range" id="min_year_range"
-                      min="{{ min_car_year }}" max="{{ max_car_year }}"
-                      value="{{ min_year|default:min_car_year }}"
-                      class="range range-xs" />
-                    <input type="number" name="min_year" id="min_year"
-                      value="{{ min_year }}"
-                      class="input input-bordered w-full mt-2"
-                      placeholder="{{ min_car_year }}">
-                  </div>
-                  <div class="divider divider-horizontal"></div>
-                  <!-- Rango para el año máximo -->
-                  <div class="year-range-item w-full">
-                    <label for="max_year_range"
-                      class="block text-lg font-semibold my-1">Max Year</label>
-                    <input type="range" id="max_year_range"
-                      min="{{ min_car_year }}" max="{{ max_car_year }}"
-                      value="{{ max_year|default:max_car_year }}"
-                      class="range range-xs" />
-                    <input type="number" name="max_year" id="max_year"
-                      value="{{ max_year }}"
-                      class="input input-bordered w-full mt-2"
-                      placeholder="{{ max_car_year }}">
-                  </div>
-                </div>
-
-                <div class="divider"></div>
-                <div class="flex justify-end">
-                  <button type="submit"
-                    class="btn btn-primary bg-opacity-50 w-full">Apply
-                    Filters</button>
-                </div>
-              </form>
-            </div>
-          </div>
-          <!-- Fin Componente Collapse -->
-
-          <!-- Contenido visible solo en desktop -->
-          <div class="hidden lg:block">
-            <form method="get">
-              <h2 class="text-lg font-semibold my-2">Options</h2>
-
-              <!-- Filtro Brands -->
-              <select class="select select-bordered w-full my-1" name="brand"
-                id="brand">
-                <option disabled selected value>Brand</option>
-                {% for brand in brands %}
-                <option value="{{ brand.name }}">{{ brand.name }}</option>
-                {% endfor %}
-              </select>
-
-              <!-- Filtro Body Type -->
-              <select class="select select-bordered w-full my-1"
-                name="body_type" id="body_type">
-                <option disabled selected value>Body Type</option>
-                {% for body_type in body_types %}
-                <option value="{{ body_type.name }}">{{ body_type.name
-                  }}</option>
-                {% endfor %}
-              </select>
-
-              <div class="divider"></div>
-
-              <!-- Filtro Precio -->
-              <h2 class="text-lg font-semibold my-1">Select Max Price</h2>
-              <div class="price-range-container">
-                <input type="range" id="price-range" min="0"
-                  max="{{ max_car_price }}" value="{{ default_max_price }}"
-                  class="range range-xs" />
-
-                <div class="max-price-container my-1">
-                  <input type="number" name="max_price" id="max_price"
-                    value="{{ max_price|default:default_max_price }}"
-                    class="input input-bordered w-full"
-                    placeholder="{{ max_car_price }}">
-                </div>
-              </div>
-
-              <div class="divider"></div>
-
-              <!-- Filtro Año -->
-              <div class="year-range-container flex justify-between">
-                <!-- Rango para el año mínimo -->
-                <div class="year-range-item w-full">
-                  <label for="min_year_range"
-                    class="block text-lg font-semibold my-1">Min Year</label>
-                  <input type="range" id="min_year_range"
-                    min="{{ min_car_year }}" max="{{ max_car_year }}"
-                    value="{{ min_year|default:min_car_year }}"
-                    class="range range-xs" />
-                  <input type="number" name="min_year" id="min_year"
-                    value="{{ min_year }}"
-                    class="input input-bordered w-full mt-2"
-                    placeholder="{{ min_car_year }}">
-                </div>
-                <div class="divider divider-horizontal"></div>
-                <!-- Rango para el año máximo -->
-                <div class="year-range-item w-full">
-                  <label for="max_year_range"
-                    class="block text-lg font-semibold my-1">Max Year</label>
-                  <input type="range" id="max_year_range"
-                    min="{{ min_car_year }}" max="{{ max_car_year }}"
-                    value="{{ max_year|default:max_car_year }}"
-                    class="range range-xs" />
-                  <input type="number" name="max_year" id="max_year"
-                    value="{{ max_year }}"
-                    class="input input-bordered w-full mt-2"
-                    placeholder="{{ max_car_year }}">
-                </div>
-              </div>
-
-              <div class="divider"></div>
-              <div class="flex justify-end">
-                <button type="submit"
-                  class="btn btn-primary bg-opacity-50 w-full">Apply
-                  Filters</button>
-              </div>
-            </form>
-          </div>
-          <!-- Fin contenido visible solo en desktop -->
-
-        </div>
+        {% include './partials/filters.html' %}
       </div>
 
       <!-- Elemento 03 (Para mobile y tablet estará abajo de todo) -->
@@ -237,81 +56,8 @@ Car Listing | Car Dealer
 
 </div>
 
-<!--
-
-
-
-              -->
-
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const rangeInput = document.getElementById('price-range');
-  const maxPriceInput = document.getElementById('max_price');
-
-  const minYearRangeInput = document.getElementById('min_year_range');
-  const maxYearRangeInput = document.getElementById('max_year_range');
-  const minYearInput = document.getElementById('min_year');
-  const maxYearInput = document.getElementById('max_year');
-
-  // Actualizar el input de número cuando el rango de precio cambia
-  rangeInput.addEventListener('input', function() {
-      maxPriceInput.value = rangeInput.value;
-  });
-
-  // Actualizar el rango de precio cuando el input de número cambia
-  maxPriceInput.addEventListener('input', function() {
-      if (parseInt(maxPriceInput.value) > rangeInput.max) {
-          maxPriceInput.value = rangeInput.max;
-      }
-      rangeInput.value = maxPriceInput.value;
-  });
-
-  // Sincronizar el rango de año mínimo con su input
-  minYearRangeInput.addEventListener('input', function() {
-      minYearInput.value = minYearRangeInput.value;
-
-      // Asegurarse de que el año mínimo no sea mayor que el año máximo
-      if (parseInt(minYearRangeInput.value) > parseInt(maxYearRangeInput.value)) {
-          maxYearRangeInput.value = minYearRangeInput.value;
-          maxYearInput.value = minYearRangeInput.value;
-      }
-  });
-
-  // Sincronizar el input de año mínimo con su rango
-  minYearInput.addEventListener('input', function() {
-      minYearRangeInput.value = minYearInput.value;
-
-      // Asegurarse de que el año mínimo no sea mayor que el año máximo
-      if (parseInt(minYearInput.value) > parseInt(maxYearInput.value)) {
-          maxYearRangeInput.value = minYearInput.value;
-          maxYearInput.value = minYearInput.value;
-      }
-  });
-
-  // Sincronizar el rango de año máximo con su input
-  maxYearRangeInput.addEventListener('input', function() {
-      maxYearInput.value = maxYearRangeInput.value;
-
-      // Asegurarse de que el año máximo no sea menor que el año mínimo
-      if (parseInt(maxYearRangeInput.value) < parseInt(minYearRangeInput.value)) {
-          minYearRangeInput.value = maxYearRangeInput.value;
-          minYearInput.value = maxYearRangeInput.value;
-      }
-  });
-
-  // Sincronizar el input de año máximo con su rango
-  maxYearInput.addEventListener('input', function() {
-      maxYearRangeInput.value = maxYearInput.value;
-
-      // Asegurarse de que el año máximo no sea menor que el año mínimo
-      if (parseInt(maxYearInput.value) < parseInt(minYearInput.value)) {
-          minYearRangeInput.value = maxYearInput.value;
-          minYearInput.value = maxYearInput.value;
-      }
-  });
-});
-</script>
+<script src="{% static 'js/car_filters.js' %}"></script>
 {% endblock %}
