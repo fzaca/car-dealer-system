@@ -33,24 +33,28 @@
             </ul>
           </div>
         </div>
-        <hr className="divider divider-info"></hr>
+        <hr className="divider divider-info my-0"></hr>
 
         {% if user.is_authenticated %}
           <!-- Sección de logout y avatar para usuarios autenticados -->
           <div class="flex items-center justify-between mt-4 p-2">
-            <form method="post" action="{% url 'logout' %}">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-secondary btn-sm btn-outline">Logout</button>
-            </form>
             <div class="avatar placeholder">
               <div class="bg-accent text-neutral-content w-10 h-10 rounded-full flex items-center justify-center">
                 <span>{{ user.get_initials }}</span>
               </div>
             </div>
+            <div class="flex flex-col">
+                <h3 class="font-bold">{{ user.username }}</h3>
+                <span class="text-xs text-accent">{{ user.email }}</span>
+            </div>
           </div>
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary btn-sm btn-outline">Logout</button>
+          </form>
         {% else %}
           <!-- Botón de Login para Usuarios No Autenticados -->
-          <a class="btn btn-primary btn-sm mt-2" href="{% url 'page_login' %}">
+          <a class="btn btn-primary btn-sm mt-2 w-full" href="{% url 'page_login' %}">
             <i class="fa-solid fa-rocket"></i>
             Login
           </a>
@@ -96,6 +100,12 @@
           </div>
         </div>
         <ul tabIndex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] p-2 shadow mt-2">
+          <li>
+            <div class="flex flex-col">
+                <h3 class="font-bold">{{ user.username }}</h3>
+                <span class="text-xs text-accent">{{ user.email }}</span>
+            </div>
+          </li>
           <li>
             <form method="post" action="{% url 'logout' %}">
               {% csrf_token %}
