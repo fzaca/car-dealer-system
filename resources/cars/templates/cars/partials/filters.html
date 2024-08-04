@@ -1,5 +1,4 @@
- <div class="lg:bg-purple-600 text-white lg:rounded-lg lg:p-5">
-
+<div class="lg:bg-purple-600 text-white lg:rounded-lg lg:p-5">
   <!-- Componente Collapse, visible solo en mobile y tablet -->
   <div class="collapse lg:hidden bg-base-200 collapse-arrow">
     <input type="checkbox" class="peer" />
@@ -15,27 +14,25 @@
         <!-- Filtro Brands -->
         <select class="select select-bordered w-full my-1" name="brand"
           id="mobile-brand">
-          <option disabled selected value>Brand</option>
+          <option value="">Brand</option>
           {% for brand in brands %}
-          <option value="{{ brand.name }}">{{ brand.name }}</option>
+          <option value="{{ brand.name }}" {% if brand.name == brand_filter %}selected{% endif %}>{{ brand.name }}</option>
           {% endfor %}
         </select>
 
         <!-- Filtro Car Model -->
-        <select class="select select-bordered w-full my-1"
-          name="body_type" id="mobile-body_type">
-          <option disabled selected value>Car Models</option>
+        <select class="select select-bordered w-full my-1" name="car_model" id="mobile-car_model">
+          <option value="">Car Models</option>
           {% for model in car_models %}
-          <option value="{{ model.name }}">{{ model.name }}</option>
+          <option value="{{ model.name }}" {% if model.name == car_model_filter %}selected{% endif %}>{{ model.name }}</option>
           {% endfor %}
         </select>
 
         <!-- Filtro Body Type -->
-        <select class="select select-bordered w-full my-1"
-          name="body_type" id="mobile-body_type">
-          <option disabled selected value>Body Type</option>
+        <select class="select select-bordered w-full my-1" name="body_type" id="mobile-body_type">
+          <option value="">Body Type</option>
           {% for body_type in body_types %}
-          <option value="{{ body_type.name }}">{{ body_type.name }}</option>
+          <option value="{{ body_type.name }}" {% if body_type.name == body_type_filter %}selected{% endif %}>{{ body_type.name }}</option>
           {% endfor %}
         </select>
 
@@ -112,27 +109,25 @@
       <!-- Filtro Brands -->
       <select class="select select-bordered w-full my-1" name="brand"
         id="desktop-brand">
-        <option disabled selected value>Brand</option>
+        <option value="">Brand</option>
         {% for brand in brands %}
-        <option value="{{ brand.name }}">{{ brand.name }}</option>
+        <option value="{{ brand.name }}" {% if brand.name == brand_filter %}selected{% endif %}>{{ brand.name }}</option>
         {% endfor %}
       </select>
 
       <!-- Filtro Car Model -->
-      <select class="select select-bordered w-full my-1"
-        name="body_type" id="mobile-body_type">
-        <option disabled selected value>Car Models</option>
+      <select class="select select-bordered w-full my-1" name="car_model" id="desktop-car_model">
+        <option value="">Car Models</option>
         {% for model in car_models %}
-        <option value="{{ model.name }}">{{ model.name }}</option>
+        <option value="{{ model.name }}" {% if model.name == car_model_filter %}selected{% endif %}>{{ model.name }}</option>
         {% endfor %}
       </select>
 
       <!-- Filtro Body Type -->
-      <select class="select select-bordered w-full my-1" name="body_type"
-        id="desktop-body_type">
-        <option disabled selected value>Body Type</option>
+      <select class="select select-bordered w-full my-1" name="body_type" id="desktop-body_type">
+        <option value="">Body Type</option>
         {% for body_type in body_types %}
-        <option value="{{ body_type.name }}">{{ body_type.name }}</option>
+        <option value="{{ body_type.name }}" {% if body_type.name == body_type_filter %}selected{% endif %}>{{ body_type.name }}</option>
         {% endfor %}
       </select>
 
@@ -197,5 +192,4 @@
     </form>
   </div>
   <!-- Fin contenido visible solo en desktop -->
-
 </div>

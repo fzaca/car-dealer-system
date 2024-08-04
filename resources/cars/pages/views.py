@@ -8,6 +8,7 @@ from resources.cars.models import Car, Brand, CarModel
 def car_list_view(request):  # noqa: PLR0914
     # Get filter values from request
     brand_filter = request.GET.get('brand', '')
+    car_model_filter = request.GET.get('car_model', '')
     body_type_filter = request.GET.get('body_type', '')
     min_price = request.GET.get('min_price', '')
     max_price = request.GET.get('max_price', '')
@@ -23,6 +24,9 @@ def car_list_view(request):  # noqa: PLR0914
 
     if body_type_filter:
         cars = cars.filter(body_type__name__icontains=body_type_filter)
+
+    if car_model_filter:
+        cars = cars.filter(car_model__name__icontains=car_model_filter)
 
     if min_price:
         cars = cars.filter(price__gte=min_price)
@@ -62,6 +66,7 @@ def car_list_view(request):  # noqa: PLR0914
         'car_models': car_models,
         'brand_filter': brand_filter,
         'body_type_filter': body_type_filter,
+        'car_model_filter': car_model_filter,
         'min_price': min_price,
         'max_price': max_price,
         'min_year': min_year,
