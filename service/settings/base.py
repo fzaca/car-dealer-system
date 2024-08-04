@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 	"nanoid_field",
     "memoize",
     "django_select2",
+    "widget_tweaks",
 	# Local apps
 	"resources.core",
 	"resources.users",

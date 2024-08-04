@@ -1,22 +1,23 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import redirect, render
-from resources.users.forms import CustomUserCreationForm
+from resources.users.forms import UserRegisterForm
 from resources.users.models import Customer, CustomUser  # noqa: F401
 
 
 def register_view(request):
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+            user.is_staff = False
             user.is_customer = True
+            user.is_employee = False
             user.save()
-            Customer.objects.create(user=user)
             login(request, user)
             return redirect("home")
     else:
-        form = CustomUserCreationForm()
+        form = UserRegisterForm()
     return render(request, "register.html", {"form": form})
 
 
