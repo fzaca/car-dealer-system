@@ -17,7 +17,7 @@
       <ul tabindex="0"
         class="dropdown-content menu z-[1] bg-base-200 p-4 rounded-box shadow w-64 gap-2 mr-4">
         <li><a>About</a></li>
-        <li><a>Cars</a></li>
+        <li><a href="{% url 'car_list' %}">Cars</a></li>
 
         <!-- Acordeón de categorías -->
         <div class="collapse bg-base-200">
@@ -70,7 +70,7 @@
       About
     </a>
 
-    <a class="btn btn-ghost btn-sm">
+    <a class="btn btn-ghost btn-sm" href="{% url 'car_list' %}">
       <i class="fa-solid fa-car text-secondary"></i>
       Cars
     </a>
