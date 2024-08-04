@@ -1,7 +1,7 @@
-<div class="bg-base-100 text-white rounded-lg p-5">
+<div class=" text-white rounded-lg p-5">
   <div class="flex flex-wrap justify-center gap-4">
     {% for car in page_obj.object_list %}
-    <div class="item flex-grow-0 flex-shrink-0 min-w-full md:min-w-[calc(50%-16px)] lg:min-w-[calc(25%-16px)] max-w-full md:max-w-[calc(50%-16px)] lg:max-w-[calc(25%-16px)]">
+    <div class="item bg-base-200 rounded flex-grow-0 flex-shrink-0 min-w-full md:min-w-[calc(50%-16px)] lg:min-w-[calc(25%-16px)] max-w-full md:max-w-[calc(50%-16px)] lg:max-w-[calc(25%-16px)]">
       <div class="flex-shrink-0 relative overflow-hidden rounded-lg shadow-lg" style="height: 300px;">
         <svg class="absolute bottom-0 left-0 mb-8" viewBox="0 0 375 283" fill="none" style="transform: scale(1.5); opacity: 0.1;">
           <rect x="159.52" y="175" width="152" height="152" rx="8" transform="rotate(-45 159.52 175)" fill="white" />
@@ -27,6 +27,7 @@
   </div>
 
   <!-- Pagination -->
+  <div class="p-5">
   <div class="join w-full justify-center flex flex-wrap">
     {% if page_obj.has_previous %}
     <a href="?page=1" class="join-item btn btn-primary brightness-75">Primera</a>
@@ -45,5 +46,6 @@
     <a href="?page={{ page_obj.next_page_number }}" class="join-item btn btn-primary brightness-75">Siguiente</a>
     <a href="?page={{ page_obj.paginator.num_pages }}" class="join-item btn btn-primary brightness-75">Última</a>
     {% endif %}
+  </div>
   </div>
 </div>
