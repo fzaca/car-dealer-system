@@ -30,8 +30,8 @@
   <div class="p-5">
     <div class="join w-full justify-center flex flex-wrap">
         {% if page_obj.has_previous %}
-        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1" class="join-item btn btn-primary brightness-75">Primera</a>
-        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}" class="join-item btn btn-primary brightness-75">Anterior</a>
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1" class="join-item btn btn-primary brightness-75">First</a>
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}" class="join-item btn btn-primary brightness-75">Previous</a>
         {% endif %}
 
         {% for num in page_obj.paginator.page_range %}
@@ -43,8 +43,8 @@
         {% endfor %}
 
         {% if page_obj.has_next %}
-        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}" class="join-item btn btn-primary brightness-75">Siguiente</a>
-        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.paginator.num_pages }}" class="join-item btn btn-primary brightness-75">Última</a>
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}" class="join-item btn btn-primary brightness-75">Next</a>
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.paginator.num_pages }}" class="join-item btn btn-primary brightness-75">Last</a>
         {% endif %}
     </div>
   </div>
