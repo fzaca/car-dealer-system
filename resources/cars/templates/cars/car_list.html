@@ -21,7 +21,16 @@ Car Listing | Car Dealer
       <!-- Elemento 02 (Para mobile y tablet estará arriba de todo) -->
       <div
         class="z-20 lg:col-span-4 bg-purple-800 text-white rounded-lg p-5 order-1">
-        02
+        <form method="get">
+          <!-- Ordenar por: Precio y Fecha -->
+          <div class="flex items-center justify-end space-x-2">
+            <label for="orderby" class="text-white">Order By:</label>
+            <select class="select select-bordered select-info select-sm" name="orderby" id="orderby">
+              <option value="price">Price</option>
+              <option value="date">Date</option>
+            </select>
+          </div>
+        </form>
       </div>
 
       <!-- Elemento 01 (Para mobile y tablet estará en el medio) -->
