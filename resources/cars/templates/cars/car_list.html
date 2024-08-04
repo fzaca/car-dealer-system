@@ -19,30 +19,39 @@ Car Listing | Car Dealer
 
     <!-- Elemento 02 (Para mobile y tablet estará arriba de todo) -->
     <div class="z-20 lg:col-span-4 bg-purple-800 text-white rounded-lg p-5 order-1">
-      <form method="get" id="filterForm">
-          <div class="flex flex-wrap justify-end items-center space-x-4">
-              <!-- Ordenar por: Precio y Fecha -->
-              <div class="flex items-center space-x-2">
-                  <label for="orderby" class="text-white">Order By:</label>
-                  <select class="select select-bordered select-info select-sm" name="orderby" id="orderby" onchange="document.getElementById('filterForm').submit();">
-                      <option value="price" {% if order_by == "price" %}selected{% endif %}>Price</option>
-                      <option value="date" {% if order_by == "date" %}selected{% endif %}>Date</option>
-                  </select>
-              </div>
-              <!-- Divider -->
-              <div class="divider divider-horizontal"></div>
-              <!-- Seleccionar cantidad de productos por página -->
-              <div class="flex items-center space-x-2">
-                  <label for="items_per_page" class="text-white">Items per Page:</label>
-                  <select class="select select-bordered select-info select-sm" name="items_per_page" id="items_per_page" onchange="document.getElementById('filterForm').submit();">
-                      <option value="12" {% if items_per_page == 12 %}selected{% endif %}>12</option>
-                      <option value="20" {% if items_per_page == 20 %}selected{% endif %}>20</option>
-                      <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50</option>
-                      <option value="100" {% if items_per_page == 100 %}selected{% endif %}>100</option>
-                  </select>
-              </div>
-          </div>
-      </form>
+    <form method="get" id="filterForm">
+        <div class="flex flex-wrap justify-end items-center space-x-4">
+            <!-- Ordenar por: Precio y Fecha -->
+            <div class="flex items-center space-x-2">
+                <label for="orderby" class="text-white">Order By:</label>
+                <select class="select select-bordered select-info select-sm" name="orderby" id="orderby" onchange="updateHiddenInputsAndSubmit();">
+                    <option value="price" {% if order_by == "price" %}selected{% endif %}>Price</option>
+                    <option value="date" {% if order_by == "date" %}selected{% endif %}>Date</option>
+                </select>
+            </div>
+            <!-- Divider -->
+            <div class="divider divider-horizontal"></div>
+            <!-- Seleccionar cantidad de productos por página -->
+            <div class="flex items-center space-x-2">
+                <label for="items_per_page" class="text-white">Items per Page:</label>
+                <select class="select select-bordered select-info select-sm" name="items_per_page" id="items_per_page" onchange="updateHiddenInputsAndSubmit();">
+                    <option value="12" {% if items_per_page == 12 %}selected{% endif %}>12</option>
+                    <option value="20" {% if items_per_page == 20 %}selected{% endif %}>20</option>
+                    <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50</option>
+                    <option value="100" {% if items_per_page == 100 %}selected{% endif %}>100</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Campos ocultos para los parámetros existentes -->
+        {% for key, value in request.GET.items %}
+            {% if key != 'orderby' and key != 'items_per_page' and key != 'page' %}
+                <input type="hidden" name="{{ key }}" value="{{ value }}">
+            {% endif %}
+        {% endfor %}
+    </form>
+
+
     </div>
       <!-- Elemento 01 (Para mobile y tablet estará en el medio) -->
       <div class="lg:order-2 order-2">
@@ -63,4 +72,10 @@ Car Listing | Car Dealer
 
 {% block extra_scripts %}
 <script src="{% static 'js/car_filters.js' %}"></script>
+<script>
+    function updateHiddenInputsAndSubmit() {
+        // Submit the form automatically after updating any selection
+        document.getElementById('filterForm').submit();
+    }
+</script>
 {% endblock %}
