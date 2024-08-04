@@ -15,7 +15,7 @@ def home_view(request):
     body_types = BodyType.objects.all()
 
     featured_cars = list(FeaturedCar.objects.select_related('car').all())
-    random_featured_cars = random.sample(featured_cars, min(len(featured_cars), 3))
+    random_featured_cars = random.sample(featured_cars, min(len(featured_cars), 10))
 
     context = {
         'body_types': body_types,

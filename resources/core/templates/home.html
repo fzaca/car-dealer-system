@@ -1,12 +1,54 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Home | Car Dealer
+home | car dealer
+{% endblock %}
+
+{% block extra_head %}
+<!-- Owl Carousel CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+<!-- Owl Carousel Theme CSS (optional) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
 {% endblock %}
 
 {% block content %}
-    {% load static %}
-    {% include 'components/hero.html' %}
-    {% include 'components/featured_cars.html' %}
-    {% include 'components/overview.html' %}
+{% load static %}
+{% include 'components/hero.html' %}
+{% include 'components/featured_cars.html' %}
+{% include 'components/overview.html' %}
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- jQuery (necessary for Owl Carousel) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Owl Carousel JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $('.owl-carousel').owlCarousel({
+        loop: true, // Loop through the items
+        margin: 10, // Space between items
+        nav: false, // Show navigation buttons
+        autoplay: true, // Enable autoplay
+        autoplayTimeout: 3000, // Time in milliseconds before transitioning (3 seconds)
+        animateOut: 'fadeOut',
+        animateIn: 'fadeIn',
+        autoplayHoverPause: true, // Pause autoplay on hover
+        responsive: {
+            0: {
+                items: 1 // Number of items for screens up to 600px
+            },
+            400: {
+                items: 2 // Number of items for screens up to 600px
+            },
+            600: {
+                items: 3 // Number of items for screens from 600px to 1000px
+            },
+            1000: {
+                items: 5 // Number of items for screens 1000px and up
+            }
+        }
+    });
+  });
+</script>
 {% endblock %}
