@@ -8,7 +8,8 @@ module.exports = {
     './service/static/css/**/*.css',
     './resources/core/templates/*.html',
     './resources/core/templates/**/*.html',
-    './*/*.html',
+    './resources/users/templates/*.html',
+    './resources/users/templates/**/*.html',
   ],
   theme: {
     extend: {

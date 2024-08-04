@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
 from resources.users.forms import CustomUserCreationForm
-from resources.users.models import Customer, CustomUser
+from resources.users.models import Customer, CustomUser  # noqa: F401
 
 
 def register_view(request):
@@ -34,13 +34,3 @@ def login_view(request):
 def logout_view(request):
 	logout(request)
 	return redirect("home")
-
-
-def user_list_view(request):
-	users = CustomUser.objects.all()
-	return render(request, "user_list.html", {"users": users})
-
-
-def user_detail_view(request, pk):
-	user = CustomUser.objects.get(pk=pk)
-	return render(request, "user_detail.html", {"user": user})

@@ -1,9 +1,61 @@
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username">
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password">
-    <button type="submit">Login</button>
-</form>
+{% extends 'base.html' %}
+
+{% block title %}
+login | car dealer
+{% endblock %}
+
+{% block extra_head %}{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="relative h-screen bg-base-300">
+  <!-- Overlay for better text contrast -->
+  <div class="absolute inset-0"></div>
+
+  <!-- Content centered on top of the overlay -->
+  <div
+    class="relative z-10 flex flex-col items-center justify-center h-full text-center gap-6 p-6 text-white">
+
+    <div class="flex flex-col gap-4 rounded-box bg-base-200 p-6 max-w-md w-full">
+      <form method="post">
+        {% csrf_token %}
+        <h1 class="text-3xl font-bold self-center">Log in</h1>
+
+        <span class="self-center">
+          Don't have an account?
+          <a class="link link-secondary">Register</a>
+        </span>
+
+        <label class="form-control" for="username">
+          <div class="label">
+            <span class="label-text">Username</span>
+          </div>
+
+          <input class="input input-bordered" type="text" id="username" name="username"/>
+        </label>
+
+        <label class="form-control" for="password">
+          <div class="label">
+            <span class="label-text">Password</span>
+            {# <a class="label-text link link-accent">Forgot password?</a> #}
+          </div>
+
+          <input class="input input-bordered" type="password" id="password" name="password"/>
+        </label>
+
+        <div class="form-control">
+          <label class="cursor-pointer label self-start gap-2">
+            <input type="checkbox" class="checkbox" />
+            <span class="label-text">Remember me</span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Log in</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}{% endblock %}
