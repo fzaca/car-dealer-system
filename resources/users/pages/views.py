@@ -1,10 +1,13 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import redirect, render
+
 from resources.users.forms import UserRegisterForm, CustomAuthenticationForm
-from resources.users.models import Customer, CustomUser  # noqa: F401
+from resources.users.models import CustomUser
+from resources.users.decorators import redirect_if_authenticated
 
 
+@redirect_if_authenticated
 def register_view(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
@@ -21,6 +24,7 @@ def register_view(request):
     return render(request, "register.html", {"form": form})
 
 
+@redirect_if_authenticated
 def login_view(request):
     if request.method == "POST":
         form = CustomAuthenticationForm(request, data=request.POST)
