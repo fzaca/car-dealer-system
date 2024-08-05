@@ -118,7 +118,7 @@ class Car(models.Model):
         if cars is None:
             cars = cls.objects.select_related('car_model', 'car_model__brand', 'body_type')
 
-            q_filters = Q()
+            q_filters = Q(is_available=True)
             if filters['brand']:
                 q_filters &= Q(car_model__brand__name__icontains=filters['brand'])
             if filters['car_model']:
