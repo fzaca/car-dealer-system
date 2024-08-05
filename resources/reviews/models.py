@@ -4,7 +4,7 @@ from nanoid_field import NanoidField
 
 from resources.cars.models import Car
 from resources.sales.models import Sale
-from resources.users.models import Customer
+from resources.users.models import CustomUser, Customer
 
 
 class Review(models.Model):
@@ -30,11 +30,11 @@ class Review(models.Model):
 
 class Comment(models.Model):
     hash = NanoidField(max_length=10, alphabet="1234567890ABCDEF", editable=False)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.customer.user} - {self.car}"
+        return f"{self.user} - {self.car}"

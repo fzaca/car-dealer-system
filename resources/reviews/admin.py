@@ -9,17 +9,17 @@ from resources.reviews.models import Comment, Review
 
 @admin.register(Comment)
 class CommentAdmin(ModelAdmin):
-    list_display = ('hash', 'customer', 'car', 'created_at', 'updated_at')
-    search_fields = ('customer__user__username', 'car__model')
+    list_display = ('hash', 'user', 'car', 'created_at', 'updated_at')
+    search_fields = ('user__username', 'car__model')
     readonly_fields = ('created_at', 'updated_at', 'hash')
     list_filter = (
         ('created_at', RangeDateTimeFilter),
         ('updated_at', RangeDateTimeFilter),
     )
-    autocomplete_fields = ('customer', 'car')
+    autocomplete_fields = ('user', 'car')
     fieldsets = (
         (None, {
-            'fields': ('customer', 'car', 'content', 'hash')
+            'fields': ('user', 'car', 'content', 'hash')
         }),
         ('Dates', {
             'fields': ('created_at', 'updated_at'),
@@ -28,7 +28,7 @@ class CommentAdmin(ModelAdmin):
 
     @memoize(timeout=60 * 15)
     def get_queryset(self, request):
-        queryset = super().get_queryset(request).select_related('customer', 'car')
+        queryset = super().get_queryset(request).select_related('user', 'car')
         return queryset
 
 

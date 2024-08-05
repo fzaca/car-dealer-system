@@ -5,7 +5,7 @@ from faker import Faker
 
 from resources.cars.models import Car
 from resources.sales.models import Sale
-from resources.users.models import Customer
+from resources.users.models import Customer, CustomUser
 from resources.reviews.models import Review, Comment
 
 fake = Faker()
@@ -62,12 +62,12 @@ class Command(BaseCommand):
 
     def load_comments(self):
         cars = list(Car.objects.all())
-        customers = list(Customer.objects.all())
+        users = list(CustomUser.objects.all())
 
         if not cars:
             self.stdout.write(self.style.ERROR('No cars found'))
             return
-        if not customers:
+        if not users:
             self.stdout.write(self.style.ERROR('No customers found'))
             return
 
@@ -75,10 +75,10 @@ class Command(BaseCommand):
 
         for _ in range(100):
             car = random.choice(cars)
-            customer = random.choice(customers)
+            user = random.choice(users)
 
             comment = Comment(
-                customer=customer,
+                user=user,
                 car=car,
                 content=fake.text(max_nb_chars=500),
             )
