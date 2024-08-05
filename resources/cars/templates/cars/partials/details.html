@@ -1,0 +1,91 @@
+<!-- Details Section -->
+<div class="bg-purple-600 rounded-lg p-6 mt-5 shadow-lg text-white">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold">Car Details</h2>
+        <div class="bg-yellow-500 text-purple-900 font-bold rounded-full px-4 py-2 shadow-md">
+            ${{ car.price }}
+        </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Engine Size -->
+        <div class="flex items-center space-x-4 bg-purple-700 rounded-lg p-4 shadow-md">
+            <div class="flex-shrink-0 text-yellow-300">
+                <i class="fas fa-cogs fa-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Engine Size</h3>
+                <p>{{ car.engine_size }}L</p>
+            </div>
+        </div>
+        <!-- Gearbox -->
+        <div class="flex items-center space-x-4 bg-purple-700 rounded-lg p-4 shadow-md">
+            <div class="flex-shrink-0 text-yellow-300">
+                <i class="fas fa-cog fa-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Gearbox</h3>
+                <p>{{ car.gearbox }}</p>
+            </div>
+        </div>
+        <!-- Fuel Type -->
+        <div class="flex items-center space-x-4 bg-purple-700 rounded-lg p-4 shadow-md">
+            <div class="flex-shrink-0 text-yellow-300">
+                <i class="fas fa-gas-pump fa-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Fuel Type</h3>
+                <p>{{ car.fuel_type }}</p>
+            </div>
+        </div>
+        <!-- Color -->
+        <div class="flex items-center space-x-4 bg-purple-700 rounded-lg p-4 shadow-md">
+            <div class="flex-shrink-0 text-yellow-300">
+                <i class="fas fa-palette fa-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Color</h3>
+                <p>{{ car.color }}</p>
+            </div>
+        </div>
+        <!-- Mileage -->
+        <div class="flex items-center space-x-4 bg-purple-700 rounded-lg p-4 shadow-md">
+            <div class="flex-shrink-0 text-yellow-300">
+                <i class="fas fa-tachometer-alt fa-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Mileage</h3>
+                <p>{{ car.mileage }} km</p>
+            </div>
+        </div>
+        <!-- Seats -->
+        <div class="flex items-center space-x-4 bg-purple-700 rounded-lg p-4 shadow-md">
+            <div class="flex-shrink-0 text-yellow-300">
+                <i class="fas fa-chair fa-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Seats</h3>
+                <p>{{ car.seats }}</p>
+            </div>
+        </div>
+        <!-- Doors -->
+        <div class="flex items-center space-x-4 bg-purple-700 rounded-lg p-4 shadow-md">
+            <div class="flex-shrink-0 text-yellow-300">
+                <i class="fas fa-door-closed fa-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Doors</h3>
+                <p>{{ car.doors }}</p>
+            </div>
+        </div>
+        <!-- Body Type -->
+        <div class="flex items-center space-x-4 bg-purple-700 rounded-lg p-4 shadow-md">
+            <div class="flex-shrink-0 text-yellow-300">
+                <i class="fas fa-car fa-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold">Body Type</h3>
+                <p>{{ car.body_type.name }}</p>
+            </div>
+        </div>
+    </div>
+</div>

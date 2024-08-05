@@ -35,19 +35,7 @@
         <!-- Divider -->
         <div class="divider"></div>
         <!-- Data -->
-        <div class="bg-purple-600 rounded p-5 mt-5">
-          <ul>
-            <li><strong>Price:</strong> ${{ car.price }}</li>
-            <li><strong>Engine Size:</strong> {{ car.engine_size }}L</li>
-            <li><strong>Gearbox:</strong> {{ car.gearbox }}</li>
-            <li><strong>Fuel Type:</strong> {{ car.fuel_type }}</li>
-            <li><strong>Color:</strong> {{ car.color }}</li>
-            <li><strong>Mileage:</strong> {{ car.mileage }} km</li>
-            <li><strong>Seats:</strong> {{ car.seats }}</li>
-            <li><strong>Doors:</strong> {{ car.doors }}</li>
-            <li><strong>Body Type:</strong> {{ car.body_type.name }}</li>
-          </ul>
-        </div>
+        {% include './partials/details.html' %}
         <!-- Action Buttons -->
         <div class="flex flex-wrap gap-2 lg:gap-0 mt-5">
             <button class="btn btn-primary w-full w-full md:w-auto">Contact Dealer</button>
