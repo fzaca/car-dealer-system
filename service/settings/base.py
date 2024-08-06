@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "memoize",
     "django_select2",
     "widget_tweaks",
+    "rest_framework",
 	# Local apps
 	"resources.core",
 	"resources.users",

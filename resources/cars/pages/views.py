@@ -1,10 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest, HttpResponse
-from django.contrib import messages
 
 from resources.cars.utils import get_filters, paginate_cars
 from resources.cars.models import Car, Brand, CarModel
-from resources.reviews.forms import CommentForm
 
 
 def car_list_view(request: HttpRequest) -> HttpResponse:
@@ -43,38 +41,13 @@ def car_list_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'cars/car_list.html', context)
 
 
-def car_detail_view(request: HttpRequest, car_id: int) -> HttpResponse:
+def car_detail_view(request, car_id):
     car = get_object_or_404(Car, id=car_id)
     similar_cars = car.get_similar_cars()
-    comments = car.comments.select_related('user').order_by('-created_at')
-
-    for comment in comments:
-        comment.can_edit_or_delete = request.user.is_authenticated and (
-            comment.user == request.user or request.user.is_staff
-        )
-
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            form = CommentForm(request.POST)
-            if form.is_valid():
-                comment = form.save(commit=False)
-                comment.car = car
-                comment.user = request.user
-                comment.save()
-                messages.success(request, 'Comment added successfully!')
-                return redirect('car_detail', car_id=car_id)
-        else:
-            messages.error(request, 'You need to be logged in to comment.')
-            return redirect('login')
-
-    else:
-        form = CommentForm()
 
     context = {
         'car': car,
         'similar_cars': similar_cars,
-        'comments': comments,
-        'form': form,
     }
 
     return render(request, 'cars/car_detail.html', context)
