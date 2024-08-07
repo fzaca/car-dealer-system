@@ -8,7 +8,12 @@
     <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
-
+    <style>
+        .htmx-swapping {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+        }
+    </style>
     {% block extra_head %}{% endblock %}
   </head>
   <body>
@@ -24,6 +29,16 @@
     <!-- Footer -->
     {% include 'components/footer.html' %}
 
+    <script src="https://unpkg.com/htmx.org@1.7.0"></script>
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+
+        document.body.addEventListener('htmx:afterRequest', (event) => {
+            document.querySelector("input.title").value = '';
+        });
+    </script>
     {% block extra_scripts %}{% endblock %}
   </body>
 </html>

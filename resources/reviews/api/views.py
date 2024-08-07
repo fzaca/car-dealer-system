@@ -15,7 +15,11 @@ class CommentViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(user=request.user)
+        car_id = request.data.get('car')
+        if not car_id:
+            return Response({'error': 'Car ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer.save(user=request.user, car_id=car_id)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get_queryset(self):

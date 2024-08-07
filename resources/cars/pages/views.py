@@ -1,8 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest, HttpResponse
+from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
 
 from resources.cars.utils import get_filters, paginate_cars
 from resources.cars.models import Car, Brand, CarModel
+from resources.reviews.models import Comment
 
 
 def car_list_view(request: HttpRequest) -> HttpResponse:
@@ -45,9 +48,27 @@ def car_detail_view(request, car_id):
     car = get_object_or_404(Car, id=car_id)
     similar_cars = car.get_similar_cars()
 
+    comments = Comment.objects.filter(car_id=car_id).order_by('-created_at')
+
     context = {
         'car': car,
         'similar_cars': similar_cars,
+        'comments': comments,
     }
 
     return render(request, 'cars/car_detail.html', context)
+
+
+@require_http_methods(['POST'])
+@login_required
+def add_comment(request):
+    comment = None
+
+    user_id = request.user.id
+    car_id = request.POST.get('car_id', '')
+    content = request.POST.get('content', '')
+
+    if car_id and content:
+        comment = Comment.objects.create(user_id=user_id, car_id=car_id, content=content)
+
+    return render(request, 'cars/partials/comment.html', {'comment': comment})
