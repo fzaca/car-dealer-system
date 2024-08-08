@@ -1,5 +1,5 @@
 <!-- Comment Section -->
-<div class="container p-5 mx-auto">
+<div class="container p-5 mx-auto bg-base-200 rounded-lg my-10">
   <div>
 
 
@@ -21,7 +21,7 @@
         <input type="hidden" name="car_id" value="{{ car.id }}">
         <button
           type="submit"
-          class="btn btn-primary md:w-auto w-full py-0 my-0 h-16"
+          class="btn btn-primary btn-outline md:w-auto w-full py-0 my-0 h-16"
         >
           Add Comment
         </button>
@@ -29,11 +29,12 @@
     </form>
     {% else %}
     <p class="text-gray-600">
-      You need to be logged in to comment.
-      <a href="{% url 'login' %}" class="text-primary font-semibold">
+      If you want to comment you need to be logged in.
+      <a href="{% url 'page_login' %}" class="text-primary font-semibold">
         Log in
       </a>
     </p>
+    <div class="divider"></div>
     {% endif %}
     <!-- End Comment Form -->
 
@@ -48,4 +49,7 @@
 
 
   </div>
+</div>
+<div class="bg-base-300 p-10">
+
 </div>
