@@ -19,7 +19,10 @@ module.exports = {
         25: '.25',
         75: '.75',
         175: '1.75',
-      }
+      },
+      animation: {
+        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
     },
   },
   plugins: [

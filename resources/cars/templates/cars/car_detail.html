@@ -27,7 +27,7 @@
         </div>
         <!-- Action Buttons -->
         <div class="grid gap-2 mt-4">
-            <button class="btn btn-primary w-full w-full ">Contact Dealer</button>
+            <button class="btn btn-primary w-full w-full animate-pulse ">Contact Dealer</button>
             <div class="divider divider-horizontal"></div>
             <button class="btn btn-secondary w-full w-full">Schedule a Test Drive</button>
         </div>
@@ -98,6 +98,16 @@
 
 document.body.addEventListener('htmx:afterRequest', (event) => {
     document.querySelector("#comment-content").value = '';
+});
+
+document.addEventListener('htmx:afterSwap', (event) => {
+  if (event.target.id === 'comment-list') {
+    const newComment = event.target.querySelector('li:first-child');
+    if (newComment) {
+      newComment.scrollIntoView({ behavior: 'smooth' });
+      newComment.classList.add('animate-pulse-slow');
+    }
+  }
 });
 </script>
 {% endblock %}

@@ -47,12 +47,14 @@ def car_list_view(request: HttpRequest) -> HttpResponse:
 def car_detail_view(request, car_id):
     car = get_object_or_404(Car, id=car_id)
     similar_cars = car.get_similar_cars()
+    has_similar_cars = bool(similar_cars)
 
     comments = Comment.objects.filter(car_id=car_id).order_by('-created_at')
 
     context = {
         'car': car,
         'similar_cars': similar_cars,
+        'has_similar_cars': has_similar_cars,
         'comments': comments,
     }
 

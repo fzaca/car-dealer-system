@@ -28,7 +28,7 @@ class="bg-neutral-800 brightness-150 rounded-lg p-5 mb-4 shadow-md">
                 </div>
                 <div class="flex gap-2">
                 {% if comment.user.id == request.user.id %}
-                    <a href="#" class="btn btn-warning btn-circle btn-outline btn-xs border-none"
+                    <a class="btn btn-warning btn-circle btn-outline btn-xs border-none"
                     hx-get="{% url 'edit_comment' comment.id %}"
                     hx-target="#comment-edit-{{ comment.id }}"
                     hx-swap="outerHTML">
@@ -36,7 +36,7 @@ class="bg-neutral-800 brightness-150 rounded-lg p-5 mb-4 shadow-md">
                     </a>
                 {% endif %}
                 {% if comment.user.id == request.user.id or request.user.is_staff %}
-                    <a href="#" class="btn btn-error btn-circle btn-outline btn-xs border-none"
+                    <a class="btn btn-error btn-circle btn-outline btn-xs border-none"
                     hx-delete="{% url 'comment-delete-comment' comment.id %}"
                     hx-confirm="Are you sure?"
                     hx-target="#comment-{{ comment.id }}"

@@ -9,7 +9,7 @@
     <form id="comment-form"
       hx-post="{% url 'add_comment' %}"
       hx-target="#comment-list"
-      hx-swap="afterbegin"
+      hx-swap="afterbegin settle:1s""
       class="mt-6">
       {% csrf_token %}
       <div class="form-control mb-4 flex flex-col md:flex-row items-start md:items-center">
@@ -42,7 +42,7 @@
 
 
     <!-- Comment List -->
-    <ul id="comment-list" class="space-y-4 overflow-y-auto max-h-96">
+    <ul id="comment-list" class="space-y-4 overflow-y-auto max-h-96 scroll-smooth">
       {% for comment in comments %}
         {% include './comment.html' %}
       {% endfor %}
