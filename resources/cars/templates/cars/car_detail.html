@@ -17,10 +17,10 @@
       class="object-cover object-center w-full h-96" />
   </div>
 
-  <div class="container mx-auto p-4 -mt-10">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+  <div class="container mx-auto -mt-10">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 m-0">
 
-      <div class="z-30 py-0 lg:px-10 justify-center h-full w-full">
+      <div class="z-30 py-0 lg:px-10 justify-center h-full w-full p-4 md:p-0">
         <!-- Car image -->
         <div class="rounded-lg overflow-hidden shadow-lg">
             <img class="object-cover w-full" src="{{ car.image_url }}" alt="{{ car.car_model.name }}" />
@@ -34,7 +34,7 @@
       </div>
 
 
-      <div class="z-30 lg:col-span-2">
+      <div class="z-30 lg:col-span-2 p-4 md:p-0">
         <!-- Title -->
         <div class="bg-purple-800 rounded-lg p-5 shadow-md text-white flex justify-between items-center">
           <div>
@@ -46,7 +46,7 @@
         </div>
 
         <!-- Divider -->
-        <div class="divider"></div>
+        <div class="lg:divider"></div>
         <!-- Data -->
         {% include './partials/details.html' %}
 
