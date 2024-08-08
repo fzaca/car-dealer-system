@@ -73,7 +73,7 @@ class Command(BaseCommand):
 
         comments = []
 
-        for _ in range(100):
+        for _ in range(200000):
             car = random.choice(cars)
             user = random.choice(users)
 

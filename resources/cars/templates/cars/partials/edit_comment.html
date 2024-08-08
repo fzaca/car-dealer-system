@@ -1,15 +1,18 @@
 <form hx-post="{% url 'edit_comment' comment.id %}"
     hx-target="closest article"
-    hx-swap="outerHTML"
-    class="flex">
-    <textarea
-        name="content"
-        placeholder="Write your comment here..."
-        class="textarea textarea-bordered w-full mt-2 bg-base-200 mb-2 md:mb-0 md:mr-2 flex-grow"
-        id="comment-content-edit"
-        value="{{ comment.content }}"
-        required
-        autofocus
-    ></textarea>
-    <button class="text-sky-600 hover:text-sky-900">Save</button>
+    hx-swap="outerHTML">
+    <div class="flex items-center flex flex-col md:flex-row">
+        <textarea
+            name="content"
+            placeholder="Write your comment here..."
+            class="textarea textarea-bordered w-full mt-2 bg-base-200 mb-2 md:mb-0 md:mr-2 flex-grow"
+            id="comment-content-edit"
+            required
+            autofocus
+        >{{ comment.content }}</textarea>
+        <button type="submit"
+            class="btn btn-outline btn-xs border-none md:w-auto w-full">
+            Save
+        </button>
+    </div>
 </form>
