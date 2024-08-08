@@ -19,6 +19,12 @@ class="bg-neutral-800 brightness-150 rounded-lg p-5 mb-4 shadow-md">
                     {% if comment.user.is_staff %}
                         <span class="badge bg-orange-400 text-gray-800 font-bold rounded-full px-4 py-2 shadow-md">Staff</span>
                     {% endif %}
+                    <small class="text-gray-500">
+                        {{ comment.updated_at|date:"F j, Y, g:i a" }}
+                        {% if comment.created_at|date:"U" != comment.updated_at|date:"U" %}
+                        edited
+                        {% endif %}
+                    </small>
                 </div>
                 <div class="flex gap-2">
                 {% if comment.user.id == request.user.id %}

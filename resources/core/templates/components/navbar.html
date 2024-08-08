@@ -51,6 +51,9 @@
             <div class="flex flex-col">
                 <h3 class="font-bold">{{ user.username }}</h3>
                 <span class="text-xs text-accent">{{ user.email }}</span>
+                {% if user.is_staff %}
+                    <span class="badge mt-1 bg-orange-400 text-gray-800 font-bold rounded-full px-4 py-2 shadow-md">Staff</span>
+                {% endif %}
             </div>
           </div>
           <form method="post" action="{% url 'logout' %}">
@@ -107,7 +110,12 @@
         <ul tabIndex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] p-2 shadow mt-2">
           <li>
             <div class="flex flex-col">
-                <h3 class="font-bold">{{ user.username }}</h3>
+                <h3 class="font-bold">
+                  {{ user.username }}
+                  {% if user.is_staff %}
+                      <span class="badge bg-orange-400 text-gray-800 font-bold rounded-full px-4 py-2 shadow-md">Staff</span>
+                  {% endif %}
+                </h3>
                 <span class="text-xs text-accent">{{ user.email }}</span>
             </div>
           </li>
