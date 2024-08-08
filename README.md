@@ -54,6 +54,12 @@ Ejemplo para entorno remoto:
 export ENV=remote
 ```
 
+## Ejecutar Minio en local
+Para correr el bucket localmente ejecutar:
+```sh
+docker compose -f compose/local/docker-compose.yml up --build -d minio --remove-orphans
+```
+
 ## Cargar Datos del Dataset
 * Dataset: [DVM-CAR Dataset](https://deepvisualmarketing.github.io/
 )
