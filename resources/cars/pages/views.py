@@ -4,7 +4,7 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 
 from resources.cars.utils import get_filters, paginate_cars
-from resources.cars.models import Car, Brand, CarModel
+from resources.cars.models import Car, CarModel
 from resources.reviews.models import Comment
 
 
@@ -20,12 +20,10 @@ def car_list_view(request: HttpRequest) -> HttpResponse:
     min_car_year = aggregates['min_year'] or 0
     max_car_year = aggregates['max_year'] or 0
 
-    brands = Brand.get_all_cached()
     car_models = CarModel.get_by_brand_cached(filters['brand'])
 
     context = {
         'page_obj': page_obj,
-        'brands': brands,
         'car_models': car_models,
         'brand_filter': filters['brand'],
         'body_type_filter': filters['body_type'],

@@ -103,6 +103,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'resources.cars.context_processors.body_types_processor',
+                'resources.cars.context_processors.brands_processor',
             ],
         },
     },
