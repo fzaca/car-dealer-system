@@ -72,3 +72,16 @@ def add_comment(request):
         comment = Comment.objects.create(user_id=user_id, car_id=car_id, content=content)
 
     return render(request, 'cars/partials/comment.html', {'comment': comment})
+
+
+@require_http_methods(['GET', 'POST'])
+def edit_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.method == 'POST':
+        comment.content = request.POST.get('content', '')
+        comment.save()
+
+        return render(request, 'cars/partials/comment.html', {'comment': comment})
+
+    return render(request, 'cars/partials/edit_comment.html', {'comment': comment})

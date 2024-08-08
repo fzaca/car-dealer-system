@@ -95,5 +95,9 @@
         }
     });
   });
+
+document.body.addEventListener('htmx:afterRequest', (event) => {
+    document.querySelector("#comment-content").value = '';
+});
 </script>
 {% endblock %}

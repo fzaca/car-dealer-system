@@ -2,6 +2,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
+from django.http import Http404
 
 from resources.reviews.models import Comment
 from resources.reviews.serializers import CommentSerializer
@@ -39,9 +40,13 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['delete'], permission_classes=[permissions.IsAuthenticated])
     def delete_comment(self, request, pk=None):
-        comment = self.get_object()
+        try:
+            comment = Comment.objects.get(id=pk)
+        except Comment.DoesNotExist:
+            raise Http404("No Comment matches the given query.")  # noqa: B904
+
         if comment.user != request.user and not request.user.is_staff:
             return Response({"error": "You do not have permission to delete this comment."}, status=status.HTTP_403_FORBIDDEN)
 
         comment.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_200_OK)

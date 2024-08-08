@@ -1,7 +1,8 @@
-<div class="bg-neutral-800 brightness-150 rounded-lg p-5 mb-4 shadow-md">
+<article id="comment-{{ comment.id }}"
+class="bg-neutral-800 brightness-150 rounded-lg p-5 mb-4 shadow-md">
     <div class="flex gap-4">
         <div class="avatar placeholder">
-            <div class="bg-neutral text-neutral-content w-10 h-10 rounded-full ring-offset-2 ring
+            <div class="bg-neutral shadow-md text-neutral-content w-10 h-10 rounded-full ring-offset-2 ring
                 {% if comment.user.id == request.user.id %}
                     ring-primary ring-offset-primary
                 {% else %}
@@ -11,14 +12,37 @@
                 <span>{{ comment.user.get_initials }}</span>
             </div>
         </div>
-        <div class="flex flex-col">
-            <div class="flex items-center gap-2">
-                <h1 class="font-semibold text-gray-200">{{ comment.user.username }}</h1>
-                {% if comment.user.is_staff %}
-                    <span class="badge bg-yellow-500 text-gray-800 font-bold rounded-full px-4 py-2 shadow-md">Staff</span>
+        <div class="flex flex-col w-full">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <h1 class="font-semibold text-gray-200">{{ comment.user.username }}</h1>
+                    {% if comment.user.is_staff %}
+                        <span class="badge bg-orange-400 text-gray-800 font-bold rounded-full px-4 py-2 shadow-md">Staff</span>
+                    {% endif %}
+                </div>
+                <div class="flex gap-2">
+                {% if comment.user.id == request.user.id %}
+                    <a href="#" class="btn btn-warning btn-outline btn-sm"
+                    hx-get="{% url 'edit_comment' comment.id %}"
+                    hx-target="#comment-edit-{{ comment.id }}"
+                    hx-swap="outerHTML">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a>
                 {% endif %}
+                {% if comment.user.id == request.user.id or request.user.is_staff %}
+                    <a href="#" class="btn btn-error btn-outline btn-sm"
+                    hx-delete="{% url 'comment-delete-comment' comment.id %}"
+                    hx-confirm="Are you sure?"
+                    hx-target="#comment-{{ comment.id }}"
+                    hx-swap="outerHTML swap:0.5s">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                {% endif %}
+                </div>
             </div>
-            <h2 class="text-gray-400">{{ comment.content }}</h2>
+            <div  id="comment-edit-{{ comment.id }}">
+                <h2 class="text-gray-400">{{ comment.content }}</h2>
+            </div>
         </div>
     </div>
-</div>
+</article>
