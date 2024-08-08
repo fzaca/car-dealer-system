@@ -67,6 +67,7 @@ Para cargar los datos del dataset en la base de datos, sigue estos pasos:
 python manage.py load_car_images
 python manage.py load_car_data
 python manage.py load_sales_data
+python manage.py load_reviews_data
 ```
 
 ## Depuración
