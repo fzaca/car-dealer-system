@@ -30,6 +30,7 @@
               {% for body_type in body_types %}
               <li>
                 <a href="{% url 'car_list' %}?body_type={{ body_type.name }}">
+                  <i class="fa-solid fa-circle fa-2xs"></i>
                   {{ body_type.name }}
                 </a>
               </li>
@@ -94,7 +95,12 @@
         tabindex="0"
         class="menu dropdown-content bg-base-100 rounded-box z-[1] mt-4 w-52 p-2 shadow">
         {% for body_type in body_types %}
-        <li><a href="{% url 'car_list' %}?body_type={{ body_type.name }}">{{ body_type.name }}</a></li>
+        <li>
+          <a href="{% url 'car_list' %}?body_type={{ body_type.name }}">
+            <i class="fa-solid fa-circle fa-2xs"></i>
+            {{ body_type.name }}
+          </a>
+        </li>
         {% endfor %}
       </ul>
     </div>
