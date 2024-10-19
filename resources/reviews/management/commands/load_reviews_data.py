@@ -21,7 +21,6 @@ class Command(BaseCommand):
 
     def clear_existing_data(self):
         Review.objects.all().delete()
-        Comment.objects.all().delete()
         self.stdout.write(self.style.SUCCESS('Successfully cleared existing data'))
 
     def load_reviews(self):
@@ -73,7 +72,7 @@ class Command(BaseCommand):
 
         comments = []
 
-        for _ in range(200000):
+        for _ in range(50000):
             car = random.choice(cars)
             user = random.choice(users)
 
