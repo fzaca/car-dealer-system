@@ -1,20 +1,37 @@
-from django.http import JsonResponse
-from django.views import View
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
+
+from resources.users.models import Customer
+from resources.users.serializers import CustomerSerializer
 
 
-class LoginAPIView(View):
-	def post(self, request, *args, **kwargs):  # noqa: PLR6301, E501
-		# TODO: Lógica de inicio de sesión para API # noqa: ERA001
-		return JsonResponse({"message": "Login successful"})
+class IsStaffPermission(permissions.BasePermission):
+    """
+    Custom permission to only allow staff users to create customers.
+    """
+    def has_permission(self, request, view):
+        return request.user.is_staff
 
 
-class LogoutAPIView(View):
-	def post(self, request, *args, **kwargs):  # noqa: PLR6301, E501
-		# TODO: Lógica de cierre de sesión para API # noqa: ERA001
-		return JsonResponse({"message": "Logout successful"})
+class CustomerViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows staff to create customers.
+    """
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    permission_classes = [permissions.IsAuthenticated, IsStaffPermission]
 
+    def create(self, request, *args, **kwargs):
+        """
+        Create a new customer. Only staff users can perform this action.
+        """
+        if not request.user.is_staff:
+            return Response({'error': 'Only staff can create customers.'}, status=status.HTTP_403_FORBIDDEN)
 
-class RegisterAPIView(View):
-	def post(self, request, *args, **kwargs):  # noqa: PLR6301, E501
-		# TODO: Lógica de registro para API # noqa: ERA001
-		return JsonResponse({"message": "Register successful"})
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        serializer.save()

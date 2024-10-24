@@ -1,8 +1,10 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import CustomerViewSet
 
-from . import views
+router = DefaultRouter()
+router.register(r'customers', CustomerViewSet)
 
 urlpatterns = [
-	path("login/", views.LoginAPIView.as_view(), name="api-login"),
-	path("logout/", views.LogoutAPIView.as_view(), name="api-logout"),
+    path('', include(router.urls)),
 ]
