@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django_select2",
     "widget_tweaks",
     "rest_framework",
+    'drf_yasg',
 	# Local apps
 	"resources.core",
 	"resources.users",
